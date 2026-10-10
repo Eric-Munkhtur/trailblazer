@@ -1,0 +1,24 @@
+{
+  "nct_id": "NCT07091175",
+  "title": "Dupilumab Therapy in Nephrotic Syndrome in Children",
+  "sponsor": "National University Hospital, Singapore",
+  "status": "RECRUITING",
+  "phases": [
+    "PHASE2"
+  ],
+  "conditions": [
+    "Nephrotic Syndrome in Children",
+    "Nephrotic Syndrome Steroid-Dependent"
+  ],
+  "mesh_terms": [],
+  "interventions": [
+    "Dupilumab",
+    "Placebo",
+    "Co-intervention of Prednisolone wean during randomised controlled phase",
+    "Dupilumab open label extension phase",
+    "Co-intervention of Prednisolone wean during open label extension phase"
+  ],
+  "primary_outcomes": [
+    "Time to relapse"
+  ]
+}
