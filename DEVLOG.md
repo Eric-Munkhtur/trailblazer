@@ -15,3 +15,9 @@ Build-window evidence for judges: everything below was written during HackRU Fal
   but never scores; UNASSESSABLE is a valid output.
 - Next: CT.gov API client, then PrimeKG subset notebook (highest data risk — do it
   while fresh).
+
+- **ctgov.py live.** Tested against the real API: NCT04437511 (donanemab,
+  TRAILBLAZER-ALZ 2 — fitting name) returns clean protocol fields; search used to
+  shortlist recruiting demo candidates. One observation: `meshTerms` comes back
+  empty for some trials — name matching must not rely on it (exact + fuzzy on
+  conditions/interventions is the primary path).
