@@ -21,3 +21,15 @@ Build-window evidence for judges: everything below was written during HackRU Fal
   shortlist recruiting demo candidates. One observation: `meshTerms` comes back
   empty for some trials — name matching must not rely on it (exact + fuzzy on
   conditions/interventions is the primary path).
+
+- **Plan merge (late evening).** Reviewed an external GNN-centric research plan.
+  Adopted: PyTDC data loader, HINT published F1s (Ph I/II/III = 0.665/0.620/0.847)
+  as prior-art rows, TxGNN (Nat Med 2024, same lab as PrimeKG) as the explanation
+  template + citation, prospective demo cases (trials with results after the data
+  cutoff), and drug-level split discipline. Rejected as spine: heterogeneous
+  GNN training (solo, ~10h — too risky). Optional unattended R-GCN lane with a
+  hour-6 kill-switch if time allows.
+
+- **prep/01 written.** PrimeKG download (official Dataverse API, file 6180620),
+  defensive column mapping, filter to 9 reasoning node types, node indexes for
+  the resolver, sanity checks (metformin/Alzheimer/dupilumab), zipped artifacts.
