@@ -5,13 +5,15 @@ __pycache__/
 .venv/
 venv/
 
-# Data & artifacts (regenerate via prep/ notebooks; large files kept out of git)
+# Data & artifacts (kg.csv raw ~1GB never committed; compact artifacts ARE
+# committed so a clean clone runs out of the box)
 artifacts/*.pkl
 artifacts/*.pt
 artifacts/*.parquet
-artifacts/*.csv
+artifacts/kg.csv
+artifacts/demo_cache/
 !artifacts/.gitkeep
-!artifacts/demo_cache/**
+!artifacts/nodes_*.csv
 
 # Notebooks / Colab
 .ipynb_checkpoints/
