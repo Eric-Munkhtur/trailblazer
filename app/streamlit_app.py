@@ -43,14 +43,28 @@ picked = st.sidebar.radio("Quick pick", list(DEMO.keys()),
 st.sidebar.caption("Cached locally — the demo runs offline.")
 
 def graph_section(rep):
-    """Agent 2: subgraph + 3D force view between the pinned entities."""
+    """Agent 2: full-graph star-field + live search animation between pins."""
+    import random
+
+    import pandas as pd
     import streamlit.components.v1 as components
     from graph_view import GraphView
-    from viz import build_html
+    from viz import TYPES, build_html
+
+    ART = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "artifacts")
 
     @st.cache_resource(show_spinner="Loading the biology map (once, ~30s)…")
     def get_graph() -> GraphView:
         return GraphView()
+
+    @st.cache_resource(show_spinner="Building the galaxy layout…")
+    def get_galaxy():
+        df = pd.read_csv(os.path.join(ART, "positions.csv.gz"))
+        tidx = {t: i for i, t in enumerate(TYPES)}
+        dust = {"xs": df["x"].tolist(), "ys": df["y"].tolist(), "zs": df["z"].tolist(),
+                "ts": [tidx.get(t, len(TYPES) - 1) for t in df["type"]]}
+        pos = dict(zip(df["name"], zip(df["x"], df["y"], df["z"])))
+        return dust, pos
 
     if rep.drug and rep.drug.ok and rep.disease and rep.disease.ok:
         sg = get_graph().subgraph_for(rep.drug.node_name, rep.disease.node_name)
@@ -68,17 +82,19 @@ def graph_section(rep):
                         "shot. The agent reports this honestly instead of inventing a "
                         "plausible-sounding chain.")
     elif (rep.drug and rep.drug.ok) or (rep.disease and rep.disease.ok):
-        from graph_view import GraphView as GV
         pin = rep.drug if (rep.drug and rep.drug.ok) else rep.disease
-        gv = get_graph()
-        sg = gv.subgraph_for(pin.node_name, pin.node_name)  # neighborhood only
-        sg.drug, sg.disease = pin.node_name, pin.node_name
+        sg = get_graph().subgraph_for(pin.node_name, pin.node_name)  # neighborhood only
     else:
         return
 
     if sg.nodes:
-        html = build_html(sg.nodes, sg.links)
-        components.html(html, height=640, scrolling=False)
+        dust, pos = get_galaxy()
+        rng = random.Random(42)
+        for n in sg.nodes:                     # seat action nodes at their galaxy spot
+            x, y, z = pos.get(n["name"], (rng.randint(-800, 800), 0, rng.randint(-800, 800)))
+            n["x"], n["y"], n["z"] = int(x), int(y), int(z)
+        html = build_html(sg.nodes, sg.links, dust=dust, height=720)
+        components.html(html, height=740, scrolling=False)
 
 
 
