@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Data & artifacts (regenerate via prep/ notebooks; large files kept out of git)
+artifacts/*.pkl
+artifacts/*.pt
+artifacts/*.parquet
+artifacts/*.csv
+!artifacts/.gitkeep
+!artifacts/demo_cache/**
+
+# Notebooks / Colab
+.ipynb_checkpoints/
+
+# Env & secrets
+.env
+*.key
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
