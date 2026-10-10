@@ -8,7 +8,7 @@ Build-window evidence for judges: everything below was written during HackRU Fal
 ## Sat Oct 10, 2026 (evening)
 
 - **Repo + scaffold.** README (pitch, architecture, evaluation plan), MIT license,
-  module skeleton, Colab prep layout. Chose the name *Trailblazer* — it blazes the
+  module skeleton, Colab prep layout. Chose the name *Verdia* — it blazes the
   trail from drug to disease through the knowledge graph.
 - Design rules locked in: the agent never parses the trial's results section
   ("prior to public results" enforced in code, not by promise); the LLM narrates
@@ -33,3 +33,6 @@ Build-window evidence for judges: everything below was written during HackRU Fal
 - **prep/01 written.** PrimeKG download (official Dataverse API, file 6180620),
   defensive column mapping, filter to 9 reasoning node types, node indexes for
   the resolver, sanity checks (metformin/Alzheimer/dupilumab), zipped artifacts.
+
+- **Renamed: Trailblazer -> Verdia.** verdict + via (Latin: the road) — the
+  system that finds the road through biology and delivers the verdict.

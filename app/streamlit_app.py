@@ -1,4 +1,4 @@
-"""Trailblazer — Agent 1: Ingestion & Agentic Fetching (UI).
+"""Verdia — Agent 1: Ingestion & Agentic Fetching (UI).
 
 Paste an NCT number -> the agent queries ClinicalTrials.gov API v2, extracts
 intervention (drug), indication (disease), phase, and eligibility protocol,
@@ -18,9 +18,9 @@ import streamlit as st
 from agent import AssemblyAgent
 from ctgov import CACHE_DIR
 
-st.set_page_config(page_title="Trailblazer", page_icon="🔬", layout="wide")
+st.set_page_config(page_title="Verdia", page_icon="🔬", layout="wide")
 
-st.title("🔬 Trailblazer")
+st.title("🔬 Verdia")
 st.caption("Agentic Assembly — NCT number → entities extracted → mapped onto the "
            "PrimeKG knowledge graph. Protocol fields only; never results.")
 

@@ -1,9 +1,9 @@
-# Trailblazer 🔬
+# Verdia 🔬
 
 **Structural Reasoning AI for Clinical Trial Outcome Prediction — the pre-flight check for clinical trials.**
 
 > Roughly 9 in 10 drugs that enter clinical trials never reach approval, and a failed pivotal
-> trial burns a median **$19M+** (≈$41K per patient). Trailblazer is an early-warning system:
+> trial burns a median **$19M+** (≈$41K per patient). Verdia is an early-warning system:
 > given only a trial's ID — **before any public results exist** — it traces the drug's route
 > through the real map of human biology and reports whether the trial is mechanistically
 > plausible, with every hop of the evidence visible.
@@ -64,7 +64,7 @@ under a **time-based split** (train on older trials, test on newer — no future
 | Majority class | baseline |
 | Zero-shot LLM (text-only) | see `results/` |
 | Symbolic path features only | see `results/` |
-| **Symbolic + structural embeddings (Trailblazer)** | see `results/` |
+| **Symbolic + structural embeddings (Verdia)** | see `results/` |
 
 We also report results **with indication edges excluded**, so the graph can't leak
 already-approved status into the prediction. Link-prediction metrics (MRR, Hits@10)

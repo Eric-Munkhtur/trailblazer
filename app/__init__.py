@@ -1,1 +1,1 @@
-# Trailblazer app package
+# Verdia app package
