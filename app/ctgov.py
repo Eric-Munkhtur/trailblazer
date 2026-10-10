@@ -53,6 +53,7 @@ def _extract_protocol(p: dict) -> dict:
     conditions = p.get("conditionsModule", {})
     arms = p.get("armsInterventionsModule", {})
     outcomes = p.get("outcomesModule", {})
+    elig = p.get("eligibilityModule", {})
 
     interventions = [
         i.get("name", "") for i in arms.get("interventions", []) if i.get("name")
@@ -73,6 +74,11 @@ def _extract_protocol(p: dict) -> dict:
         "mesh_terms": conditions.get("meshTerms", []),
         "interventions": interventions,
         "primary_outcomes": primary,
+        "eligibility_criteria": elig.get("eligibilityCriteria", ""),
+        "sex": elig.get("sex", ""),
+        "min_age": elig.get("minimumAge", ""),
+        "max_age": elig.get("maximumAge", ""),
+        "healthy_volunteers": elig.get("healthyVolunteers", ""),
     }
 
 

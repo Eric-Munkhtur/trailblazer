@@ -20,5 +20,10 @@
   ],
   "primary_outcomes": [
     "Time to relapse"
-  ]
+  ],
+  "eligibility_criteria": "Inclusion Criteria:\n\n1. Age between 6 years old and 18 years old at the point of recruitment with idiopathic nephrotic syndrome with disease onset between 1-18 years old\n2. Steroid-dependent disease or frequently relapsing disease prior to commencement of maintenance immunosuppression\n3. On oral prednisolone +/- mycophenolate or levamisole only as maintenance therapy for 6 months or more, and with inadequate disease control or steroid toxicity on therapy\n4. Nephrotic relapse or partial relapse (clinical or biochemical) within the last 1 year either unprovoked or during prednisolone wean, and which responded to increase in steroids\n5. In complete remission at the time of recruitment\n6. Competent with, and compliant to, daily urine protein monitoring with Albustix\n\nExclusion Criteria:\n\n1. Pre-existing ophthalmological conditions except refractive errors, squint or mild cataract\n2. Current symptoms of helminth infection or travel to endemic areas, unless helminth infection is excluded\n3. eGFR (by Bedside Schwartz equation) \\<60 ml/min/1.73m2\n4. Received Rituximab or other B-cell depleting agents within the last 1 year\n5. Biopsy proven focal segmental glomerulosclerosis\n6. Known ongoing infection including HIV, Hepatitis B, Hepatitis C or tuberculosis, otherwise immunosuppressed or with frequent infections\n7. Known or suspected non-compliance to medication or follow-up\n8. Pregnancy or intention to become pregnant\n9. Major systemic conditions, i.e. ASA Physical Status III-IV.\n10. Known hypersensitivity to dupilumab or any of its excipients",
+  "sex": "ALL",
+  "min_age": "6 Years",
+  "max_age": "18 Years",
+  "healthy_volunteers": false
 }

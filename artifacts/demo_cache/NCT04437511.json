@@ -17,5 +17,10 @@
   "primary_outcomes": [
     "Change From Baseline on the Integrated Alzheimer's Disease Rating Scale (iADRS) (Overall Population)",
     "Change From Baseline on the Integrated Alzheimer's Disease Rating Scale (iADRS) (Intermediate (Low-medium) Tau Population)"
-  ]
+  ],
+  "eligibility_criteria": "Inclusion Criteria:\n\n* Gradual and progressive change in memory function reported by participants or informants for \u2265 6 months\n* MMSE score of 20 to 28 (inclusive) at baseline\n* Meet 18F flortaucipir PET scan (central read) criteria - does not apply to safety cohort\n* Meet 18F florbetapir PET scan (central read) criteria\n* Have a study partner who will provide written informed consent to participate\n\nExclusion Criteria:\n\n* Contraindication to MRI or PET scans\n* Current treatment with immunoglobulin G (IgG) therapy",
+  "sex": "ALL",
+  "min_age": "60 Years",
+  "max_age": "85 Years",
+  "healthy_volunteers": false
 }
