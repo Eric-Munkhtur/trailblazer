@@ -42,6 +42,47 @@ picked = st.sidebar.radio("Quick pick", list(DEMO.keys()),
                           label_visibility="collapsed")
 st.sidebar.caption("Cached locally — the demo runs offline.")
 
+def graph_section(rep):
+    """Agent 2: subgraph + 3D force view between the pinned entities."""
+    import streamlit.components.v1 as components
+    from graph_view import GraphView
+    from viz import build_html
+
+    @st.cache_resource(show_spinner="Loading the biology map (once, ~30s)…")
+    def get_graph() -> GraphView:
+        return GraphView()
+
+    if rep.drug and rep.drug.ok and rep.disease and rep.disease.ok:
+        sg = get_graph().subgraph_for(rep.drug.node_name, rep.disease.node_name)
+        if sg.found_routes:
+            st.markdown(f"**Traced route(s)** through the knowledge graph "
+                        f"({sg.found_routes} found):")
+            for r in sg.routes[:5]:
+                st.markdown("&nbsp;&nbsp;→ ".join(
+                    f"`{x}`" if not x.startswith("[") else f"**{x}**"
+                    for x in r["chain"]))
+        else:
+            st.markdown("**No connecting route exists in PrimeKG** — the drug and "
+                        "disease sit in disconnected parts of the map. This trial is "
+                        "mechanistically *uncharted*: either novel biology or a long "
+                        "shot. The agent reports this honestly instead of inventing a "
+                        "plausible-sounding chain.")
+    elif (rep.drug and rep.drug.ok) or (rep.disease and rep.disease.ok):
+        from graph_view import GraphView as GV
+        pin = rep.drug if (rep.drug and rep.drug.ok) else rep.disease
+        gv = get_graph()
+        sg = gv.subgraph_for(pin.node_name, pin.node_name)  # neighborhood only
+        sg.drug, sg.disease = pin.node_name, pin.node_name
+    else:
+        return
+
+    if sg.nodes:
+        html = build_html(sg.nodes, sg.links)
+        components.html(html, height=640, scrolling=False)
+
+
+
+
 # --- input ---------------------------------------------------------------
 col1, col2 = st.columns([3, 1])
 nct = col1.text_input("NCT trial number", value=picked, label_visibility="collapsed")
@@ -104,6 +145,16 @@ if run or nct:
         with st.expander("🎯 Primary outcome(s) — shown, never used for mapping"):
             for o in t["primary_outcomes"]:
                 st.markdown(f"- {o}")
+
+        # ---- Agent 2: 3D map view ---------------------------------------
+        st.subheader("🧬 Agent 2 — the map (PrimeKG)")
+        if rep.status in ("MAPPED", "PARTIAL"):
+            try:
+                graph_section(rep)
+            except Exception as e:
+                st.warning(f"Map view unavailable: {e}")
+        else:
+            st.info("Nothing pinned — nothing to draw (honest refusal).")
     else:
         st.info("No cached trial and no network — try a demo trial from the sidebar.")
 
