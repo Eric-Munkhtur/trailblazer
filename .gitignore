@@ -43,3 +43,6 @@ artifacts/demo_cache/
 !artifacts/nodes_*.csv
 .idea/
 .vscode/
+
+# promotional videos are kept out of git (host externally)
+videos/
