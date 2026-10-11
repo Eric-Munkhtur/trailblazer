@@ -14,7 +14,7 @@ The conditioned attempt was exploratory after inspecting the first attempt's tes
 
 ## What changed
 
-- **Global attention:** replace the mean of each inclusion/exclusion sentence group with a softmax-weighted average using two learned 768-dimensional scoring vectors (1,536 added parameters). The scoring rule is shared across trials and has no drug/disease input.
+- **Sentence attention (global scoring):** replace the mean of each inclusion/exclusion sentence group with a softmax-weighted average using two learned 768-dimensional scoring vectors (1,536 added parameters). The scoring rule is shared across trials and has no drug/disease input.
 - **Conditioned attention:** derive separate inclusion/exclusion queries from the concatenated drug and disease representations, using a shared 32-dimensional sentence-key space (31,040 added parameters). The original protocol projection and downstream HINT interaction graph remain.
 - Both preserve mean pooling at initialization. Both retain frozen cached sentence embeddings; both ultimately compress eligibility into a 50-dimensional protocol vector. Neither adds biological evidence or PrimeKG paths to HINT.
 
