@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
@@ -31,26 +30,23 @@ export async function loadPrimeKG(onProgress) {
   return { meta, pos, types, degree, names, edges, edgeRels, N: types.length };
 }
 
+// The graph is drawn in muted type colours so that highlighted nodes (hovered neighbours here,
+// search results in the highlight layer) stand out in full colour.
 const NODE_VS = /* glsl */ `
-  uniform float uTime, uSize, uPixelRatio, uDim, uReveal, uBase;
+  uniform float uSize, uPixelRatio, uReveal, uBase, uMute;
   uniform float uMask[16];
   attribute vec3 aColor;
-  attribute float aType, aFire, aLock, aHi, aSize, aAlpha, aOrder;
+  attribute float aType, aHi, aSize, aAlpha, aOrder;
   varying vec3 vColor;
-  varying float vAlpha, vGlow;
+  varying float vAlpha;
   void main() {
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
-    float since = uTime - aFire;
-    float act = since >= 0.0 ? exp(-since * 1.4) : 0.0;
-    float hold = max(aLock, aHi);
-    float glow = max(act, hold);
     float mask = uMask[int(aType + 0.5)];
     float reveal = smoothstep(aOrder * 2.0, aOrder * 2.0 + 0.4, uReveal);
-    float base = uBase * mix(1.0, 0.3, uDim) * aAlpha;
-    vAlpha = mask * reveal * min(1.0, base + glow);
-    vGlow = glow;
-    vColor = mix(aColor, vec3(1.0), act * 0.55);
-    float size = uSize * aSize * (1.0 + act * 2.0 + hold * 0.9);
+    vAlpha = mask * reveal * min(1.0, uBase * aAlpha + aHi);
+    float grey = dot(aColor, vec3(0.299, 0.587, 0.114));
+    vColor = mix(aColor, vec3(grey), uMute * (1.0 - aHi)) * (0.6 + 0.7 * aHi);
+    float size = uSize * aSize * (1.0 + aHi * 0.9);
     // Slightly flatter than true perspective so close-up points do not balloon.
     gl_PointSize = min(80.0, mask * size * uPixelRatio * pow(420.0 / -mv.z, 0.8));
     gl_Position = projectionMatrix * mv;
@@ -58,27 +54,26 @@ const NODE_VS = /* glsl */ `
 
 const NODE_FS = /* glsl */ `
   varying vec3 vColor;
-  varying float vAlpha, vGlow;
+  varying float vAlpha;
   void main() {
     float d = length(gl_PointCoord - 0.5);
     if (d > 0.5) discard;
-    float core = pow(1.0 - d * 2.0, 1.6);
-    gl_FragColor = vec4(vColor * (0.55 + vGlow * 1.3), core * vAlpha);
+    gl_FragColor = vec4(vColor, pow(1.0 - d * 2.0, 1.6) * vAlpha);
   }`;
 
 // Fibres fade with length (long edges between distant clusters would otherwise dominate) and
 // with local density.
 const FIBER_VS = /* glsl */ `
   uniform float uMask[16];
-  uniform float uDim, uLength;
+  uniform float uLength;
   attribute vec3 aColor;
   attribute float aType, aLen, aAlpha;
   varying vec3 vColor;
   varying float vAlpha;
   void main() {
-    vColor = mix(aColor, vec3(0.8), 0.45);
+    vColor = mix(aColor, vec3(0.7), 0.6);
     float l = aLen / uLength;
-    vAlpha = uMask[int(aType + 0.5)] * mix(1.0, 0.3, uDim) * aAlpha / (1.0 + l * l);
+    vAlpha = uMask[int(aType + 0.5)] * aAlpha / (1.0 + l * l);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }`;
 
@@ -88,90 +83,62 @@ const FIBER_FS = /* glsl */ `
   varying float vAlpha;
   void main() { gl_FragColor = vec4(vColor, uOpacity * vAlpha); }`;
 
-// A node's real edges, with pulses flowing outward from it.
 const EGO_VS = /* glsl */ `
-  attribute float aS, aPhase;
   attribute vec3 aColor;
-  varying float vS, vPhase;
   varying vec3 vColor;
   void main() {
-    vS = aS; vPhase = aPhase; vColor = aColor;
+    vColor = aColor;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }`;
 
 const EGO_FS = /* glsl */ `
-  uniform float uTime, uOpacity;
-  varying float vS, vPhase;
+  uniform float uOpacity;
   varying vec3 vColor;
-  void main() {
-    float q = fract(uTime * 0.45 + vPhase - vS);
-    float pulse = exp(-q * 10.0);
-    gl_FragColor = vec4(vColor * (1.0 + pulse), uOpacity * (0.3 + 0.9 * pulse));
-  }`;
+  void main() { gl_FragColor = vec4(vColor, uOpacity); }`;
 
-// A signal is a comet travelling from A to B: bright head, fading tail, then the fibre fades out.
-const SIGNAL_VS = /* glsl */ `
-  attribute float aS, aT0, aDur, aStrength;
-  attribute vec3 aColor;
-  varying float vS, vT0, vDur, vStrength;
-  varying vec3 vColor;
-  void main() {
-    vS = aS; vT0 = aT0; vDur = aDur; vStrength = aStrength; vColor = aColor;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }`;
-
-const SIGNAL_FS = /* glsl */ `
-  uniform float uTime, uLoop, uPeriod;
-  varying float vS, vT0, vDur, vStrength;
-  varying vec3 vColor;
-  void main() {
-    float p = (uTime - vT0) / vDur;
-    if (p < 0.0) discard;
-    float a;
-    if (uLoop > 0.5) {
-      float q = mod(p, uPeriod);
-      float behind = q - vS;
-      float head = behind >= 0.0 ? exp(-behind * 7.0) : 0.0;
-      a = (0.22 + head * 1.1) * vStrength;
-    } else {
-      float behind = p - vS;
-      if (behind < 0.0) discard;
-      float trail = exp(-behind * 3.2);
-      float head = exp(-behind * behind * 500.0);
-      float fade = p > 1.0 ? exp(-(p - 1.0) * 1.1) : 1.0;
-      a = (trail * 0.5 + head * 1.4) * fade * vStrength;
-    }
-    if (a < 0.004) discard;
-    gl_FragColor = vec4(vColor * (1.0 + a), min(a, 1.0));
-  }`;
-
-const PULSE_VS = /* glsl */ `
-  uniform float uTime, uPixelRatio, uLoop, uPeriod;
-  attribute vec3 aB;
-  attribute float aT0, aDur, aStrength;
+// Highlights over the graph: nodes as solid discs and edges as lines, each fading in at its
+// own time and then staying put.
+const MARK_VS = /* glsl */ `
+  uniform float uTime, uPixelRatio, uOpacity;
+  attribute float aT, aSize;
   attribute vec3 aColor;
   varying vec3 vColor;
   varying float vA;
   void main() {
-    float p = (uTime - aT0) / aDur;
-    if (uLoop > 0.5) p = mod(p, uPeriod);
-    float vis = (p >= 0.0 && p <= 1.0) ? 1.0 : 0.0;
-    vec3 pos = mix(position, aB, clamp(p, 0.0, 1.0));
-    vec4 mv = modelViewMatrix * vec4(pos, 1.0);
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    vA = smoothstep(aT, aT + 0.25, uTime) * uOpacity;
     vColor = aColor;
-    vA = vis * aStrength;
-    gl_PointSize = vis * (5.0 + 5.0 * aStrength) * uPixelRatio * (420.0 / -mv.z);
+    gl_PointSize = vA > 0.0 ? min(40.0, aSize * uPixelRatio * pow(420.0 / -mv.z, 0.6)) : 0.0;
     gl_Position = projectionMatrix * mv;
   }`;
 
-const PULSE_FS = /* glsl */ `
+const MARK_FS = /* glsl */ `
   varying vec3 vColor;
   varying float vA;
   void main() {
     float d = length(gl_PointCoord - 0.5);
     if (d > 0.5 || vA <= 0.0) discard;
-    float core = pow(1.0 - d * 2.0, 2.2);
-    gl_FragColor = vec4(mix(vColor, vec3(1.0), 0.45) * 1.6, core * vA);
+    gl_FragColor = vec4(vColor, vA * (1.0 - smoothstep(0.36, 0.5, d)));
+  }`;
+
+const LINK_VS = /* glsl */ `
+  uniform float uTime, uOpacity;
+  attribute float aT, aAlpha;
+  attribute vec3 aColor;
+  varying vec3 vColor;
+  varying float vA;
+  void main() {
+    vA = smoothstep(aT, aT + 0.3, uTime) * aAlpha * uOpacity;
+    vColor = aColor;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }`;
+
+const LINK_FS = /* glsl */ `
+  varying vec3 vColor;
+  varying float vA;
+  void main() {
+    if (vA < 0.003) discard;
+    gl_FragColor = vec4(vColor, vA);
   }`;
 
 // Reference frame around the layout: great circles on the sphere that holds 95% of nodes.
@@ -202,83 +169,82 @@ const dynamicAttr = (geo, name, size, n) => {
   return a;
 };
 
-class SignalLayer {
-  constructor(capacity, shared, loop = false) {
+class HighlightLayer {
+  constructor(capacity, shared, order) {
     this.cap = capacity;
-    this.next = 0;
-    this.count = 0;
-    const lg = new THREE.BufferGeometry();
-    this.l = {
-      position: dynamicAttr(lg, 'position', 3, capacity * 2),
-      aS: dynamicAttr(lg, 'aS', 1, capacity * 2),
-      aT0: dynamicAttr(lg, 'aT0', 1, capacity * 2),
-      aDur: dynamicAttr(lg, 'aDur', 1, capacity * 2),
-      aStrength: dynamicAttr(lg, 'aStrength', 1, capacity * 2),
-      aColor: dynamicAttr(lg, 'aColor', 3, capacity * 2),
-    };
-    this.l.aT0.array.fill(1e9);
-    // Loop period in units of one hop, long enough for a 4-hop pathway plus a pause.
-    this.period = 5.2;
-    const uniforms = { uTime: shared.uTime, uPixelRatio: shared.uPixelRatio, uLoop: { value: loop ? 1 : 0 }, uPeriod: { value: this.period } };
-    this.lines = new THREE.LineSegments(
-      lg,
-      new THREE.ShaderMaterial({ uniforms, vertexShader: SIGNAL_VS, fragmentShader: SIGNAL_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
-    );
+    this.nodes = 0;
+    this.links = 0;
+    this.uniforms = { uTime: shared.uTime, uPixelRatio: shared.uPixelRatio, uOpacity: { value: 1 } };
+    const material = (vertexShader, fragmentShader) =>
+      new THREE.ShaderMaterial({ uniforms: this.uniforms, vertexShader, fragmentShader, transparent: true, depthWrite: false, depthTest: false });
     const pg = new THREE.BufferGeometry();
     this.p = {
       position: dynamicAttr(pg, 'position', 3, capacity),
-      aB: dynamicAttr(pg, 'aB', 3, capacity),
-      aT0: dynamicAttr(pg, 'aT0', 1, capacity),
-      aDur: dynamicAttr(pg, 'aDur', 1, capacity),
-      aStrength: dynamicAttr(pg, 'aStrength', 1, capacity),
+      aT: dynamicAttr(pg, 'aT', 1, capacity),
+      aSize: dynamicAttr(pg, 'aSize', 1, capacity),
       aColor: dynamicAttr(pg, 'aColor', 3, capacity),
     };
-    this.p.aT0.array.fill(1e9);
-    this.pulses = new THREE.Points(
-      pg,
-      new THREE.ShaderMaterial({ uniforms, vertexShader: PULSE_VS, fragmentShader: PULSE_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
-    );
-    this.lines.frustumCulled = this.pulses.frustumCulled = false;
+    const lg = new THREE.BufferGeometry();
+    this.l = {
+      position: dynamicAttr(lg, 'position', 3, capacity * 2),
+      aT: dynamicAttr(lg, 'aT', 1, capacity * 2),
+      aAlpha: dynamicAttr(lg, 'aAlpha', 1, capacity * 2),
+      aColor: dynamicAttr(lg, 'aColor', 3, capacity * 2),
+    };
+    pg.setDrawRange(0, 0);
+    lg.setDrawRange(0, 0);
+    this.lines = new THREE.LineSegments(lg, material(LINK_VS, LINK_FS));
+    this.points = new THREE.Points(pg, material(MARK_VS, MARK_FS));
+    this.lines.frustumCulled = this.points.frustumCulled = false;
+    this.lines.renderOrder = order;
+    this.points.renderOrder = order + 1;
     this.dirty = false;
   }
 
-  add(a, b, t0, dur, color, strength) {
-    const k = this.next;
-    this.next = (this.next + 1) % this.cap;
-    this.count = Math.min(this.cap, this.count + 1);
+  node(p, t, color, size) {
+    if (this.nodes >= this.cap) return;
+    const k = this.nodes++;
+    this.p.position.array.set(p, k * 3);
+    this.p.aT.array[k] = t;
+    this.p.aSize.array[k] = size;
+    this.p.aColor.array.set(color, k * 3);
+    this.dirty = true;
+  }
+
+  link(a, b, t, color, alpha) {
+    if (this.links >= this.cap) return;
+    const k = this.links++;
     const L = this.l;
     L.position.array.set(a, k * 6);
     L.position.array.set(b, k * 6 + 3);
-    L.aS.array[k * 2] = 0;
-    L.aS.array[k * 2 + 1] = 1;
     for (const j of [0, 1]) {
-      L.aT0.array[k * 2 + j] = t0;
-      L.aDur.array[k * 2 + j] = dur;
-      L.aStrength.array[k * 2 + j] = strength;
+      L.aT.array[k * 2 + j] = t;
+      L.aAlpha.array[k * 2 + j] = alpha;
       L.aColor.array.set(color, (k * 2 + j) * 3);
     }
-    const P = this.p;
-    P.position.array.set(a, k * 3);
-    P.aB.array.set(b, k * 3);
-    P.aT0.array[k] = t0;
-    P.aDur.array[k] = dur;
-    P.aStrength.array[k] = strength;
-    P.aColor.array.set(color, k * 3);
     this.dirty = true;
   }
 
   clear() {
-    this.l.aT0.array.fill(1e9);
-    this.p.aT0.array.fill(1e9);
-    this.next = this.count = 0;
+    this.nodes = this.links = 0;
     this.dirty = true;
   }
 
   flush() {
     if (!this.dirty) return;
-    for (const a of Object.values(this.l)) a.needsUpdate = true;
-    for (const a of Object.values(this.p)) a.needsUpdate = true;
     this.dirty = false;
+    const upload = (attrs, n) => {
+      if (!n) return;
+      for (const a of Object.values(attrs)) {
+        a.clearUpdateRanges();
+        a.addUpdateRange(0, n * a.itemSize);
+        a.needsUpdate = true;
+      }
+    };
+    upload(this.p, this.nodes);
+    upload(this.l, this.links * 2);
+    this.points.geometry.setDrawRange(0, this.nodes);
+    this.lines.geometry.setDrawRange(0, this.links * 2);
   }
 }
 
@@ -287,6 +253,7 @@ const SIDE_COLORS = {
   disease: new THREE.Color('#ff8b3d'),
   A: new THREE.Color('#8c84ff'),
   B: new THREE.Color('#ff8b3d'),
+  meet: new THREE.Color('#ffffff'),
   path: new THREE.Color('#ff4a2e'),
 };
 
@@ -330,7 +297,7 @@ function wireGeometry(R) {
 }
 
 // A coarse 3D grid over the layout. Points and fibres in crowded cells are drawn fainter, so
-// clusters keep their texture under additive blending instead of saturating to white.
+// clusters keep their texture instead of filling in solid.
 function densityGrid(pos, N, cells = 48) {
   const lo = [Infinity, Infinity, Infinity];
   const hi = [-Infinity, -Infinity, -Infinity];
@@ -352,7 +319,9 @@ const smooth = (a, b, x) => {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
 };
-const FIBER_OPACITY = 0.03;
+const FIBER_OPACITY = 0.05;
+// A second hop reaches tens of thousands of nodes; only its strongest are drawn.
+const DRAWN_PER_HOP = { 1: 3000, 2: 1500 };
 const EGO_MAX = 4000;
 const HINTS = 24;
 const HINT_MIN = 1.45;
@@ -384,15 +353,14 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   controls.minDistance = 30;
   controls.maxDistance = 3000;
 
-  const composer = new EffectComposer(renderer);
+  const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 4 }));
+  composer.setSize(container.clientWidth, container.clientHeight);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.38, 0.4, 0.42);
-  composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
-  const shared = { uTime: { value: 0 }, uPixelRatio: { value: pixelRatio }, uDim: { value: 0 }, uMask: { value: new Array(16).fill(1) } };
+  const shared = { uTime: { value: 0 }, uPixelRatio: { value: pixelRatio }, uMask: { value: new Array(16).fill(1) } };
   const typeColors = meta.types.map((t) => new THREE.Color(t.color));
-  const egoColors = typeColors.map((c) => c.clone().lerp(new THREE.Color(1, 1, 1), 0.4));
+  const egoColors = typeColors.map((c) => c.clone().lerp(new THREE.Color(1, 1, 1), 0.15));
   const grid = densityGrid(pos, N);
 
   // Neurons: every PrimeKG node, sized by its real number of connections.
@@ -417,16 +385,12 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   geo.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
   geo.setAttribute('aAlpha', new THREE.BufferAttribute(alpha, 1));
   geo.setAttribute('aOrder', new THREE.BufferAttribute(order, 1));
-  const fire = new THREE.BufferAttribute(new Float32Array(N).fill(-1000), 1);
-  const lock = new THREE.BufferAttribute(new Float32Array(N), 1);
   const hi = new THREE.BufferAttribute(new Float32Array(N), 1);
-  geo.setAttribute('aFire', fire);
-  geo.setAttribute('aLock', lock);
   geo.setAttribute('aHi', hi);
-  const nodeUniforms = { ...shared, uSize: { value: 1.8 }, uReveal: { value: 0 }, uBase: { value: 1 } };
+  const nodeUniforms = { ...shared, uSize: { value: 1.8 }, uReveal: { value: 0 }, uBase: { value: 1 }, uMute: { value: 0.6 } };
   const points = new THREE.Points(
     geo,
-    new THREE.ShaderMaterial({ uniforms: nodeUniforms, vertexShader: NODE_VS, fragmentShader: NODE_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
+    new THREE.ShaderMaterial({ uniforms: nodeUniforms, vertexShader: NODE_VS, fragmentShader: NODE_FS, transparent: true, depthWrite: false }),
   );
   scene.add(points);
 
@@ -459,10 +423,10 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   fgeo.setAttribute('aType', new THREE.BufferAttribute(ftype, 1));
   fgeo.setAttribute('aLen', new THREE.BufferAttribute(flen, 1));
   fgeo.setAttribute('aAlpha', new THREE.BufferAttribute(falpha, 1));
-  const fiberUniforms = { ...shared, uOpacity: { value: FIBER_OPACITY }, uLength: { value: 70 } };
+  const fiberUniforms = { ...shared, uOpacity: { value: FIBER_OPACITY }, uLength: { value: 100 } };
   const fibers = new THREE.LineSegments(
     fgeo,
-    new THREE.ShaderMaterial({ uniforms: fiberUniforms, vertexShader: FIBER_VS, fragmentShader: FIBER_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
+    new THREE.ShaderMaterial({ uniforms: fiberUniforms, vertexShader: FIBER_VS, fragmentShader: FIBER_FS, transparent: true, depthWrite: false }),
   );
   scene.add(fibers);
 
@@ -470,23 +434,26 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   const egoGeo = new THREE.BufferGeometry();
   const ego = {
     position: dynamicAttr(egoGeo, 'position', 3, EGO_MAX * 2),
-    aS: dynamicAttr(egoGeo, 'aS', 1, EGO_MAX * 2),
-    aPhase: dynamicAttr(egoGeo, 'aPhase', 1, EGO_MAX * 2),
     aColor: dynamicAttr(egoGeo, 'aColor', 3, EGO_MAX * 2),
   };
   egoGeo.setDrawRange(0, 0);
-  const egoUniforms = { uTime: shared.uTime, uOpacity: { value: 0.5 } };
+  const egoUniforms = { uOpacity: { value: 0.5 } };
   const egoLines = new THREE.LineSegments(
     egoGeo,
-    new THREE.ShaderMaterial({ uniforms: egoUniforms, vertexShader: EGO_VS, fragmentShader: EGO_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
+    new THREE.ShaderMaterial({ uniforms: egoUniforms, vertexShader: EGO_VS, fragmentShader: EGO_FS, transparent: true, depthWrite: false, depthTest: false }),
   );
   egoLines.frustumCulled = false;
+  egoLines.renderOrder = 1;
   scene.add(egoLines);
   let egoNodes = [];
 
-  const signals = new SignalLayer(24000, shared);
-  const paths = new SignalLayer(1200, shared, true);
-  scene.add(signals.lines, signals.pulses, paths.lines, paths.pulses);
+  // Search results: every node a wavefront reached, with the edge it was reached through.
+  // Pathways sit on top in red.
+  const reach = new HighlightLayer(20000, shared, 2);
+  const routes = new HighlightLayer(2000, shared, 4);
+  scene.add(reach.lines, reach.points, routes.lines, routes.points);
+  const reachedFrom = new Map();
+  let reachFade = 1;
 
   // Reference sphere, shown in the overview and faded out up close. Its outline is the sphere's
   // silhouette, recomputed for the camera every frame.
@@ -543,18 +510,13 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   }
 
   // ---------- state ----------
-  const state = { labels: true, fireDirty: false, lockDirty: false, cam: null, hover: -1, frame: 0 };
+  const state = { labels: true, cam: null, hover: -1, frame: 0 };
   const labelObjs = new Map();
   const timer = new THREE.Timer();
   timer.connect(document);
   const now = () => shared.uTime.value;
   const P = (i) => pos.subarray(i * 3, i * 3 + 3);
-
-  function fireAt(i, t) {
-    const cur = fire.array[i];
-    if (cur < now() - 0.4 || t < cur) fire.array[i] = t;
-    state.fireDirty = true;
-  }
+  const span = (a, b) => Math.hypot(pos[a * 3] - pos[b * 3], pos[a * 3 + 1] - pos[b * 3 + 1], pos[a * 3 + 2] - pos[b * 3 + 2]);
 
   function resize() {
     const w = container.clientWidth;
@@ -700,7 +662,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     // Fewer fibres overlap per pixel up close, so each one is drawn stronger.
     const dist = camera.position.distanceTo(controls.target);
     const zoom = homeDist / Math.max(1, dist);
-    fiberUniforms.uOpacity.value = FIBER_OPACITY * Math.min(6, Math.max(1, Math.pow(zoom, 0.9)));
+    fiberUniforms.uOpacity.value = FIBER_OPACITY * Math.min(3, Math.max(1, Math.pow(zoom, 0.9)));
 
     const camR = camera.position.length();
     const wireA = smooth(R * 1.5, R * 2.3, camR);
@@ -726,16 +688,10 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       onHover?.(i, x, y);
     }
 
-    if (state.fireDirty) {
-      fire.needsUpdate = true;
-      state.fireDirty = false;
-    }
-    if (state.lockDirty) {
-      lock.needsUpdate = true;
-      state.lockDirty = false;
-    }
-    signals.flush();
-    paths.flush();
+    // Once pathways are in, the rest of the search steps back so the red routes read first.
+    reach.uniforms.uOpacity.value += (reachFade - reach.uniforms.uOpacity.value) * Math.min(1, dt * 3);
+    reach.flush();
+    routes.flush();
     state.frame++;
     if (state.frame % 8 === 0) updateHints();
     composer.render();
@@ -808,17 +764,40 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     get time() {
       return now();
     },
-    /** Fire neurons now, after `delay` seconds, or each at its own delay (array). */
-    fire(indices, delay = 0) {
-      indices.forEach((i, k) => fireAt(i, now() + (Array.isArray(delay) ? delay[k] : delay)));
+    /** Colour the search's seed nodes, each in its side's colour. */
+    seeds(list) {
+      const t = now();
+      for (const { i, side } of list) reach.node(P(i), t, SIDE_COLORS[side].toArray(), 11);
     },
-    /** Replay one hop of a search wavefront: signals depart and arrive at their cost-derived times. */
-    wave({ side, hop, edges, nodes, times }) {
+    /**
+     * One hop of a wavefront (nodes sorted by path cost): the strongest reached nodes and the edges
+     * they came through appear at their cost-derived times.
+     */
+    wave({ side, hop, nodes, parents, times }) {
       const col = SIDE_COLORS[side].toArray();
       const t = now();
-      const strength = hop === 1 ? 0.85 : 0.45;
-      for (const [u, v, , tu, tv] of edges) signals.add(P(u), P(v), t + tu, Math.max(0.2, tv - tu), col, strength);
-      nodes.forEach((v, k) => fireAt(v, t + times[k]));
+      if (!reachedFrom.has(side)) reachedFrom.set(side, new Map());
+      const from = reachedFrom.get(side);
+      nodes.forEach((v, k) => from.set(v, parents[k]));
+      const first = hop === 1;
+      const n = Math.min(nodes.length, DRAWN_PER_HOP[hop] ?? 0);
+      for (let k = 0; k < n; k++) {
+        const [u, v] = [parents[k], nodes[k]];
+        reach.link(P(u), P(v), t + times[k], col, (first ? 0.6 : 0.3) / (1 + (span(u, v) / 260) ** 2));
+        reach.node(P(v), t + times[k], col, first ? 5 : 3.2);
+      }
+    },
+    /** Nodes both wavefronts reached: each appears, with its route back to both sides' seeds, when the later one arrives. */
+    meet(nodes, times) {
+      const t = now();
+      nodes.forEach((m, k) => {
+        const at = t + (times?.[k] ?? 0);
+        for (const [side, from] of reachedFrom) {
+          const col = SIDE_COLORS[side].toArray();
+          for (let v = m; from.has(v); v = from.get(v)) reach.link(P(from.get(v)), P(v), at, col, 0.85 / (1 + (span(from.get(v), v) / 420) ** 2));
+        }
+        reach.node(P(m), at, SIDE_COLORS.meet.toArray(), 6);
+      });
     },
     /** Show node i's real edges to `nbrs`, highlighting the neighbours. */
     showEgo(i, nbrs) {
@@ -829,16 +808,13 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
         const j = nbrs[k];
         ego.position.array.set(P(i), k * 6);
         ego.position.array.set(P(j), k * 6 + 3);
-        ego.aS.array[k * 2] = 0;
-        ego.aS.array[k * 2 + 1] = 1;
-        ego.aPhase.array[k * 2] = ego.aPhase.array[k * 2 + 1] = Math.random();
         c0.toArray(ego.aColor.array, k * 6);
         egoColors[types[j]].toArray(ego.aColor.array, k * 6 + 3);
         hi.array[j] = 0.5;
       }
       hi.array[i] = 1;
       egoNodes = [i, ...nbrs.slice(0, n)];
-      egoUniforms.uOpacity.value = Math.min(0.6, Math.max(0.12, 6 / Math.sqrt(n)));
+      egoUniforms.uOpacity.value = Math.min(0.7, Math.max(0.22, 7 / Math.sqrt(n)));
       for (const a of Object.values(ego)) a.needsUpdate = true;
       egoGeo.setDrawRange(0, n * 2);
       hi.needsUpdate = true;
@@ -854,41 +830,30 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       egoGeo.setDrawRange(0, 0);
       hi.needsUpdate = true;
     },
+    /** Draw pathways in red; with `selected`, only that one at full strength. */
     lockPaths(list, selected = null) {
-      paths.clear();
-      lock.array.fill(0);
-      const t = now();
-      const hop = 0.55;
+      // Pathways already on screen change at once; new ones fade in like the rest of the search.
+      const t = routes.links ? now() - 1 : now();
+      routes.clear();
       const col = SIDE_COLORS.path.toArray();
-      list.forEach((p, j) => {
+      for (const p of list) {
         const on = !selected || p.id === selected;
-        const s = selected ? (on ? 1.0 : 0.1) : Math.max(0.35, p.strength * 1.6);
-        const offset = selected ? 0 : j * 0.37;
-        // A selected pathway carries a continuous spike train rather than a single pulse per loop.
-        const train = selected && on ? 4 : 1;
+        const alpha = selected ? (on ? 1 : 0.12) : 0.8;
         p.nodes.forEach((n, k) => {
-          lock.array[n] = Math.max(lock.array[n], on ? 1 : 0.2);
-          if (!k) return;
-          for (let r = 0; r < train; r++) {
-            paths.add(P(p.nodes[k - 1]), P(n), t + offset + (k - 1) * hop + (r * paths.period * hop) / train, hop, col, s);
-          }
+          if (k) routes.link(P(p.nodes[k - 1]), P(n), t, col, alpha);
+          routes.node(P(n), t, col, on ? 6 : 3);
         });
-      });
-      state.lockDirty = true;
+      }
+      reachFade = selected ? 0.25 : 0.45;
     },
     clearPaths() {
-      paths.clear();
-      lock.array.fill(0);
-      state.lockDirty = true;
+      routes.clear();
+      reachFade = 1;
     },
     clearSignals() {
-      signals.clear();
-      fire.array.fill(-1000);
-      state.fireDirty = true;
-    },
-    setDim(on) {
-      shared.uDim.value = on ? 1 : 0;
-      labelRenderer.domElement.classList.toggle('dim', on);
+      reach.clear();
+      reachedFrom.clear();
+      reachFade = 1;
     },
     setTypeVisible(t, on) {
       shared.uMask.value[t] = on ? 1 : 0;

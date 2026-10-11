@@ -210,7 +210,6 @@ export async function runAgent(nct, emit) {
     });
   diseases.forEach((d, k) => entities.push({ key: `D${k + 1}`, side: 'disease', entity: d.canonical, names: [d.canonical, d.name], types: ['disease', 'effect/phenotype'] }));
   for (const e of entities) e.candidates = candidatesFor(kg, e.names, e.types);
-  emit({ type: 'probe', nodes: entities.flatMap((e) => e.candidates.map((c) => c.i)) });
   log('ground', `${entities.length} entities · ${entities.reduce((s, e) => s + e.candidates.length, 0)} candidate nodes probed`);
 
   const picked = await askJSON({

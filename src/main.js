@@ -189,7 +189,6 @@ function reset() {
   brain.clearLabels();
   brain.clearEgo();
   brain.mark(-1);
-  brain.setDim(false);
   telemetry.mark(-1);
   telemetry.idle();
   $('#tab-note').textContent = '';
@@ -211,7 +210,6 @@ async function searchKG(q) {
     .map((h) => `<button class="hit" data-i="${h.i}"><span class="sw" style="background:${typeOf(h.i).color}"></span><span class="nm">${esc(h.name)}</span><span class="ty">${esc(typeOf(h.i).label)} · ${h.degree.toLocaleString()}</span></button>`)
     .join('')}</li>`;
   document.querySelectorAll('.hit').forEach((b) => b.addEventListener('click', () => inspect(Number(b.dataset.i))));
-  brain.fire(hits.map((h) => h.i));
   if (!connecting) inspect(hits[0].i);
 }
 
@@ -278,19 +276,10 @@ function handle(ev) {
     case 'trial':
       $('#tab-connections').innerHTML = `<div class="trial"><a href="${esc(ev.trial.url)}" target="_blank" rel="noopener">${esc(ev.trial.nct)} ↗</a><div>${esc(ev.trial.title)}</div></div><div class="placeholder">Grounding entities in PrimeKG…</div>`;
       break;
-    case 'probe':
-      ev.nodes.forEach((i, k) => brain.fire([i], k * 0.03));
-      break;
-    case 'seeds': {
-      brain.setDim(true);
+    case 'seeds':
       for (const s of ev.seeds) brain.label(s.i, s.name, `seed ${s.side}`);
-      brain.fire(ev.seeds.map((s) => s.i));
-      brain.focus(
-        ev.seeds.map((s) => s.i),
-        { distance: 900 },
-      );
+      brain.seeds(ev.seeds);
       break;
-    }
     case 'search':
       telemetry.search(ev);
       break;
@@ -299,14 +288,13 @@ function handle(ev) {
       telemetry.signal(ev);
       break;
     case 'meet':
-      brain.fire(ev.nodes, ev.times ?? 0);
+      brain.meet(ev.nodes, ev.times);
       telemetry.meet(ev.times);
       break;
     case 'paths':
       paths = ev.paths;
       brain.lockPaths(paths);
       labelPaths(paths.slice(0, 8));
-      if (paths.length) brain.focus([...new Set(paths.flatMap((p) => p.nodes))]);
       telemetry.paths(paths.length);
       $('#tab-note').textContent = `${paths.length} found`;
       renderConnections();

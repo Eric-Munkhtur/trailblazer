@@ -1,6 +1,6 @@
 # Verdia · PrimeKG neural map
 
-The whole of [PrimeKG](https://github.com/mims-harvard/PrimeKG) (129,375 biomedical entities, 4,050,249 relations), laid out in 3D by its own connectivity. Give it an NCT number: an AI agent reads the trial from ClinicalTrials.gov, extracts its interventions and diseases, grounds them as nodes in PrimeKG, and fires signals from both sides through the graph until the wavefronts meet. The strongest pathways between drug and disease then lock in as looping spike trains.
+The whole of [PrimeKG](https://github.com/mims-harvard/PrimeKG) (129,375 biomedical entities, 4,050,249 relations), laid out in 3D by its own connectivity. Give it an NCT number: an AI agent reads the trial from ClinicalTrials.gov, extracts its interventions and diseases, grounds them as nodes in PrimeKG, and searches outward from both sides until the wavefronts meet. The nodes it reaches and the edges it reached them through light up in colour while the rest of the graph stays as it is; the strongest pathways between drug and disease are then drawn in red.
 
 ## Run
 
@@ -23,9 +23,9 @@ Besides NCT numbers, the search box takes a drug, disease, or gene name (find an
 | --- | --- | --- |
 | Retrieve | ClinicalTrials.gov API v2 | — |
 | Extract & normalize | LLM: canonical drug names, combination components, modality, arm role, putative targets, diseases | — |
-| Ground | Lexical search over PrimeKG names proposes candidates; the LLM picks the node that denotes the same concept. Drugs without a DrugBank node are seeded at their LLM-proposed gene targets | Candidate nodes flicker, chosen seeds light up and get labels |
-| Propagate | Bidirectional search, two hops from each side, over relation-weighted edges with a hub penalty | Replayed in cost time: every node the search reaches lights up when its cumulative path cost says it should (0.9 s per unit), and the cheapest edges of each hop travel as violet (intervention) and orange (disease) signals. The trace reports how long the real search took (tens of milliseconds) |
-| Meet & lock | Meet-in-the-middle path reconstruction, diversified across pathway kinds | Meeting nodes flash when both wavefronts have reached them; up to 24 pathways loop as red spike trains |
+| Ground | Lexical search over PrimeKG names proposes candidates; the LLM picks the node that denotes the same concept. Drugs without a DrugBank node are seeded at their LLM-proposed gene targets | Chosen seeds are coloured (violet for interventions, orange for diseases) and labelled |
+| Propagate | Bidirectional search, two hops from each side, over relation-weighted edges with a hub penalty | Replayed in cost time: a reached node appears in its side's colour, with the edge it was reached through, when its cumulative path cost says it should (0.9 s per unit). All of a seed's direct connections are drawn, and the 1,500 strongest second-hop ones per side; the counter and chart count every reached node. The trace reports how long the real search took (tens of milliseconds) |
+| Meet & lock | Meet-in-the-middle path reconstruction, diversified across pathway kinds | Meeting nodes appear in white once both wavefronts have reached them, with their routes back to both sides; up to 24 pathways are drawn in red |
 | Interpret | LLM explains the mechanistic pathways and proposes hypotheses and gaps | Key pathways in the Connections panel |
 
 Pathways are classified as known indication, off-label use, contraindication, shared target, protein-interaction bridge, pathway bridge, phenotype overlap, shared disease genetics, disease hierarchy, therapeutic analogy, functional bridge, or multi-hop.

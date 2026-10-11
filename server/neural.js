@@ -32,7 +32,6 @@ const HUB_EXPAND = 3000;
 // Replay timing: a signal takes WAVE_SECONDS per unit of path cost to reach a node, so the
 // cheapest (strongest) connections light up first, in the order the search ranked them.
 const WAVE_SECONDS = 0.9;
-const DRAW_CAP = [0, 600, 1400];
 const LIT_CAP = 30000;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -175,25 +174,20 @@ export function neuralSearch(kg, seedsA, seedsB, { hops = 2, maxPaths = 24, side
 
   const ms = performance.now() - t0;
 
-  // Replay frames, one per hop and wavefront. Every reached node is lit at its arrival time;
-  // the cheapest edges of each hop (plus all edges on a reported pathway) are drawn as signals.
+  // Replay frames, one per hop and wavefront: each reached node (the cheapest LIT_CAP of the hop,
+  // plus any on a reported pathway) with the node it was reached from and its arrival time.
   const onPath = new Set();
   for (const p of paths) for (const n of p.nodes) onPath.add(n);
   const at = (side, v) => +(side.cost.get(v) * WAVE_SECONDS).toFixed(2);
   let duration = 0;
   const framesFor = (side, label) =>
     side.layers.map((layer, h) => {
-      const keep = layer.filter((v) => onPath.has(v));
-      const rest = layer.filter((v) => !onPath.has(v)).slice(0, DRAW_CAP[h + 1] || 600);
       const lit = layer.slice(0, LIT_CAP);
+      for (const v of layer.slice(LIT_CAP)) if (onPath.has(v)) lit.push(v);
       const times = lit.map((v) => at(side, v));
       for (const t of times) duration = Math.max(duration, t);
-      const edges = [...keep, ...rest].map((v) => {
-        const [u, r] = side.parent.get(v);
-        duration = Math.max(duration, at(side, v));
-        return [u, v, r, at(side, u), at(side, v)];
-      });
-      return { side: label, hop: h + 1, reached: layer.length, edges, nodes: lit, times };
+      const parents = lit.map((v) => side.parent.get(v)[0]);
+      return { side: label, hop: h + 1, reached: layer.length, nodes: lit, parents, times };
     });
   const fa = framesFor(A, sides[0]);
   const fb = framesFor(B, sides[1]);

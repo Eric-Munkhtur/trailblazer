@@ -81,7 +81,6 @@ code { font-family: var(--mono); text-transform: none; color: var(--bright); }
 .nlabel.node { color: #bdbdbd; font-size: 9.5px; max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
 .nlabel.hint { font-size: 9px; padding: 0; color: color-mix(in srgb, var(--c) 30%, #9a9a9a); max-width: 190px; overflow: hidden; text-overflow: ellipsis; }
 .nlabel.hint::before { display: none; }
-.labels-layer.dim .nlabel.hint { opacity: 0.35; }
 .axis-label { font: 400 10px/1 var(--mono); letter-spacing: 0.06em; color: #a6a6a6; text-shadow: 0 0 4px #000; }
 .reticle { width: 26px; height: 26px; border: 1px solid var(--red); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55); }
 
