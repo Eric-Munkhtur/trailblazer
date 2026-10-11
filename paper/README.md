@@ -1,9 +1,17 @@
 # Verdia HackRU technical report
 
-Author: Eric Munkhtur · HackRU 2026.
+**Eric Munkhtur · HackRU 2026 · Version 1.1 · October 11, 2026**
 
-`verdia.tex` is the standalone source of the report, including its embedded architecture figure, annotations, tables, and references. Compile with pdfLaTeX (two passes for cross-references), or upload the source to a compatible LaTeX editor. The embedded original HINT image is credited in the caption and references.
+[Read or download the paper (PDF)](verdia.pdf) · [Editable LaTeX source](verdia.tex) · [Recorded experiments](../research/README.md)
 
-This is a HackRU technical report, not a peer-reviewed publication. No PDF export is included in this release. The author's working copy remains in the original Codex document editor; this file is the distribution copy.
+The report explains HINT in plain language, shows the original architecture with Verdia’s changes annotated, and documents both fine-tuning attempts, benchmark results, hardware, runtime, and limitations.
 
-The report presents the negative result: neither eligibility-pooling modification showed a reliable gain. It describes Colab, MSI, and Azure roles and the separation between graph exploration and model scoring.
+Both variants were fine-tuned from the authors’ Phase II checkpoint. Neither demonstrated a reliable improvement over the matched fine-tuned control. The website’s PrimeKG exploration and HINT prediction are separate paths.
+
+This is a HackRU technical report, not a peer-reviewed publication. The paper distinguishes completed Colab CPU runs, T4 embedding generation, MSI GPU fine-tuning, and Azure CPU serving.
+
+## Build from source
+
+`verdia.tex` is standalone: its architecture figure, annotations, tables, and references are embedded. Compile with pdfLaTeX twice for cross-references, or upload it to a compatible LaTeX editor. The original HINT figure is credited in the caption and references; see [third-party terms](../THIRD_PARTY.md).
+
+The author’s working source remains open in the original Codex document editor. This directory contains its matching distribution copy and PDF.

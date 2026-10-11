@@ -145,4 +145,4 @@ The worker binds to `127.0.0.1:8791` and Node calls it locally. It needs the ori
 
 ## 6. Review the report
 
-`paper/verdia.tex` contains the standalone report and embedded annotated figure. No PDF was exported as part of this repository publication. The report and root README are the current interpretation; files in `docs/legacy/` and archived scripts retain historical wording.
+[Read the finished report (PDF)](../paper/verdia.pdf). [The LaTeX source](../paper/verdia.tex) includes the embedded annotated architecture figure. The report and root README are the current interpretation; files in `docs/legacy/` and archived scripts retain historical wording.

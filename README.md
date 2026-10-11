@@ -4,9 +4,11 @@
 
 Eric Munkhtur · HackRU 2026 · Regeneron challenge
 
-[Live website](https://verdia-hackru-20839887.westus2.cloudapp.azure.com/) · [Research paper source](paper/verdia.tex) · [Experiments and results](research/README.md) · [Reproduction guide](docs/REPRODUCING.md) · [Demo guide](docs/DEMO.md)
+[Live website](https://verdia-hackru-20839887.westus2.cloudapp.azure.com/) · [Read the paper (PDF)](paper/verdia.pdf) · [LaTeX source](paper/verdia.tex) · [Experiments and results](research/README.md) · [Reproduction guide](docs/REPRODUCING.md) · [Demo guide](docs/DEMO.md)
 
-![Verdia mapping a trial and displaying a model score](deploy/evidence/graph-mapping.jpg)
+[![Verdia — one trial ID, follow the biology; promotional illustration](docs/media/verdia-thumbnail.png)](https://verdia-hackru-20839887.westus2.cloudapp.azure.com/)
+
+*AI-generated promotional artwork based on Verdia’s graph interface.*
 
 ## Try it
 
@@ -20,7 +22,7 @@ Predictions support **Phase II interventional drug trials with resolvable inputs
 2. Extract structured interventions and conditions, and match them to PrimeKG nodes.
 3. Search up to two graph links outward from each side, reconstruct up to 24 connecting paths, and animate the reached subgraph.
 4. Independently resolve drug structures with PubChem, map diseases using a dictionary built from TOP training inputs, and encode current eligibility text with BioBERT.
-5. Run our trained sentence-attention HINT and the matched original HINT control on the same inputs. Display both scores and downloadable input/model provenance.
+5. Run our fine-tuned sentence-attention HINT and the matched original HINT control on the same inputs. Display both scores and downloadable input/model provenance.
 
 ```mermaid
 flowchart LR
@@ -42,7 +44,7 @@ HINT already combines molecular, disease, and eligibility encoders through an in
 - **Sentence attention:** learn which cached BioBERT sentence vectors receive more weight; 1,536 added parameters.
 - **Conditioned attention:** use drug and disease representations to guide the sentence weights; 31,040 added parameters.
 
-Both begin with uniform pooling. BioBERT sentence vectors stay fixed during these training runs; the outcome model is trained further. We did not pretrain a new language model or add PrimeKG features to HINT.
+Both begin with uniform pooling. BioBERT sentence vectors stay fixed during these training runs; the outcome model is fine-tuned from the authors’ Phase II checkpoint. We did not pretrain a new language model or add PrimeKG features to HINT.
 
 ### Recorded TOP Phase II results
 
@@ -50,13 +52,17 @@ Matched continuations from the same authors' checkpoint; seed 0; five epochs; 4,
 
 | Model | Test ROC-AUC | Continuous AP | F1 at 0.5 |
 |---|---:|---:|---:|
-| Original HINT continuation | 0.632018 | 0.682925 | 0.605844 |
+| Fine-tuned HINT control | 0.632018 | 0.682925 | 0.605844 |
 | Sentence attention | 0.632309 | 0.683349 | 0.605592 |
 | Conditioned attention | 0.630982 | 0.682502 | 0.596026 |
 
 **Neither modification demonstrated a reliable improvement.** The later conditioned experiment was exploratory after inspecting the earlier test results. These are single-seed comparisons. Separate fresh HINT training runs are documented in [research](research/README.md); they are not the matched control above.
 
 The site reports model scores, not calibrated clinical probabilities or separate efficacy/safety predictions. Benchmark accuracy describes an entire historical test set, not confidence that one trial's score is correct. The two example trials are historical demonstrations; current registry text can differ from the benchmark inputs. Live preprocessing has not been benchmarked end to end.
+
+### Actual website capture
+
+![Actual Verdia interface mapping a trial and displaying a model score](deploy/evidence/graph-mapping.jpg)
 
 ## Run the graph website locally
 
@@ -87,7 +93,7 @@ For public deployments, follow [deploy/README.md](deploy/README.md), including r
 | `model_service/` | CPU inference worker, attention module, attributed upstream HINT code |
 | `scripts/` | Graph build and model evidence exporter |
 | `research/` | Training source snapshots, aggregate results, configs, histories, provenance |
-| `paper/` | Standalone LaTeX technical report |
+| `paper/` | Finished technical report as PDF and standalone LaTeX |
 | `deploy/` | Deployment configuration and captured demo evidence |
 | `app/`, `prep/`, `artifacts/`, `results/`, root `requirements.txt` | Earlier Streamlit prototype retained from the existing GitHub repository; not the deployed site |
 | `docs/legacy/` | Earlier planning/design documents; not current performance claims |

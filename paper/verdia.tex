@@ -16,7 +16,7 @@
 \definecolor{verdiaBlue}{HTML}{255EC7}
 \title{\textbf{Verdia: Testing Two Changes to HINT\\for Clinical Trial Outcome Prediction}}
 \author{Eric Munkhtur\\\small Verdia $\cdot$ HackRU 2026}
-\date{October 11, 2026\\\small HackRU 2026 technical report, version 1.0}
+\date{October 11, 2026\\\small HackRU 2026 technical report, version 1.1}
 
 % BEGIN EMBEDDED ORIGINAL HINT IMAGE. Generated from figures/hint-original.jpg.
 \begin{filecontents*}[overwrite]{verdia-hint-source.pdf}
@@ -6468,7 +6468,7 @@ startxref
 \begin{document}
 \maketitle
 \begin{abstract}
-Verdia is a HackRU project about predicting clinical trial outcomes and exploring the biology behind a trial. We first ran the published HINT model on the Phase II TOP dataset. We then tried two changes to the way HINT reads eligibility rules: learning which sentences deserve more weight, and using the trial's drug and disease to guide those weights. The original model scored 0.63202 on test ROC-AUC, compared with 0.63231 and 0.63098 for our two versions. These small differences do not show a reliable improvement. We checked the saved predictions and confirmed that the new layers worked, but had little effect on the final scores. We also built a website that maps clinical trial entities into PrimeKG and runs the trained model on supported Phase II drug trials. This report explains what we changed, the Colab and laptop hardware we used, the results, and the limits of the work.
+Verdia is a HackRU project about predicting clinical trial outcomes and exploring the biology behind a trial. We evaluated the published HINT model on the Phase II TOP dataset, then fine-tuned it with two changes to how it combines eligibility sentences: learning which sentences deserve more weight, and using the trial's drug and disease to guide those weights. A matched HINT control, fine-tuned from the same starting checkpoint, scored 0.63202 on test ROC-AUC, compared with 0.63231 and 0.63098 for our two versions. These small differences do not show a reliable improvement. We checked the saved predictions and confirmed that the new layers worked, but had little effect on the final scores. We also built a website that maps clinical trial entities into PrimeKG and runs our fine-tuned model on supported Phase II drug trials. This report explains what we changed, the Colab and laptop hardware we used, the results, and the limits of the work.
 \end{abstract}
 
 \section{What We Wanted to Find Out}
@@ -6562,7 +6562,7 @@ Azure virtual machine & Standard B2als v2; 2 CPU cores, 4 GB RAM & Hosted the Ve
 \section{How We Kept the Comparison Fair}
 A \emph{checkpoint} is a saved model. An \emph{epoch} is one pass through the training data. A \emph{seed} controls random choices such as the initial weights and training order.
 
-For the MSI comparison, all three versions started from the same authors' Phase II checkpoint. Each used the same data, sentence vectors, seed, and five training epochs. We used batches of 32 trials and the Adam optimizer with a learning rate of 0.0003. All model weights could update during training, while the cached BioBERT vectors stayed fixed.
+For the MSI comparison, all three versions started from the same authors' Phase II checkpoint. This was \emph{fine-tuning}: continuing to train an existing model on the trial-outcome task, with our new pooling layers added in the two experimental versions. Each used the same data, sentence vectors, seed, and five training epochs. We used batches of 32 trials and the Adam optimizer with a learning rate of 0.0003. All model weights could update during training, while the cached BioBERT vectors stayed fixed.
 
 We chose the saved model with the lowest validation error, including the starting model as an option. All three selected the model after epoch four. The test set was then used to produce the reported scores. The three new Colab training runs were a separate reproduction task: they started with the released ADMET initialization, rather than the already-trained Phase II outcome checkpoint.
 
@@ -6597,7 +6597,7 @@ Average of the three Colab run scores & 0.63614 & 0.67619 & 0.63118\\\bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Additional check with no eligibility vectors.} GLM also evaluated the authors' checkpoint with the empty upstream cache, which makes HINT use zero vectors for the eligibility input. Test AUC was 0.62065 and AP was 0.67240, compared with 0.62045 and 0.67273 using the rebuilt cache. The ranking metrics barely changed in this checkpoint. This supports checking the importance of that input before changing its pooling, but does not prove that eligibility text is unimportant in every trained model. This check is separate from our MSI attention experiments.
+\textbf{Additional check with no eligibility vectors.} The reproduction workflow also evaluated the authors' checkpoint with the empty upstream cache, which makes HINT use zero vectors for the eligibility input. Test AUC was 0.62065 and AP was 0.67240, compared with 0.62045 and 0.67273 using the rebuilt cache. The ranking metrics barely changed in this checkpoint. This supports checking the importance of that input before changing its pooling, but does not prove that eligibility text is unimportant in every trained model. This check is separate from our MSI attention experiments.
 
 The last row averages the scores of three models. It does not combine their predictions into a new model. We have not completed an ensemble experiment. We also cannot prove why the authors' saved model and saved predictions differ. Our rebuilt sentence cache and the code's model-saving behavior are possible contributors.
 
@@ -6607,7 +6607,7 @@ The last row averages the scores of three models. It does not combine their pred
 \caption{Same starting checkpoint and training settings for all three MSI models.}
 \begin{tabular}{lrrr}\toprule
 Model & ROC-AUC & AP & F1\\\midrule
-Original HINT control & 0.63202 & 0.68293 & 0.60584\\
+Fine-tuned HINT control & 0.63202 & 0.68293 & 0.60584\\
 Attempt 1: sentence attention & 0.63231 & 0.68335 & 0.60559\\
 Attempt 2: context attention & 0.63098 & 0.68250 & 0.59603\\\bottomrule
 \end{tabular}
@@ -6641,10 +6641,10 @@ Our attention comparison used one seed, one trial phase, and a short training bu
 Future experiments could improve the eligibility parser, repeat the attention comparison with more seeds, or add information from earlier related trials. Any historical evidence must have been available before the trial's prediction date. None of those proposed improvements has a result in this report.
 
 \section{Conclusion}
-We reproduced HINT in our environment, tested two changes to eligibility pooling, and built a website combining graph exploration with live model inference. Neither pooling change clearly improved prediction. The useful outcome is a documented experiment: the models ran, their outputs were saved, and the unsuccessful changes can be inspected. Training a predictor that uses the website's PrimeKG paths remains future work.
+We evaluated and retrained HINT in our environment, fine-tuned two versions with changes to eligibility pooling, and built a website combining graph exploration with live model inference. Neither pooling change clearly improved prediction. The useful outcome is a documented experiment: the models ran, their outputs were saved, and the unsuccessful changes can be inspected. Training a predictor that uses the website's PrimeKG paths remains future work.
 
 \section*{Code, Evidence, and Assistance}
-The project keeps model files, settings, training logs, per-trial predictions, and analysis outputs. An evidence manifest records file hashes so the exact inputs and outputs can be identified. Source code, the report source, aggregate metrics, training configurations, and selected evidence records are published at \url{https://github.com/Eric-Munkhtur/verdia}. The original per-trial prediction files, checkpoint weights, and sentence caches are retained locally; their identities are recorded, but they are not included in this public release. A complete reproduction from the packaged repository has not been run, and the earlier Colab seed-0 script was not separately archived. The original HINT and PrimeKG work is credited in the references.
+The project keeps model files, settings, training logs, per-trial predictions, and analysis outputs. An evidence manifest records file hashes so the exact inputs and outputs can be identified. Source code, this report as PDF and LaTeX, aggregate metrics, training configurations, and selected evidence records are published at \url{https://github.com/Eric-Munkhtur/verdia}. The original per-trial prediction files, checkpoint weights, and sentence caches are retained locally; their identities are recorded, but they are not included in this public release. A complete reproduction from the packaged repository has not been run, and the earlier Colab seed-0 script was not separately archived. The original HINT and PrimeKG work is credited in the references. The website is available at \url{https://verdia-hackru-20839887.westus2.cloudapp.azure.com/}.
 
 AI assistants helped with coding, running experiments, analysis, and drafting. Eric Munkhtur is the named author. Reported scores come from saved experiment outputs. This technical report documents completed HackRU experiments; the system has not undergone peer review or clinical validation.
 
