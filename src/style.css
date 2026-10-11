@@ -24,8 +24,16 @@ a { color: var(--accent); }
 .nlabel.seed { font-size: 13px; font-weight: 700; padding: 5px 10px; border-width: 1.5px; box-shadow: 0 0 18px color-mix(in srgb, var(--c) 45%, transparent); }
 .nlabel.seed.intervention::before { content: 'INTERVENTION · '; color: #38e1ff; font-size: 9px; letter-spacing: 0.1em; }
 .nlabel.seed.disease::before { content: 'DISEASE · '; color: #ff4f9a; font-size: 9px; letter-spacing: 0.1em; }
+.nlabel.seed.A::before { content: 'A · '; color: #38e1ff; font-size: 9px; letter-spacing: 0.1em; }
+.nlabel.seed.B::before { content: 'B · '; color: #ff4f9a; font-size: 9px; letter-spacing: 0.1em; }
 .nlabel.path { opacity: 0.88; }
 .nlabel.focus { border-color: #fff; box-shadow: 0 0 14px rgba(255, 255, 255, 0.35); }
+.nlabel.node { font-size: 10px; padding: 2px 6px; }
+.nlabel.hint { font-size: 10px; padding: 0; background: none; border: 0; color: color-mix(in srgb, var(--c) 55%, #dfe8f5); text-shadow: 0 0 4px #000, 0 0 10px #000; }
+.labels-layer.dim .nlabel.hint { opacity: 0.4; }
+
+.mode { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); z-index: 6; display: flex; gap: 8px; align-items: center; padding: 7px 14px; border-radius: 999px; background: rgba(6, 10, 18, 0.92); border: 1px solid var(--accent); font-size: 13px; box-shadow: 0 0 24px rgba(92, 242, 192, 0.18); }
+.mode span { color: var(--muted); font: 11px var(--mono); }
 
 .tip { position: fixed; left: 0; top: 0; z-index: 20; pointer-events: none; display: flex; gap: 8px; align-items: center; padding: 6px 10px; border-radius: 8px; background: rgba(6, 10, 18, 0.92); border: 1px solid var(--border); font-size: 12px; max-width: 360px; }
 .tip .ty { color: var(--muted); font: 11px var(--mono); }
@@ -120,6 +128,11 @@ a { color: var(--accent); }
 .insp h2 { font-size: 20px; margin: 8px 0 2px; word-break: break-word; }
 .insp .src { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
 .insp .src a { text-decoration: none; }
+.insp-actions { display: flex; gap: 10px; align-items: center; margin: 10px 0 4px; }
+.insp-actions span { color: var(--muted); font: 10px/1.4 var(--mono); }
+.connect-btn { flex: none; background: rgba(92, 242, 192, 0.1); border: 1px solid rgba(92, 242, 192, 0.5); color: var(--accent); border-radius: 8px; padding: 5px 11px; font-size: 12px; font-weight: 600; }
+.connect-btn:hover { background: rgba(92, 242, 192, 0.2); }
+.trial.pair { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .insp p { margin: 0; font-size: 13px; color: #c4d3e6; }
 .relgroup { margin-bottom: 10px; }
 .rg-head { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }

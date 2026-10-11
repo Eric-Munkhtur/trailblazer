@@ -115,6 +115,26 @@ function load() {
         .sort((a, b) => b.count - a.count);
       return { ...kg.node(i), degree: kg.degree(i), byRelation, features: features[i] || null };
     },
+    /** All neighbours of i, or an evenly spaced sample of each relation if there are more than `limit`. */
+    neighbors(i, limit = 1500) {
+      const lo = offsets[i];
+      const degree = offsets[i + 1] - lo;
+      const byRel = new Map();
+      for (let p = lo; p < lo + degree; p++) {
+        if (!byRel.has(rels[p])) byRel.set(rels[p], []);
+        byRel.get(rels[p]).push(p);
+      }
+      const out = [];
+      const outRels = [];
+      for (const [r, list] of byRel) {
+        const take = degree <= limit ? list.length : Math.max(1, Math.round((list.length / degree) * limit));
+        for (let k = 0; k < take; k++) {
+          out.push(nbrs[list[Math.floor((k * list.length) / take)]]);
+          outRels.push(r);
+        }
+      }
+      return { i, degree, nbrs: out, rels: outRels };
+    },
   };
   console.log(`[primekg] loaded ${N.toLocaleString()} nodes · ${kg.E.toLocaleString()} edges in ${Date.now() - t}ms`);
   return kg;

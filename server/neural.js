@@ -29,7 +29,12 @@ const TYPE_PENALTY = { drug: 0.9, disease: 0.3 };
 const KIND_CAP = { 'known indication': 6, 'off-label use': 6, contraindication: 4, 'direct link': 4, 'therapeutic analogy': 3 };
 const DEFAULT_KIND_CAP = 4;
 const HUB_EXPAND = 3000;
-const LAYER_CAP = [0, 280, 520];
+// Replay timing: a signal takes WAVE_SECONDS per unit of path cost to reach a node, so the
+// cheapest (strongest) connections light up first, in the order the search ranked them.
+const WAVE_SECONDS = 0.9;
+const DRAW_CAP = [0, 600, 1400];
+const LIT_CAP = 30000;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 let cache = null;
 function prepare(kg) {
@@ -114,7 +119,8 @@ function classify(rels, interiorTypes) {
   return 'multi-hop';
 }
 
-export function neuralSearch(kg, seedsA, seedsB, { hops = 2, maxPaths = 24 } = {}) {
+export function neuralSearch(kg, seedsA, seedsB, { hops = 2, maxPaths = 24, sides = ['intervention', 'disease'] } = {}) {
+  const t0 = performance.now();
   const P = prepare(kg);
   const A = expand(kg, P, seedsA, seedsA.length ? hops : 0);
   const B = expand(kg, P, seedsB, seedsB.length ? hops : 0);
@@ -167,37 +173,61 @@ export function neuralSearch(kg, seedsA, seedsB, { hops = 2, maxPaths = 24 } = {
     });
   }
 
-  // Animation frames: each hop of each wavefront, cheapest edges first, always including the
-  // edges that end up on a selected pathway.
+  const ms = performance.now() - t0;
+
+  // Replay frames, one per hop and wavefront. Every reached node is lit at its arrival time;
+  // the cheapest edges of each hop (plus all edges on a reported pathway) are drawn as signals.
   const onPath = new Set();
   for (const p of paths) for (const n of p.nodes) onPath.add(n);
+  const at = (side, v) => +(side.cost.get(v) * WAVE_SECONDS).toFixed(2);
+  let duration = 0;
   const framesFor = (side, label) =>
     side.layers.map((layer, h) => {
       const keep = layer.filter((v) => onPath.has(v));
-      const rest = layer.filter((v) => !onPath.has(v)).slice(0, LAYER_CAP[h + 1] || 400);
-      return {
-        side: label,
-        hop: h + 1,
-        reached: layer.length,
-        edges: [...keep, ...rest].map((v) => {
-          const [u, r] = side.parent.get(v);
-          return [u, v, r];
-        }),
-      };
+      const rest = layer.filter((v) => !onPath.has(v)).slice(0, DRAW_CAP[h + 1] || 600);
+      const lit = layer.slice(0, LIT_CAP);
+      const edges = [...keep, ...rest].map((v) => {
+        const [u, r] = side.parent.get(v);
+        duration = Math.max(duration, at(side, v));
+        return [u, v, r, at(side, u), at(side, v)];
+      });
+      return { side: label, hop: h + 1, reached: layer.length, edges, nodes: lit, times: lit.map((v) => at(side, v)) };
     });
-  const fa = framesFor(A, 'intervention');
-  const fb = framesFor(B, 'disease');
+  const fa = framesFor(A, sides[0]);
+  const fb = framesFor(B, sides[1]);
   const frames = [];
   for (let h = 0; h < Math.max(fa.length, fb.length); h++) {
     if (fa[h]) frames.push(fa[h]);
     if (fb[h]) frames.push(fb[h]);
   }
+  const shownMeets = meets.slice(0, 60).map(([m]) => m);
 
   return {
     frames,
-    meets: meets.slice(0, 60).map(([m]) => m),
+    meets: shownMeets,
+    meetTimes: shownMeets.map((m) => Math.max(at(A, m), at(B, m))),
     meetCount: meets.length,
     paths,
-    reached: { intervention: A.cost.size, disease: B.cost.size },
+    reached: { [sides[0]]: A.cost.size, [sides[1]]: B.cost.size },
+    ms,
+    duration,
   };
+}
+
+/** Runs a search and streams it as `signal`, `meet` and `paths` events, replayed in cost time. */
+export async function streamSearch(kg, seedsA, seedsB, emit, log, opts) {
+  const s = neuralSearch(kg, seedsA, seedsB, opts);
+  const explored = Object.values(s.reached).reduce((a, b) => a + b, 0);
+  log(`searched ${explored.toLocaleString()} nodes in ${s.ms < 10 ? s.ms.toFixed(1) : Math.round(s.ms)} ms · replayed at ${WAVE_SECONDS}s per unit of path cost`);
+  for (const f of s.frames) {
+    emit({ type: 'signal', ...f });
+    log(`${f.side} wave ${f.hop}: ${f.reached.toLocaleString()} nodes reached`);
+  }
+  if (s.meetCount) {
+    emit({ type: 'meet', nodes: s.meets, times: s.meetTimes });
+    log(`wavefronts met at ${s.meetCount.toLocaleString()} nodes`);
+  }
+  await sleep(s.duration * 1000 + 400);
+  emit({ type: 'paths', paths: s.paths });
+  return s;
 }

@@ -8,7 +8,12 @@ let brain;
 let source = null;
 let paths = [];
 let summary = null;
+let expectSummary = true;
 let selectedPath = null;
+let pinned = -1;
+let hovered = -1;
+let hoverTimer = 0;
+let connectFrom = -1;
 
 // ---------- boot ----------
 
@@ -20,7 +25,8 @@ async function boot() {
     $('#boot').classList.add('error');
     return;
   }
-  brain = createBrain($('#scene'), kg, { onHover: showTip, onClick: (i) => (i >= 0 ? inspect(i) : deselect()) });
+  brain = createBrain($('#scene'), kg, { onHover, onClick: (i) => (i >= 0 ? inspect(i) : deselect()) });
+  if (import.meta.env.DEV) window.verdia = { brain, kg };
   $('#kg-status').textContent = `PrimeKG · ${kg.N.toLocaleString()} nodes · ${kg.meta.edges.toLocaleString()} edges`;
   renderLegend();
   $('#boot').classList.add('done');
@@ -40,10 +46,12 @@ async function boot() {
     })
     .catch(() => ($('#llm-status').textContent = 'agent server offline'));
 
-  const q = new URLSearchParams(location.search).get('q');
-  if (q) {
-    $('#nct').value = q;
-    submit(q);
+  const params = new URLSearchParams(location.search);
+  const pair = params.get('connect')?.split(',').map(Number);
+  if (pair?.length === 2 && pair.every((i) => Number.isInteger(i) && i >= 0 && i < kg.N)) connect(pair[0], pair[1]);
+  else if (params.get('q')) {
+    $('#nct').value = params.get('q');
+    submit(params.get('q'));
   }
 }
 
@@ -60,6 +68,15 @@ const plain = (s) =>
 const chip = (i, label = kg.names[i]) => `<button class="chip" data-i="${i}" style="--c:${typeOf(i).color}">${esc(label)}</button>`;
 const bindChips = (root) => root.querySelectorAll('.chip[data-i]').forEach((b) => b.addEventListener('click', () => inspect(Number(b.dataset.i))));
 
+const nbrCache = new Map();
+function neighbors(i) {
+  if (!nbrCache.has(i)) {
+    if (nbrCache.size > 400) nbrCache.delete(nbrCache.keys().next().value);
+    nbrCache.set(i, fetch(`/api/primekg/neighbors/${i}`).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+  }
+  return nbrCache.get(i);
+}
+
 // ---------- input ----------
 
 $('#run-form').addEventListener('submit', (e) => {
@@ -73,51 +90,96 @@ document.querySelectorAll('.examples button').forEach((b) =>
   }),
 );
 
-function submit(raw) {
+const PAIR = /^(.+?)\s*(?:->|→|<->|⟷|↔)\s*(.+)$/;
+const PAIR_TO = /^(.+?)\s+to\s+(.+)$/i;
+
+async function submit(raw) {
   const q = String(raw || '').trim();
   if (!q || !brain) return;
+  if (/^NCT\d{8}$/i.test(q)) {
+    history.replaceState(null, '', `?q=${encodeURIComponent(q)}`);
+    return run(q.toUpperCase());
+  }
+  // "A -> B" (or "A to B" when the whole phrase is not itself a node name) connects two nodes.
+  let pair = q.match(PAIR);
+  if (!pair && PAIR_TO.test(q)) {
+    const whole = await find(q);
+    if (!whole || whole.score < 3) pair = q.match(PAIR_TO);
+  }
+  if (pair) {
+    const [a, b] = await Promise.all([find(pair[1]), find(pair[2])]);
+    if (a && b && a.i !== b.i) return connect(a.i, b.i);
+    $('#steps').innerHTML = `<li class="empty">Could not find ${esc(!a ? pair[1] : pair[2])} in PrimeKG.</li>`;
+    return;
+  }
   history.replaceState(null, '', `?q=${encodeURIComponent(q)}`);
-  if (/^NCT\d{8}$/i.test(q)) run(q.toUpperCase());
-  else searchKG(q);
+  searchKG(q);
 }
+
+const find = (q) =>
+  fetch(`/api/primekg/search?q=${encodeURIComponent(q.trim())}&limit=1`)
+    .then((r) => r.json())
+    .then((h) => (Array.isArray(h) ? h[0] : null))
+    .catch(() => null);
 
 function reset() {
   source?.close();
   paths = [];
   summary = null;
   selectedPath = null;
+  pinned = -1;
   brain.clearSignals();
   brain.clearPaths();
   brain.clearLabels();
+  brain.clearEgo();
   brain.setDim(false);
 }
 
 async function searchKG(q) {
-  reset();
+  const connecting = connectFrom >= 0;
+  if (!connecting) reset();
   $('#steps').innerHTML = '<li class="empty">Searching PrimeKG…</li>';
   const hits = await fetch(`/api/primekg/search?q=${encodeURIComponent(q)}&limit=14`).then((r) => r.json()).catch(() => []);
   if (!Array.isArray(hits) || !hits.length) {
     $('#steps').innerHTML = `<li class="empty">No PrimeKG node matches “${esc(q)}”.</li>`;
     return;
   }
-  $('#steps').innerHTML = `<li class="hits"><div class="title">PrimeKG matches for “${esc(q)}”</div>${hits
+  const title = connecting ? `Connect ${esc(kg.names[connectFrom])} to…` : `PrimeKG matches for “${esc(q)}”`;
+  $('#steps').innerHTML = `<li class="hits"><div class="title">${title}</div>${hits
     .map((h) => `<button class="hit" data-i="${h.i}"><span class="sw" style="background:${typeOf(h.i).color}"></span><span class="nm">${esc(h.name)}</span><span class="ty">${esc(typeOf(h.i).label)} · ${h.degree}</span></button>`)
     .join('')}</li>`;
   document.querySelectorAll('.hit').forEach((b) => b.addEventListener('click', () => inspect(Number(b.dataset.i))));
   brain.fire(hits.map((h) => h.i));
-  inspect(hits[0].i);
+  if (!connecting) inspect(hits[0].i);
 }
 
-// ---------- agent run ----------
+// ---------- agent run / connect: both stream search events ----------
 
 function run(nct) {
+  cancelConnect();
   reset();
+  expectSummary = true;
   $('#steps').innerHTML = '';
   $('#tab-connections').innerHTML = '<div class="placeholder">Agent is reading the trial…</div>';
   showTab('connections');
-  $('#run').disabled = true;
+  stream(`/api/assemble?nct=${encodeURIComponent(nct)}`);
+}
 
-  source = new EventSource(`/api/assemble?nct=${encodeURIComponent(nct)}`);
+function connect(a, b) {
+  cancelConnect();
+  reset();
+  expectSummary = false;
+  history.replaceState(null, '', `?connect=${a},${b}`);
+  $('#steps').innerHTML = '';
+  $('#tab-connections').innerHTML = `<div class="trial pair">${chip(a)}<span>⟷</span>${chip(b)}</div><div class="placeholder">Firing from both nodes…</div>`;
+  bindChips($('#tab-connections'));
+  showTab('connections');
+  stream(`/api/connect?a=${a}&b=${b}`);
+}
+
+function stream(url) {
+  $('#run').disabled = true;
+  source = new EventSource(url);
   let finished = false;
   source.onmessage = (m) => {
     const ev = JSON.parse(m.data);
@@ -166,10 +228,10 @@ function handle(ev) {
       break;
     }
     case 'signal':
-      brain.propagate(ev.edges, { side: ev.side, spread: ev.hop === 1 ? 1.6 : 2.8, strength: ev.hop === 1 ? 0.9 : 0.5 });
+      brain.wave(ev);
       break;
     case 'meet':
-      brain.fire(ev.nodes);
+      brain.fire(ev.nodes, ev.times ?? 0);
       break;
     case 'paths':
       paths = ev.paths;
@@ -181,6 +243,9 @@ function handle(ev) {
     case 'summary':
       summary = ev.summary;
       renderConnections();
+      break;
+    case 'done':
+      if (!expectSummary && !paths.length) $('#tab-connections .placeholder').textContent = 'No pathway connects these nodes within four hops.';
       break;
     case 'error':
       document.querySelectorAll('.step.running').forEach((s) => s.classList.replace('running', 'error'));
@@ -235,18 +300,19 @@ function renderConnections() {
   };
   const keyPaths = paths.filter((p) => keyIds.has(p.id));
   const others = paths.filter((p) => !keyIds.has(p.id));
-  $('#tab-connections').innerHTML = `
-    ${trial}
-    ${
-      s
-        ? `<div class="syn">
+  const synthesis = s
+    ? `<div class="syn">
       <span class="conf ${esc(s.confidence)}">confidence: ${esc(s.confidence || 'n/a')}</span>
       <h2>${esc(s.headline)}</h2>
       <p>${esc(s.summary)}</p>
       ${s.mechanistic_hypothesis ? `<h3>Mechanistic hypothesis</h3><p>${esc(s.mechanistic_hypothesis)}</p>` : ''}
     </div>`
-        : '<div class="placeholder">Interpreting pathways…</div>'
-    }
+    : expectSummary
+      ? '<div class="placeholder">Interpreting pathways…</div>'
+      : '';
+  $('#tab-connections').innerHTML = `
+    ${trial}
+    ${synthesis}
     ${keyPaths.length ? `<h3 class="sec">Key pathways</h3>${keyPaths.map(card).join('')}` : ''}
     ${others.length ? `<h3 class="sec">All pathways found (${paths.length}) · click to trace</h3>${others.map(card).join('')}` : ''}
     ${s?.novel_hypotheses?.length ? `<h3 class="sec">Hypotheses</h3><ul>${s.novel_hypotheses.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>` : ''}
@@ -271,8 +337,38 @@ function selectPath(id) {
 }
 
 function deselect() {
+  if (connectFrom >= 0) return cancelConnect();
   if (selectedPath) selectPath(null);
+  unpin();
 }
+
+function unpin() {
+  pinned = -1;
+  brain.clearEgo();
+  brain.clearLabels('node');
+}
+
+// ---------- connect mode ----------
+
+function startConnect(i) {
+  connectFrom = i;
+  $('#mode').innerHTML = `Connect ${chip(i)} to… <span>click any node or search for one · Esc to cancel</span>`;
+  $('#mode').classList.remove('hidden');
+  bindChips($('#mode'));
+  $('#nct').placeholder = 'search the node to connect to';
+  $('#nct').value = '';
+  $('#nct').focus();
+}
+
+function cancelConnect() {
+  connectFrom = -1;
+  $('#mode').classList.add('hidden');
+  $('#nct').placeholder = 'NCT02142738';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') deselect();
+});
 
 // ---------- inspector ----------
 
@@ -294,17 +390,33 @@ function sourceLink(n) {
 }
 
 async function inspect(i) {
+  if (connectFrom >= 0) {
+    if (i !== connectFrom) connect(connectFrom, i);
+    return;
+  }
   showTab('inspector');
-  $('#tab-inspector').innerHTML = '<div class="placeholder">Reading neuron…</div>';
+  pinned = i;
+  brain.clearLabels('node');
+  brain.clearLabels('focus');
   brain.label(i, kg.names[i], 'focus');
-  brain.focus([i], { distance: 260 });
-  const info = await fetch(`/api/primekg/node/${i}`).then((r) => r.json()).catch(() => null);
+  brain.focus([i], { distance: 240 });
+  $('#tab-inspector').innerHTML = '<div class="placeholder">Reading neuron…</div>';
+  const [info, nb] = await Promise.all([
+    fetch(`/api/primekg/node/${i}`)
+      .then((r) => r.json())
+      .catch(() => null),
+    neighbors(i),
+  ]);
+  if (pinned !== i) return;
   if (!info || info.error) {
     $('#tab-inspector').innerHTML = `<div class="placeholder">${esc(info?.error || 'Agent server offline.')}</div>`;
     return;
   }
-  const edges = info.byRelation.flatMap((g) => g.sample.map((n) => [i, n.i]));
-  brain.propagate(edges, { side: 'focus', spread: 1.2, strength: 0.7 });
+  if (nb) {
+    brain.showEgo(i, nb.nbrs);
+    const named = [...new Set(nb.nbrs)].sort((a, b) => kg.degree[b] - kg.degree[a]).slice(0, 10);
+    for (const j of named) brain.label(j, kg.names[j], 'node');
+  }
 
   const t = typeOf(i);
   const link = sourceLink(info);
@@ -318,11 +430,16 @@ async function inspect(i) {
     ['Category', f.category],
     ['Status', f.group],
   ].filter(([, v]) => v);
+  const shown = nb ? nb.nbrs.length : 0;
   $('#tab-inspector').innerHTML = `
     <div class="insp">
       <span class="kind" style="color:${t.color};border-color:${t.color}66">${esc(t.label)}</span>
       <h2>${esc(info.name)}</h2>
       <div class="src">${link ? `<a href="${esc(link[1])}" target="_blank" rel="noopener">${esc(link[0])} ↗</a> · ` : ''}${info.degree.toLocaleString()} connections</div>
+      <div class="insp-actions">
+        <button class="connect-btn">Connect to…</button>
+        <span>${shown < info.degree ? `graph shows ${shown.toLocaleString()} of ${info.degree.toLocaleString()} edges, sampled evenly per relation` : `all ${info.degree.toLocaleString()} edges drawn in the graph`}</span>
+      </div>
       ${facts.map(([k, v]) => `<h3>${esc(k)}</h3><p>${esc(v)}</p>`).join('')}
       <h3>Connections by relation</h3>
       ${info.byRelation
@@ -332,16 +449,31 @@ async function inspect(i) {
         )
         .join('')}
     </div>`;
+  $('#tab-inspector .connect-btn').addEventListener('click', () => startConnect(i));
   bindChips($('#tab-inspector'));
 }
 
-// ---------- tooltip, tabs, legend, controls ----------
+// ---------- hover, tabs, legend, controls ----------
+
+function onHover(i, x, y) {
+  showTip(i, x, y);
+  if (i === hovered) return;
+  hovered = i;
+  clearTimeout(hoverTimer);
+  if (pinned >= 0) return;
+  if (i < 0) return brain.clearEgo();
+  hoverTimer = setTimeout(async () => {
+    const nb = await neighbors(i);
+    if (nb && hovered === i && pinned < 0) brain.showEgo(i, nb.nbrs);
+  }, 80);
+}
 
 function showTip(i, x, y) {
   const tip = $('#tip');
   if (i < 0) return tip.classList.add('hidden');
   const t = typeOf(i);
-  tip.innerHTML = `<span class="sw" style="background:${t.color}"></span><b>${esc(kg.names[i])}</b><span class="ty">${esc(t.label)}</span>`;
+  const hint = connectFrom >= 0 && i !== connectFrom ? ' · click to connect' : '';
+  tip.innerHTML = `<span class="sw" style="background:${t.color}"></span><b>${esc(kg.names[i])}</b><span class="ty">${esc(t.label)} · ${kg.degree[i].toLocaleString()} edges${hint}</span>`;
   tip.style.transform = `translate(${x + 14}px, ${y + 14}px)`;
   tip.classList.remove('hidden');
 }
@@ -374,11 +506,11 @@ function toggle(id, fn) {
     fn(on);
   });
 }
-toggle('#ambient', (on) => brain.setAmbient(on));
 toggle('#rotate', (on) => brain.setOrbit(on));
 toggle('#labels', (on) => brain.setLabels(on));
 $('#home').addEventListener('click', () => brain.home());
 $('#clear').addEventListener('click', () => {
+  cancelConnect();
   reset();
   brain.home();
 });

@@ -1,11 +1,9 @@
 import { askJSON, llmConfig } from './llm.js';
 import { fetchTrial } from './tools/ctgov.js';
 import { primekg } from './primekg.js';
-import { neuralSearch } from './neural.js';
+import { streamSearch } from './neural.js';
 
 const LOOKUP_TYPES = new Set(['small_molecule', 'biologic', 'vaccine', 'cell_therapy', 'gene_therapy', 'dietary', 'other']);
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
 function armRole(trial, name) {
   const types = trial.armGroups
     .filter((a) => a.interventions.some((i) => i.toLowerCase().includes(name.toLowerCase())))
@@ -250,18 +248,7 @@ export async function runAgent(nct, emit) {
 
   // 4. Neural search
   step('signal', 'Propagate neural signals', 'running', 'bidirectional activation over PrimeKG');
-  const search = neuralSearch(kg, seedsA, seedsB);
-  for (const f of search.frames) {
-    emit({ type: 'signal', ...f });
-    log('signal', `${f.side} wave ${f.hop}: ${f.reached.toLocaleString()} neurons activated`);
-    await sleep(900);
-  }
-  if (search.meetCount) {
-    emit({ type: 'meet', nodes: search.meets });
-    log('signal', `wavefronts met at ${search.meetCount.toLocaleString()} nodes`);
-    await sleep(600);
-  }
-  emit({ type: 'paths', paths: search.paths });
+  const search = await streamSearch(kg, seedsA, seedsB, emit, (text) => log('signal', text));
   const kinds = [...new Set(search.paths.map((p) => p.kind))];
   for (const p of search.paths.slice(0, 6)) log('signal', `${p.id} ${p.kind}: ${describePath(kg, p).replace(/ \([^)]*\)/g, '')}`);
   step('signal', 'Propagate neural signals', 'done', `${search.paths.length} pathways · ${kinds.length} kinds`);

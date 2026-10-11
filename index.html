@@ -12,6 +12,7 @@
   <body>
     <div id="scene"></div>
     <div id="tip" class="tip hidden"></div>
+    <div id="mode" class="mode hidden"></div>
 
     <div id="boot" class="boot">
       <div class="boot-inner">
@@ -27,7 +28,7 @@
 
     <aside class="panel left">
       <form id="run-form" class="run">
-        <label for="nct">ClinicalTrials.gov ID — or any drug, disease, gene</label>
+        <label for="nct">ClinicalTrials.gov ID, any drug / disease / gene, or A → B</label>
         <div class="row">
           <input id="nct" placeholder="NCT02142738" autocomplete="off" spellcheck="false" />
           <button id="run" type="submit">Fire</button>
@@ -38,13 +39,14 @@
           <button type="button" data-q="NCT01035255" title="PARADIGM-HF · sacubitril/valsartan in heart failure">PARADIGM-HF</button>
           <button type="button" data-q="NCT00000620" title="ACCORD · intensive glycemic control in type 2 diabetes">ACCORD</button>
           <button type="button" data-q="metformin" title="Explore a PrimeKG node">metformin</button>
+          <button type="button" data-q="metformin -> Alzheimer disease" title="Connect two PrimeKG nodes">metformin → Alzheimer</button>
         </div>
         <div id="llm-status" class="llm-status"></div>
       </form>
 
       <div class="section-title">Agent trace</div>
       <ol id="steps" class="steps">
-        <li class="empty">Every point is one of PrimeKG's 129,375 biomedical entities. Enter an NCT number: the agent reads the trial, grounds its drugs and diseases in PrimeKG, and fires signals from both sides until the wavefronts meet. Click any point to explore it.</li>
+        <li class="empty">Every point is one of PrimeKG's 129,375 biomedical entities, placed by a force-directed layout of its real connections and sized by how many it has. Hover a point to see its edges, click to pin it. Enter an NCT number and the agent grounds the trial's drugs and diseases, then fires signals from both sides until the wavefronts meet — or connect any two nodes with “A → B”.</li>
       </ol>
     </aside>
 
@@ -64,7 +66,6 @@
     <footer class="dock">
       <div id="legend" class="legend"></div>
       <div class="controls">
-        <button id="ambient" class="toggle on" title="Spontaneous background firing">Ambient</button>
         <button id="rotate" class="toggle on">Orbit</button>
         <button id="labels" class="toggle on">Labels</button>
         <button id="home">Reset view</button>

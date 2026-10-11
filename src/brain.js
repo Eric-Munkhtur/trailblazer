@@ -14,39 +14,40 @@ export async function loadPrimeKG() {
     }
     return kind === 'json' ? res.json() : kind === 'text' ? res.text() : res.arrayBuffer();
   };
-  const [meta, pos, types, names, edges, edgeRels] = await Promise.all([
+  const [meta, pos, types, degree, names, edges, edgeRels] = await Promise.all([
     get('meta.json', 'json'),
     get('positions.f32').then((b) => new Float32Array(b)),
     get('types.u8').then((b) => new Uint8Array(b)),
+    get('degree.u32').then((b) => new Uint32Array(b)),
     get('names.txt', 'text').then((t) => t.split('\n')),
     get('edges.u32').then((b) => new Uint32Array(b)),
     get('edges-rel.u8').then((b) => new Uint8Array(b)),
   ]);
-  return { meta, pos, types, names, edges, edgeRels, N: types.length };
+  return { meta, pos, types, degree, names, edges, edgeRels, N: types.length };
 }
 
 const NODE_VS = /* glsl */ `
-  uniform float uTime, uSize, uPixelRatio, uDim, uReveal;
+  uniform float uTime, uSize, uPixelRatio, uDim, uReveal, uBase;
   uniform float uMask[16];
-  uniform float uTypeAlpha[16];
   attribute vec3 aColor;
-  attribute float aType, aFire, aLock, aSeed;
+  attribute float aType, aFire, aLock, aHi, aSize, aAlpha, aOrder;
   varying vec3 vColor;
   varying float vAlpha, vGlow;
   void main() {
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
     float since = uTime - aFire;
     float act = since >= 0.0 ? exp(-since * 1.4) : 0.0;
-    float glow = max(act, aLock);
+    float hold = max(aLock, aHi);
+    float glow = max(act, hold);
     float mask = uMask[int(aType + 0.5)];
-    float reveal = smoothstep(aSeed * 2.0, aSeed * 2.0 + 0.5, uReveal);
-    float twinkle = 0.85 + 0.15 * sin(uTime * 1.7 + aSeed * 60.0);
-    float base = mix(0.3, 0.07, uDim) * twinkle * uTypeAlpha[int(aType + 0.5)];
+    float reveal = smoothstep(aOrder * 2.0, aOrder * 2.0 + 0.4, uReveal);
+    float base = uBase * mix(1.0, 0.3, uDim) * aAlpha;
     vAlpha = mask * reveal * min(1.0, base + glow);
     vGlow = glow;
     vColor = mix(aColor, vec3(1.0), act * 0.55);
-    float size = uSize * (1.0 + glow * 2.6);
-    gl_PointSize = min(72.0, mask * size * uPixelRatio * (420.0 / -mv.z));
+    float size = uSize * aSize * (1.0 + act * 2.0 + hold * 0.9);
+    // Slightly flatter than true perspective so close-up points do not balloon.
+    gl_PointSize = min(80.0, mask * size * uPixelRatio * pow(420.0 / -mv.z, 0.8));
     gl_Position = projectionMatrix * mv;
   }`;
 
@@ -60,16 +61,19 @@ const NODE_FS = /* glsl */ `
     gl_FragColor = vec4(vColor * (0.55 + vGlow * 1.3), core * vAlpha);
   }`;
 
+// Fibres fade with length (long edges between distant clusters would otherwise dominate) and
+// with local density.
 const FIBER_VS = /* glsl */ `
   uniform float uMask[16];
-  uniform float uDim;
+  uniform float uDim, uLength;
   attribute vec3 aColor;
-  attribute float aType;
+  attribute float aType, aLen, aAlpha;
   varying vec3 vColor;
   varying float vAlpha;
   void main() {
     vColor = aColor;
-    vAlpha = uMask[int(aType + 0.5)] * mix(1.0, 0.35, uDim);
+    float l = aLen / uLength;
+    vAlpha = uMask[int(aType + 0.5)] * mix(1.0, 0.3, uDim) * aAlpha / (1.0 + l * l);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }`;
 
@@ -78,6 +82,27 @@ const FIBER_FS = /* glsl */ `
   varying vec3 vColor;
   varying float vAlpha;
   void main() { gl_FragColor = vec4(vColor, uOpacity * vAlpha); }`;
+
+// A node's real edges, with pulses flowing outward from it.
+const EGO_VS = /* glsl */ `
+  attribute float aS, aPhase;
+  attribute vec3 aColor;
+  varying float vS, vPhase;
+  varying vec3 vColor;
+  void main() {
+    vS = aS; vPhase = aPhase; vColor = aColor;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }`;
+
+const EGO_FS = /* glsl */ `
+  uniform float uTime, uOpacity;
+  varying float vS, vPhase;
+  varying vec3 vColor;
+  void main() {
+    float q = fract(uTime * 0.45 + vPhase - vS);
+    float pulse = exp(-q * 10.0);
+    gl_FragColor = vec4(vColor * (1.0 + pulse), uOpacity * (0.3 + 0.9 * pulse));
+  }`;
 
 // A signal is a comet travelling from A to B: bright head, fading tail, then the fibre fades out.
 const SIGNAL_VS = /* glsl */ `
@@ -144,25 +169,26 @@ const PULSE_FS = /* glsl */ `
     gl_FragColor = vec4(mix(vColor, vec3(1.0), 0.45) * 1.6, core * vA);
   }`;
 
+const dynamicAttr = (geo, name, size, n) => {
+  const a = new THREE.BufferAttribute(new Float32Array(n * size), size);
+  a.setUsage(THREE.DynamicDrawUsage);
+  geo.setAttribute(name, a);
+  return a;
+};
+
 class SignalLayer {
   constructor(capacity, shared, loop = false) {
     this.cap = capacity;
     this.next = 0;
     this.count = 0;
     const lg = new THREE.BufferGeometry();
-    const attr = (geo, name, size, n) => {
-      const a = new THREE.BufferAttribute(new Float32Array(n * size), size);
-      a.setUsage(THREE.DynamicDrawUsage);
-      geo.setAttribute(name, a);
-      return a;
-    };
     this.l = {
-      position: attr(lg, 'position', 3, capacity * 2),
-      aS: attr(lg, 'aS', 1, capacity * 2),
-      aT0: attr(lg, 'aT0', 1, capacity * 2),
-      aDur: attr(lg, 'aDur', 1, capacity * 2),
-      aStrength: attr(lg, 'aStrength', 1, capacity * 2),
-      aColor: attr(lg, 'aColor', 3, capacity * 2),
+      position: dynamicAttr(lg, 'position', 3, capacity * 2),
+      aS: dynamicAttr(lg, 'aS', 1, capacity * 2),
+      aT0: dynamicAttr(lg, 'aT0', 1, capacity * 2),
+      aDur: dynamicAttr(lg, 'aDur', 1, capacity * 2),
+      aStrength: dynamicAttr(lg, 'aStrength', 1, capacity * 2),
+      aColor: dynamicAttr(lg, 'aColor', 3, capacity * 2),
     };
     this.l.aT0.array.fill(1e9);
     // Loop period in units of one hop, long enough for a 4-hop pathway plus a pause.
@@ -174,12 +200,12 @@ class SignalLayer {
     );
     const pg = new THREE.BufferGeometry();
     this.p = {
-      position: attr(pg, 'position', 3, capacity),
-      aB: attr(pg, 'aB', 3, capacity),
-      aT0: attr(pg, 'aT0', 1, capacity),
-      aDur: attr(pg, 'aDur', 1, capacity),
-      aStrength: attr(pg, 'aStrength', 1, capacity),
-      aColor: attr(pg, 'aColor', 3, capacity),
+      position: dynamicAttr(pg, 'position', 3, capacity),
+      aB: dynamicAttr(pg, 'aB', 3, capacity),
+      aT0: dynamicAttr(pg, 'aT0', 1, capacity),
+      aDur: dynamicAttr(pg, 'aDur', 1, capacity),
+      aStrength: dynamicAttr(pg, 'aStrength', 1, capacity),
+      aColor: dynamicAttr(pg, 'aColor', 3, capacity),
     };
     this.p.aT0.array.fill(1e9);
     this.pulses = new THREE.Points(
@@ -233,12 +259,37 @@ class SignalLayer {
 const SIDE_COLORS = {
   intervention: new THREE.Color('#38e1ff'),
   disease: new THREE.Color('#ff4f9a'),
+  A: new THREE.Color('#38e1ff'),
+  B: new THREE.Color('#ff4f9a'),
   path: new THREE.Color('#5cf2c0'),
-  focus: new THREE.Color('#ffffff'),
 };
 
+// A coarse 3D grid over the layout. Points and fibres in crowded cells are drawn fainter, so
+// clusters keep their texture under additive blending instead of saturating to white.
+function densityGrid(pos, N, cells = 48) {
+  const lo = [Infinity, Infinity, Infinity];
+  const hi = [-Infinity, -Infinity, -Infinity];
+  for (let k = 0; k < N * 3; k++) {
+    const d = k % 3;
+    if (pos[k] < lo[d]) lo[d] = pos[k];
+    if (pos[k] > hi[d]) hi[d] = pos[k];
+  }
+  const axis = (v, d) => Math.min(cells - 1, Math.max(0, Math.floor(((v - lo[d]) / (hi[d] - lo[d] || 1)) * cells)));
+  const cellAt = (x, y, z) => (axis(x, 0) * cells + axis(y, 1)) * cells + axis(z, 2);
+  const cell = new Uint32Array(N);
+  const counts = new Uint32Array(cells ** 3);
+  for (let i = 0; i < N; i++) counts[(cell[i] = cellAt(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]))]++;
+  return { cells, cell, counts, cellAt };
+}
+
+const fade = (ref, count, exp) => Math.min(1, Math.pow(ref / Math.max(1, count), exp));
+const FIBER_OPACITY = 0.03;
+const EGO_MAX = 4000;
+const HINTS = 32;
+const HINT_MIN = 1.45;
+
 export function createBrain(container, kg, { onHover, onClick } = {}) {
-  const { N, pos, types, meta } = kg;
+  const { N, pos, types, degree, meta } = kg;
   const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
   const pixelRatio = Math.min(window.devicePixelRatio, 1.75);
   renderer.setPixelRatio(pixelRatio);
@@ -251,54 +302,73 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   labelRenderer.domElement.className = 'labels-layer';
   container.appendChild(labelRenderer.domElement);
 
+  const HOME = 1150;
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x03050a, 0.00035);
+  scene.fog = new THREE.FogExp2(0x03050a, 0.0003);
   const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 1, 8000);
-  camera.position.set(0, 200, 900);
+  camera.position.set(0, 0.25 * HOME, 0.97 * HOME);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.autoRotate = true;
   controls.autoRotateSpeed = 0.35;
-  controls.minDistance = 60;
+  controls.minDistance = 30;
   controls.maxDistance = 3000;
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.9, 0.5, 0.35);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.55, 0.5, 0.4);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
   const shared = { uTime: { value: 0 }, uPixelRatio: { value: pixelRatio }, uDim: { value: 0 }, uMask: { value: new Array(16).fill(1) } };
   const typeColors = meta.types.map((t) => new THREE.Color(t.color));
+  const grid = densityGrid(pos, N);
 
-  // Neurons: every PrimeKG node.
+  // Neurons: every PrimeKG node, sized by its real number of connections.
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   const colors = new Float32Array(N * 3);
-  for (let i = 0; i < N; i++) typeColors[types[i]].toArray(colors, i * 3);
+  const size = new Float32Array(N);
+  const alpha = new Float32Array(N);
+  const order = new Float32Array(N);
+  let maxLog = 1;
+  for (let i = 0; i < N; i++) maxLog = Math.max(maxLog, Math.log10(1 + degree[i]));
+  for (let i = 0; i < N; i++) {
+    typeColors[types[i]].toArray(colors, i * 3);
+    const l = Math.log10(1 + degree[i]) / maxLog;
+    size[i] = 0.55 + 1.9 * l;
+    alpha[i] = fade(6, grid.counts[grid.cell[i]], 0.6) * (0.55 + 0.45 * l);
+    // The intro reveals hubs first, then their neighbourhoods fill in.
+    order[i] = (1 - l) * 0.85 + Math.random() * 0.15;
+  }
   geo.setAttribute('aColor', new THREE.BufferAttribute(colors, 3));
   geo.setAttribute('aType', new THREE.BufferAttribute(Float32Array.from(types), 1));
+  geo.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
+  geo.setAttribute('aAlpha', new THREE.BufferAttribute(alpha, 1));
+  geo.setAttribute('aOrder', new THREE.BufferAttribute(order, 1));
   const fire = new THREE.BufferAttribute(new Float32Array(N).fill(-1000), 1);
   const lock = new THREE.BufferAttribute(new Float32Array(N), 1);
+  const hi = new THREE.BufferAttribute(new Float32Array(N), 1);
   geo.setAttribute('aFire', fire);
   geo.setAttribute('aLock', lock);
-  geo.setAttribute('aSeed', new THREE.BufferAttribute(Float32Array.from({ length: N }, Math.random), 1));
-  // Dense types (genes, GO terms) would wash out under additive blending; scale them down.
-  const typeAlpha = new Array(16).fill(1);
-  meta.types.forEach((t, k) => (typeAlpha[k] = Math.min(1, Math.pow(3000 / t.count, 0.35))));
-  const nodeUniforms = { ...shared, uSize: { value: 1.8 }, uReveal: { value: 0 }, uTypeAlpha: { value: typeAlpha } };
+  geo.setAttribute('aHi', hi);
+  const nodeUniforms = { ...shared, uSize: { value: 1.8 }, uReveal: { value: 0 }, uBase: { value: 1 } };
   const points = new THREE.Points(
     geo,
     new THREE.ShaderMaterial({ uniforms: nodeUniforms, vertexShader: NODE_VS, fragmentShader: NODE_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
   );
   scene.add(points);
 
-  // Axons: a stratified sample of real PrimeKG edges as a faint fibre texture.
+  // Axons: a stratified sample of real PrimeKG edges.
   const M = kg.edges.length / 2;
   const fpos = new Float32Array(M * 6);
   const fcol = new Float32Array(M * 6);
   const ftype = new Float32Array(M * 2);
+  const flen = new Float32Array(M * 2);
+  const falpha = new Float32Array(M * 2);
+  const fcell = new Uint32Array(M);
+  const edgeCounts = new Uint32Array(grid.counts.length);
   for (let e = 0; e < M; e++) {
     const a = kg.edges[e * 2];
     const b = kg.edges[e * 2 + 1];
@@ -308,23 +378,48 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     typeColors[types[b]].toArray(fcol, e * 6 + 3);
     ftype[e * 2] = types[a];
     ftype[e * 2 + 1] = types[b];
+    const dx = pos[b * 3] - pos[a * 3], dy = pos[b * 3 + 1] - pos[a * 3 + 1], dz = pos[b * 3 + 2] - pos[a * 3 + 2];
+    flen[e * 2] = flen[e * 2 + 1] = Math.sqrt(dx * dx + dy * dy + dz * dz);
+    edgeCounts[(fcell[e] = grid.cellAt(pos[a * 3] + dx / 2, pos[a * 3 + 1] + dy / 2, pos[a * 3 + 2] + dz / 2))]++;
   }
+  for (let e = 0; e < M; e++) falpha[e * 2] = falpha[e * 2 + 1] = fade(4, edgeCounts[fcell[e]], 0.7);
   const fgeo = new THREE.BufferGeometry();
   fgeo.setAttribute('position', new THREE.BufferAttribute(fpos, 3));
   fgeo.setAttribute('aColor', new THREE.BufferAttribute(fcol, 3));
   fgeo.setAttribute('aType', new THREE.BufferAttribute(ftype, 1));
+  fgeo.setAttribute('aLen', new THREE.BufferAttribute(flen, 1));
+  fgeo.setAttribute('aAlpha', new THREE.BufferAttribute(falpha, 1));
+  const fiberUniforms = { ...shared, uOpacity: { value: FIBER_OPACITY }, uLength: { value: 70 } };
   const fibers = new THREE.LineSegments(
     fgeo,
-    new THREE.ShaderMaterial({ uniforms: { ...shared, uOpacity: { value: 0.0045 } }, vertexShader: FIBER_VS, fragmentShader: FIBER_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
+    new THREE.ShaderMaterial({ uniforms: fiberUniforms, vertexShader: FIBER_VS, fragmentShader: FIBER_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
   );
   scene.add(fibers);
+
+  // Ego network: the real edges of the hovered or selected node.
+  const egoGeo = new THREE.BufferGeometry();
+  const ego = {
+    position: dynamicAttr(egoGeo, 'position', 3, EGO_MAX * 2),
+    aS: dynamicAttr(egoGeo, 'aS', 1, EGO_MAX * 2),
+    aPhase: dynamicAttr(egoGeo, 'aPhase', 1, EGO_MAX * 2),
+    aColor: dynamicAttr(egoGeo, 'aColor', 3, EGO_MAX * 2),
+  };
+  egoGeo.setDrawRange(0, 0);
+  const egoUniforms = { uTime: shared.uTime, uOpacity: { value: 0.5 } };
+  const egoLines = new THREE.LineSegments(
+    egoGeo,
+    new THREE.ShaderMaterial({ uniforms: egoUniforms, vertexShader: EGO_VS, fragmentShader: EGO_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
+  );
+  egoLines.frustumCulled = false;
+  scene.add(egoLines);
+  let egoNodes = [];
 
   const signals = new SignalLayer(24000, shared);
   const paths = new SignalLayer(1200, shared, true);
   scene.add(signals.lines, signals.pulses, paths.lines, paths.pulses);
 
   // ---------- state ----------
-  const state = { ambient: true, labels: true, fireDirty: false, lockDirty: false, cam: null, hover: -1, frame: 0 };
+  const state = { labels: true, fireDirty: false, lockDirty: false, cam: null, hover: -1, frame: 0 };
   const labelObjs = new Map();
   const timer = new THREE.Timer();
   timer.connect(document);
@@ -348,6 +443,74 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   }
   window.addEventListener('resize', resize);
 
+  // ---------- zoom-dependent labels ----------
+  // Prominence is a node's degree percentile within its own type (anatomy terms carry thousands
+  // of expression edges and would otherwise take every label). Candidates are the most prominent
+  // nodes of each density cell; one is named when it is prominent and close to the camera.
+  const prominence = new Float32Array(N);
+  meta.types.forEach((_, k) => {
+    const members = [];
+    for (let i = 0; i < N; i++) if (types[i] === k) members.push(i);
+    members.sort((a, b) => degree[a] - degree[b]);
+    members.forEach((i, r) => (prominence[i] = members.length > 1 ? r / (members.length - 1) : 1));
+  });
+  const hintCandidates = (() => {
+    const best = new Map();
+    for (let i = 0; i < N; i++) {
+      if (degree[i] < 5) continue;
+      const c = grid.cell[i];
+      const list = best.get(c);
+      if (!list) best.set(c, [i]);
+      else if (list.length < 2) list.push(i);
+      else if (prominence[i] > prominence[list[1]]) list[1] = i;
+      if (list?.length === 2 && prominence[list[1]] > prominence[list[0]]) list.reverse();
+    }
+    return Uint32Array.from([...best.values()].flat());
+  })();
+  const hintPool = Array.from({ length: HINTS }, () => {
+    const el = document.createElement('div');
+    el.className = 'nlabel hint';
+    const o = new CSS2DObject(el);
+    o.visible = false;
+    o.userData = { rank: 4, node: -1 };
+    scene.add(o);
+    return o;
+  });
+  const hv = new THREE.Vector3();
+  function updateHints() {
+    const scored = [];
+    if (state.labels) {
+      for (let k = 0; k < hintCandidates.length; k++) {
+        const i = hintCandidates[k];
+        if (labelObjs.has(i) || shared.uMask.value[types[i]] < 0.5) continue;
+        hv.fromArray(pos, i * 3);
+        const s = 3.5 * prominence[i] - 2.6 * Math.log10(Math.max(1, hv.distanceTo(camera.position)) / 200);
+        if (s < HINT_MIN) continue;
+        hv.project(camera);
+        if (hv.z > 1 || Math.abs(hv.x) > 0.92 || Math.abs(hv.y) > 0.92) continue;
+        scored.push([s, i]);
+      }
+      scored.sort((a, b) => b[0] - a[0]);
+    }
+    // At most a quarter of the names go to any one type.
+    const perType = new Map();
+    const shown = scored.filter(([, i]) => {
+      const n = perType.get(types[i]) || 0;
+      perType.set(types[i], n + 1);
+      return n < HINTS / 4;
+    });
+    hintPool.forEach((o, k) => {
+      const i = shown[k]?.[1] ?? -1;
+      o.visible = i >= 0;
+      if (i < 0 || o.userData.node === i) return;
+      o.userData.node = i;
+      o.userData.w = 0;
+      o.element.textContent = kg.names[i];
+      o.element.style.setProperty('--c', meta.types[types[i]].color);
+      o.position.fromArray(pos, i * 3);
+    });
+  }
+
   // ---------- picking ----------
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
@@ -356,12 +519,23 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     const r = renderer.domElement.getBoundingClientRect();
     mouse.set(((clientX - r.left) / r.width) * 2 - 1, -((clientY - r.top) / r.height) * 2 + 1);
     raycaster.setFromCamera(mouse, camera);
-    raycaster.params.Points.threshold = Math.max(1.5, camera.position.distanceTo(controls.target) / 260);
+    raycaster.params.Points.threshold = Math.max(1, camera.position.distanceTo(controls.target) / 300);
     const mask = shared.uMask.value;
-    for (const hit of raycaster.intersectObject(points)) {
-      if (mask[types[hit.index]] > 0.5) return hit.index;
+    // Among the points under the cursor, prefer the best-connected one near the front.
+    let best = -1;
+    let bestScore = -Infinity;
+    const hits = raycaster.intersectObject(points);
+    const front = hits[0]?.distance ?? 0;
+    for (const hit of hits) {
+      if (hit.distance > front * 1.15 + 20) break;
+      if (mask[types[hit.index]] < 0.5) continue;
+      const s = Math.log10(1 + degree[hit.index]) - hit.distanceToRay / raycaster.params.Points.threshold;
+      if (s > bestScore) {
+        bestScore = s;
+        best = hit.index;
+      }
     }
-    return -1;
+    return best;
   }
   renderer.domElement.addEventListener('pointermove', (e) => {
     pending = [e.clientX, e.clientY];
@@ -383,27 +557,11 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   });
 
   // ---------- loop ----------
-  let lastAmbient = 0;
-  const ambientColor = new THREE.Color();
   renderer.setAnimationLoop(() => {
     timer.update();
     const dt = Math.min(timer.getDelta(), 0.1);
     shared.uTime.value += dt;
-    const t = now();
     nodeUniforms.uReveal.value = Math.min(3, nodeUniforms.uReveal.value + dt * 0.9);
-
-    if (state.ambient && t - lastAmbient > 0.05) {
-      lastAmbient = t;
-      const n = shared.uDim.value > 0.5 ? 1 : 3;
-      for (let k = 0; k < n; k++) {
-        const e = Math.floor(Math.random() * M);
-        const a = kg.edges[e * 2];
-        const b = kg.edges[e * 2 + 1];
-        ambientColor.copy(typeColors[types[a]]);
-        signals.add(P(a), P(b), t, 1.2 + Math.random(), ambientColor.toArray(), 0.28);
-        fireAt(b, t + 1.4);
-      }
-    }
 
     if (state.cam) {
       const c = state.cam;
@@ -414,15 +572,16 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       if (k >= 1) state.cam = null;
     }
     controls.update();
+    // Fewer fibres overlap per pixel up close, so each one is drawn stronger.
+    const zoom = HOME / Math.max(1, camera.position.distanceTo(controls.target));
+    fiberUniforms.uOpacity.value = FIBER_OPACITY * Math.min(6, Math.max(1, Math.pow(zoom, 0.9)));
 
     if (pending) {
       const [x, y] = pending;
       pending = null;
       const i = pick(x, y);
-      if (i !== state.hover) {
-        state.hover = i;
-        onHover?.(i, x, y);
-      } else if (i >= 0) onHover?.(i, x, y);
+      if (i !== state.hover) state.hover = i;
+      onHover?.(i, x, y);
     }
 
     if (state.fireDirty) {
@@ -435,19 +594,22 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     }
     signals.flush();
     paths.flush();
+    state.frame++;
+    if (state.frame % 8 === 0) updateHints();
     composer.render();
     labelRenderer.render(scene, camera);
-    if (state.labels && labelObjs.size && ++state.frame % 6 === 0) declutter();
+    if (state.labels && state.frame % 4 === 0) declutter();
   });
 
-  // Labels of nearby nodes (e.g. several drugs from one trial) stack vertically instead of overlapping.
+  // Named labels (seeds, focus, pathway nodes) stack vertically instead of overlapping; zoom
+  // hints never move and simply hide when they would collide with anything placed before them.
   const LABEL_RANK = { seed: 0, focus: 1, path: 2, node: 3 };
   const proj = new THREE.Vector3();
   function declutter() {
     const w = container.clientWidth;
     const h = container.clientHeight;
     const placed = [];
-    const objs = [...labelObjs.values()].sort((a, b) => a.userData.rank - b.userData.rank);
+    const objs = [...labelObjs.values(), ...hintPool.filter((o) => o.visible)].sort((a, b) => a.userData.rank - b.userData.rank);
     for (const o of objs) {
       const el = o.element;
       proj.copy(o.position).project(camera);
@@ -463,7 +625,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       const x = ((proj.x + 1) / 2) * w - lw / 2;
       const y = ((1 - proj.y) / 2) * h - lh / 2 - lift;
       let dy = null;
-      for (const k of [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5]) {
+      for (const k of o.userData.rank === 4 ? [0] : [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5]) {
         const top = y + k * lh;
         if (!placed.some((r) => x < r.x + r.w && x + lw > r.x && top < r.y + r.h && top + lh > r.y)) {
           dy = k * lh;
@@ -492,26 +654,58 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     };
   }
 
+  function removeLabel(i) {
+    const o = labelObjs.get(i);
+    if (!o) return;
+    scene.remove(o);
+    o.element.remove();
+    labelObjs.delete(i);
+  }
+
   return {
     get time() {
       return now();
     },
-    /** Fire a set of neurons now (or at `delay` seconds). */
+    /** Fire neurons now, after `delay` seconds, or each at its own delay (array). */
     fire(indices, delay = 0) {
-      for (const i of indices) fireAt(i, now() + delay);
+      indices.forEach((i, k) => fireAt(i, now() + (Array.isArray(delay) ? delay[k] : delay)));
     },
-    /** Send signals along edges [[u, v], ...], staggered so they read as a travelling wave. */
-    propagate(edges, { side = 'focus', spread = 2.4, strength = 0.65 } = {}) {
+    /** Replay one hop of a search wavefront: signals depart and arrive at their cost-derived times. */
+    wave({ side, hop, edges, nodes, times }) {
       const col = SIDE_COLORS[side].toArray();
       const t = now();
-      const step = edges.length > 1 ? spread / edges.length : 0;
-      edges.forEach(([u, v], k) => {
-        const t0 = t + k * step + Math.random() * 0.15;
-        const dur = 0.7 + Math.random() * 0.5;
-        signals.add(P(u), P(v), t0, dur, col, strength);
-        fireAt(u, t0);
-        fireAt(v, t0 + dur);
-      });
+      const strength = hop === 1 ? 0.85 : 0.45;
+      for (const [u, v, , tu, tv] of edges) signals.add(P(u), P(v), t + tu, Math.max(0.2, tv - tu), col, strength);
+      nodes.forEach((v, k) => fireAt(v, t + times[k]));
+    },
+    /** Show node i's real edges to `nbrs`, highlighting the neighbours. */
+    showEgo(i, nbrs) {
+      for (const j of egoNodes) hi.array[j] = 0;
+      const n = Math.min(EGO_MAX, nbrs.length);
+      const c0 = typeColors[types[i]];
+      for (let k = 0; k < n; k++) {
+        const j = nbrs[k];
+        ego.position.array.set(P(i), k * 6);
+        ego.position.array.set(P(j), k * 6 + 3);
+        ego.aS.array[k * 2] = 0;
+        ego.aS.array[k * 2 + 1] = 1;
+        ego.aPhase.array[k * 2] = ego.aPhase.array[k * 2 + 1] = Math.random();
+        c0.toArray(ego.aColor.array, k * 6);
+        typeColors[types[j]].toArray(ego.aColor.array, k * 6 + 3);
+        hi.array[j] = 0.5;
+      }
+      hi.array[i] = 1;
+      egoNodes = [i, ...nbrs.slice(0, n)];
+      egoUniforms.uOpacity.value = Math.min(0.6, Math.max(0.12, 6 / Math.sqrt(n)));
+      for (const a of Object.values(ego)) a.needsUpdate = true;
+      egoGeo.setDrawRange(0, n * 2);
+      hi.needsUpdate = true;
+    },
+    clearEgo() {
+      for (const j of egoNodes) hi.array[j] = 0;
+      egoNodes = [];
+      egoGeo.setDrawRange(0, 0);
+      hi.needsUpdate = true;
     },
     lockPaths(list, selected = null) {
       paths.clear();
@@ -547,12 +741,10 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     },
     setDim(on) {
       shared.uDim.value = on ? 1 : 0;
+      labelRenderer.domElement.classList.toggle('dim', on);
     },
     setTypeVisible(t, on) {
       shared.uMask.value[t] = on ? 1 : 0;
-    },
-    setAmbient(on) {
-      state.ambient = on;
     },
     setOrbit(on) {
       controls.autoRotate = on;
@@ -560,6 +752,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     setLabels(on) {
       state.labels = on;
       for (const o of labelObjs.values()) o.visible = on;
+      updateHints();
     },
     label(i, text, kind = 'node') {
       let o = labelObjs.get(i);
@@ -582,12 +775,9 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       o.userData.rank = LABEL_RANK[kind.split(' ')[0]] ?? 3;
       return o;
     },
-    clearLabels() {
-      for (const o of labelObjs.values()) {
-        scene.remove(o);
-        o.element.remove();
-      }
-      labelObjs.clear();
+    /** Remove all labels, or only those of one kind (e.g. 'node'). */
+    clearLabels(kind) {
+      for (const [i, o] of [...labelObjs]) if (!kind || o.userData.rank === LABEL_RANK[kind]) removeLabel(i);
     },
     focus(indices, { distance, ms } = {}) {
       if (!indices.length) return;
@@ -595,10 +785,10 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       for (const i of indices) box.expandByPoint(new THREE.Vector3().fromArray(P(i)));
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3()).length();
-      flyTo(center, distance ?? Math.max(220, size * 1.25), ms);
+      flyTo(center, distance ?? Math.max(160, size * 1.25), ms);
     },
-    home() {
-      flyTo(new THREE.Vector3(0, 0, 0), 920);
+    home(distance = HOME) {
+      flyTo(new THREE.Vector3(0, 0, 0), distance);
     },
     position: P,
   };
