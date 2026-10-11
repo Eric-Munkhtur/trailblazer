@@ -30,3 +30,16 @@ runs/
 *.toc
 *.synctex.gz
 *.bak
+
+# Exclusions retained from the earlier GitHub prototype
+*.py[cod]
+*.egg-info/
+artifacts/*.pkl
+artifacts/*.pt
+artifacts/*.parquet
+artifacts/kg.csv
+artifacts/demo_cache/
+!artifacts/.gitkeep
+!artifacts/nodes_*.csv
+.idea/
+.vscode/

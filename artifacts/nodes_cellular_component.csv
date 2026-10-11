@@ -1,0 +1,4177 @@
+node_id,node_name
+110165,cellular anatomical entity
+30137,COPI-coated vesicle
+30133,transport vesicle
+31356,intrinsic component of chloroplast inner membrane
+31353,integral component of plastid inner membrane
+5777,peroxisome
+31230,intrinsic component of cell outer membrane
+16021,integral component of membrane
+31225,anchored component of membrane
+99512,supramolecular fiber
+43232,intracellular non-membrane-bounded organelle
+98644,complex of collagen trimers
+9527,plastid outer membrane
+46862,chromoplast membrane
+33113,cyanelle membrane
+31969,chloroplast membrane
+31242,extrinsic component of external side of cell outer membrane
+36420,extrinsic component of mycolate outer membrane
+30532,small nuclear ribonucleoprotein complex
+31410,cytoplasmic vesicle
+5773,vacuole
+30659,cytoplasmic vesicle membrane
+16234,inclusion body
+43231,intracellular membrane-bounded organelle
+42170,plastid membrane
+31968,organelle outer membrane
+19866,organelle inner membrane
+42651,thylakoid membrane
+98802,plasma membrane signaling receptor complex
+1902911,protein kinase complex
+1902554,serine/threonine protein kinase complex
+90665,glycoprotein complex
+34702,ion channel complex
+19814,immunoglobulin complex
+98636,protein complex involved in cell adhesion
+8076,voltage-gated potassium channel complex
+98797,plasma membrane protein complex
+48494,chromatophore ribulose bisphosphate carboxylase complex
+34707,chloride channel complex
+90533,cation-transporting ATPase complex
+46930,pore complex
+45277,respiratory chain complex IV
+45261,"proton-transporting ATP synthase complex, catalytic core F(1)"
+33176,proton-transporting V-type ATPase complex
+1902687,glucosidase complex
+1902495,transmembrane transporter complex
+1990204,oxidoreductase complex
+45263,"proton-transporting ATP synthase complex, coupling factor F(o)"
+98533,ATPase dependent transmembrane transport complex
+45267,"proton-transporting ATP synthase, catalytic core"
+1905862,ferroxidase complex
+45281,succinate dehydrogenase complex
+45271,respiratory chain complex I
+45265,"proton-transporting ATP synthase, stator stalk"
+9523,photosystem II
+34706,sodium channel complex
+9522,photosystem I
+34705,potassium channel complex
+43235,receptor complex
+45283,fumarate reductase complex
+1905360,GTPase complex
+30118,clathrin coat
+1903114,silver ion transmembrane transporter complex
+1903113,copper ion transmembrane transporter complex
+45259,proton-transporting ATP synthase complex
+62137,cargo receptor complex
+5581,collagen trimer
+98803,respiratory chain complex
+9325,nitrate reductase complex
+34704,calcium channel complex
+45269,"proton-transporting ATP synthase, central stalk"
+45275,respiratory chain complex III
+33180,"proton-transporting V-type ATPase, V1 domain"
+30131,clathrin adaptor complex
+1990234,transferase complex
+33179,"proton-transporting V-type ATPase, V0 domain"
+45273,respiratory chain complex II
+98588,bounding membrane of organelle
+90741,pigment granule membrane
+97381,photoreceptor disc membrane
+1902555,endoribonuclease complex
+1905354,exoribonuclease complex
+140535,intracellular protein-containing complex
+109,nucleotide-excision repair complex
+90575,RNA polymerase II transcription regulator complex
+32806,carboxy-terminal domain protein kinase complex
+71141,SMAD protein complex
+70461,SAGA-type complex
+120114,Sm-like protein family complex
+33655,host cell cytoplasm part
+33648,host intracellular membrane-bounded organelle
+33644,host cell membrane
+39713,viral factory
+65010,extracellular membrane-bounded organelle
+43264,extracellular non-membrane-bounded organelle
+98796,membrane protein complex
+97180,serine protease inhibitor complex
+140534,endoplasmic reticulum protein-containing complex
+152,nuclear ubiquitin ligase complex
+99023,vesicle tethering complex
+30076,light-harvesting complex
+31501,mannosyltransferase complex
+36452,ESCRT complex
+98798,mitochondrial protein-containing complex
+70069,cytochrome complex
+1904949,ATPase complex
+140513,nuclear protein-containing complex
+153,cytoplasmic ubiquitin ligase complex
+1990351,transporter complex
+61695,"transferase complex, transferring phosphorus-containing groups"
+1905368,peptidase complex
+151,ubiquitin ligase complex
+8303,caspase complex
+8287,protein serine/threonine phosphatase complex
+1905961,protein-cysteine S-palmitoyltransferase complex
+98807,chloroplast thylakoid membrane protein complex
+44385,integral to membrane of host cell
+97633,intrinsic component of phagophore assembly site membrane
+45240,dihydrolipoyl dehydrogenase complex
+31982,vesicle
+32991,protein-containing complex
+1902494,catalytic complex
+34518,RNA cap binding complex
+32993,protein-DNA complex
+1902773,GTPase activator complex
+1905369,endopeptidase complex
+70288,ferritin complex
+1990391,DNA repair complex
+1902503,adenylyltransferase complex
+1902493,acetyltransferase complex
+8230,ecdysone receptor holocomplex
+98895,postsynaptic endosome membrane
+31901,early endosome membrane
+31371,ubiquitin conjugating enzyme complex
+42995,cell projection
+43228,non-membrane-bounded organelle
+31904,endosome lumen
+43202,lysosomal lumen
+323,lytic vacuole
+322,storage vacuole
+325,plant-type vacuole
+16461,unconventional myosin complex
+31902,late endosome membrane
+44796,DNA polymerase processivity factor complex
+35840,old growing cell tip
+45239,tricarboxylic acid cycle enzyme complex
+97386,glial cell projection
+5902,microvillus
+1990904,ribonucleoprotein complex
+19773,"proteasome core complex, alpha-subunit complex"
+33061,DNA recombinase mediator complex
+33202,DNA helicase complex
+106068,SUMO ligase complex
+5839,proteasome core complex
+808,origin recognition complex
+31332,RNAi effector complex
+34708,methyltransferase complex
+19774,"proteasome core complex, beta-subunit complex"
+178,exosome (RNase complex)
+8540,"proteasome regulatory particle, base subcomplex"
+5667,transcription regulator complex
+17053,transcription repressor complex
+8278,cohesin complex
+70419,nonhomologous end joining complex
+72588,box H/ACA RNP complex
+5838,proteasome regulatory particle
+32300,mismatch repair complex
+502,proteasome complex
+444,MIS12/MIND type complex
+8541,"proteasome regulatory particle, lid subcomplex"
+30684,preribosome
+307,cyclin-dependent protein kinase holoenzyme complex
+1903095,ribonuclease III complex
+42575,DNA polymerase complex
+34751,aryl hydrocarbon receptor complex
+31379,RNA-directed RNA polymerase complex
+30681,multimeric ribonuclease P complex
+31248,protein acetyltransferase complex
+36387,pre-replicative complex
+782,telomere cap complex
+5663,DNA replication factor C complex
+30894,replisome
+428,DNA-directed RNA polymerase complex
+9536,plastid
+19030,icosahedral viral capsid
+5681,spliceosomal complex
+5732,sno(s)RNA-containing ribonucleoprotein complex
+5875,microtubule associated complex
+98552,side of membrane
+30677,ribonuclease P complex
+177,cytoplasmic exosome (RNase complex)
+9368,endopeptidase Clp complex
+314,organellar small ribosomal subunit
+45254,pyruvate dehydrogenase complex
+1905202,methylcrotonoyl-CoA carboxylase complex
+45293,mRNA editing complex
+2185,creatine kinase complex
+31027,glutamate synthase complex (NADH)
+36125,fatty acid beta-oxidation multienzyme complex
+315,organellar large ribosomal subunit
+45251,electron transfer flavoprotein complex
+45253,pyruvate dehydrogenase (lipoamide) phosphatase complex
+32838,plasma membrane bounded cell projection cytoplasm
+43527,tRNA methyltransferase complex
+221,"vacuolar proton-transporting V-type ATPase, V1 domain"
+30176,integral component of endoplasmic reticulum membrane
+1990415,Pex17p-Pex14p docking complex
+43229,intracellular organelle
+43227,membrane-bounded organelle
+12506,vesicle membrane
+16020,membrane
+31226,intrinsic component of plasma membrane
+98955,intrinsic component of presynaptic endosome membrane
+98675,intrinsic component of neuronal dense core vesicle membrane
+98949,intrinsic component of postsynaptic endosome membrane
+98952,intrinsic component of spine apparatus membrane
+98563,intrinsic component of synaptic vesicle membrane
+70112,organellar chromatophore membrane
+43661,peribacteroid membrane
+5871,kinesin complex
+31358,intrinsic component of chloroplast outer membrane
+31355,integral component of plastid outer membrane
+1674,female germ cell nucleus
+98573,intrinsic component of mitochondrial membrane
+31301,integral component of organelle membrane
+835,ER ubiquitin ligase complex
+43256,laminin complex
+19867,outer membrane
+9518,PSI associated light-harvesting complex I
+1990104,DNA bending complex
+44815,DNA packaging complex
+32982,myosin filament
+36379,myofilament
+98878,neurotransmitter receptor complex
+9526,plastid envelope
+5940,septin ring
+32161,cleavage apparatus septin structure
+399,cellular bud neck septin structure
+97526,spliceosomal tri-snRNP complex
+45202,synapse
+32279,asymmetric synapse
+60076,excitatory synapse
+98978,glutamatergic synapse
+98791,Golgi apparatus subcompartment
+55029,nuclear DNA-directed RNA polymerase complex
+46658,anchored component of plasma membrane
+31235,intrinsic component of the cytoplasmic side of the plasma membrane
+31233,intrinsic component of external side of plasma membrane
+99240,intrinsic component of synaptic membrane
+44423,virion component
+33647,host intracellular organelle
+42716,plasma membrane-derived chromatophore
+5789,endoplasmic reticulum membrane
+31253,cell projection membrane
+42579,microbody
+43195,terminal bouton
+32997,Fc receptor complex
+43186,P granule
+5768,endosome
+5764,lysosome
+101031,chaperone complex
+5891,voltage-gated calcium channel complex
+98799,outer mitochondrial membrane protein complex
+98981,cholinergic synapse
+98520,excitatory neuromuscular junction
+98523,neuromuscular junction of myotube
+33643,host cell part
+5798,Golgi-associated vesicle
+30136,clathrin-coated vesicle
+30135,coated vesicle
+98888,extrinsic component of presynaptic membrane
+98637,protein complex involved in cell-matrix adhesion
+30936,transmembrane collagen trimer
+98733,hemidesmosome associated protein complex
+60205,cytoplasmic vesicle lumen
+31977,thylakoid lumen
+97013,phagocytic vesicle lumen
+5775,vacuolar lumen
+19005,SCF ubiquitin ligase complex
+98553,lumenal side of endoplasmic reticulum membrane
+31303,integral component of endosome membrane
+85035,haustorium
+43658,host symbiosome
+98645,collagen network
+99572,postsynaptic specialization
+5774,vacuolar membrane
+120025,plasma membrane bounded cell projection
+427,plastid-encoded plastid RNA polymerase complex
+39714,cytoplasmic viral factory
+48788,cytoskeleton of presynaptic active zone
+5767,secondary lysosome
+5776,autophagosome
+45335,phagocytic vesicle
+39661,host organelle outer membrane
+44191,host cell mitochondrial membrane
+44200,host cell nuclear membrane
+32159,septin cap
+30964,NADH dehydrogenase complex
+98800,inner mitochondrial membrane protein complex
+70603,SWI/SNF superfamily-type complex
+31976,plastid thylakoid
+31469,polyhedral organelle
+31984,organelle subcompartment
+9579,thylakoid
+9277,fungal-type cell wall
+31160,spore wall
+5583,fibrillar collagen trimer
+5689,U12-type spliceosomal complex
+71010,prespliceosome
+71013,catalytic step 2 spliceosome
+71020,post-spliceosomal complex
+71011,precatalytic spliceosome
+71014,post-mRNA release spliceosomal complex
+71012,catalytic step 1 spliceosome
+31090,organelle membrane
+9534,chloroplast thylakoid
+30424,axon
+99081,supramolecular polymer
+8250,oligosaccharyltransferase complex
+150005,enzyme activator complex
+19908,nuclear cyclin-dependent protein kinase holoenzyme complex
+8023,transcription elongation factor complex
+5593,FACIT collagen trimer
+30934,anchoring collagen complex
+98651,basement membrane collagen trimer
+5874,microtubule
+42627,chylomicron
+5887,integral component of plasma membrane
+5828,kinetochore microtubule
+1990498,mitotic spindle microtubule
+98857,membrane microdomain
+98590,plasma membrane region
+31300,intrinsic component of organelle membrane
+30935,sheet-forming collagen trimer
+5598,short-chain collagen trimer
+36464,cytoplasmic ribonucleoprotein granule
+45121,membrane raft
+42717,plasma membrane-derived chromatophore membrane
+45257,succinate dehydrogenase complex (ubiquinone)
+32476,decaprenyl diphosphate synthase complex
+99080,supramolecular complex
+9295,nucleoid
+98922,extrinsic component of dense core granule membrane
+5876,spindle microtubule
+5881,cytoplasmic microtubule
+61696,pituitary gonadotropin complex
+97071,interferon regulatory factor complex
+42571,"immunoglobulin complex, circulating"
+71745,IgA immunoglobulin complex
+71735,IgG immunoglobulin complex
+71738,IgD immunoglobulin complex
+71742,IgE immunoglobulin complex
+71753,IgM immunoglobulin complex
+19815,B cell receptor complex
+5684,U2-type spliceosomal complex
+97729,9+2 motile cilium
+33018,sarcoplasmic reticulum lumen
+90571,RNA polymerase II transcription repressor complex
+1905347,endodeoxyribonuclease complex
+34993,meiotic nuclear membrane microtubule tethering complex
+31965,nuclear membrane
+5657,replication fork
+31302,intrinsic component of endosome membrane
+44165,host cell endoplasmic reticulum
+98947,intrinsic component of postsynaptic endocytic zone membrane
+99055,integral component of postsynaptic membrane
+99025,anchored component of postsynaptic membrane
+5884,actin filament
+70993,translation preinitiation complex
+70013,intracellular organelle lumen
+31983,vesicle lumen
+30112,glycocalyx
+5778,peroxisomal membrane
+31966,mitochondrial membrane
+5852,eukaryotic translation initiation factor 3 complex
+32592,integral component of mitochondrial membrane
+31304,intrinsic component of mitochondrial inner membrane
+31306,intrinsic component of mitochondrial outer membrane
+31308,intrinsic component of nuclear outer membrane
+803,sex chromosome
+9330,"DNA topoisomerase type II (double strand cut, ATP-hydrolyzing) complex"
+31311,intrinsic component of contractile vacuolar membrane
+31166,integral component of vacuolar membrane
+43005,neuron projection
+98858,actin-based cell projection
+97732,9+2 non-motile cilium
+30027,lamellipodium
+30175,filopodium
+97731,9+0 non-motile cilium
+1750,photoreceptor outer segment
+98793,presynapse
+44306,neuron projection terminus
+9505,plant-type cell wall
+5821,intermediate layer of spindle pole body
+31350,intrinsic component of plastid membrane
+31231,intrinsic component of peroxisomal membrane
+31310,intrinsic component of vacuolar membrane
+31227,intrinsic component of endoplasmic reticulum membrane
+97630,intrinsic component of omegasome membrane
+31229,intrinsic component of nuclear inner membrane
+1990673,intrinsic component of endoplasmic reticulum-Golgi intermediate compartment (ERGIC) membrane
+31228,intrinsic component of Golgi membrane
+60170,ciliary membrane
+10009,cytoplasmic side of endosome membrane
+43679,axon terminus
+32994,protein-lipid complex
+16222,procollagen-proline 4-dioxygenase complex
+98889,intrinsic component of presynaptic membrane
+99699,integral component of synaptic membrane
+99144,anchored component of synaptic membrane
+30425,dendrite
+1990777,lipoprotein particle
+8021,synaptic vesicle
+71682,endocytic vesicle lumen
+1990229,iron-sulfur cluster assembly complex
+31597,cytosolic proteasome complex
+20023,kinetoplast
+836,Hrd1p ubiquitin ligase complex
+9506,plasmodesma
+98827,endoplasmic reticulum subcompartment
+120082,smooth endoplasmic reticulum cisterna
+5694,chromosome
+1903293,phosphatase complex
+35097,histone methyltransferase complex
+31465,Cul4B-RING E3 ubiquitin ligase complex
+31519,PcG protein complex
+31461,cullin-RING ubiquitin ligase complex
+1903561,extracellular vesicle
+792,heterochromatin
+781,"chromosome, telomeric region"
+61845,neuron projection branch point
+133,polarisome
+44094,host cell nuclear part
+30689,Noc complex
+5938,cell cortex
+99568,cytoplasmic region
+30667,secretory granule membrane
+5765,lysosomal membrane
+5929,cilium
+922,spindle pole
+99571,postsynaptic cytoskeleton
+45111,intermediate filament cytoskeleton
+14731,spectrin-associated cytoskeleton
+32156,septin cytoskeleton
+15629,actin cytoskeleton
+31201,SNARE complex
+34358,plasma lipoprotein particle
+31256,leading edge membrane
+31257,cell trailing edge membrane
+9343,biotin carboxylase complex
+35452,extrinsic component of plastid membrane
+35448,extrinsic component of thylakoid membrane
+30119,AP-type membrane coat adaptor complex
+43190,ATP-binding cassette (ABC) transporter complex
+1902509,methionine-importing complex
+1990427,stereocilia tip-link density
+10008,endosome membrane
+34364,high-density lipoprotein particle
+30880,RNA polymerase complex
+8305,integrin complex
+43230,extracellular organelle
+5911,cell-cell junction
+5618,cell wall
+9288,bacterial-type flagellum
+51233,spindle midzone
+34774,secretory granule lumen
+30141,secretory granule
+5766,primary lysosome
+70382,exocytic vesicle
+80008,Cul4-RING E3 ubiquitin ligase complex
+46536,dosage compensation complex
+43233,organelle lumen
+97683,dinoflagellate apex
+98999,extrinsic component of postsynaptic endosome membrane
+98524,neuromuscular junction of somatic muscle myotube
+98665,serotonin receptor complex
+1902695,metallochaperone complex
+31012,extracellular matrix
+8328,ionotropic glutamate receptor complex
+97470,ribbon synapse
+31082,BLOC complex
+36284,tubulobulbar complex
+18995,host cellular component
+98945,intrinsic component of presynaptic active zone membrane
+99056,integral component of presynaptic membrane
+99026,anchored component of presynaptic membrane
+126,transcription factor TFIIIB complex
+44232,organelle membrane contact site
+90576,RNA polymerase III transcription regulator complex
+35450,extrinsic component of lumenal side of plastid thylakoid membrane
+5942,phosphatidylinositol 3-kinase complex
+38037,G protein-coupled receptor dimeric complex
+1902710,GABA receptor complex
+1903439,calcitonin family receptor complex
+5822,inner plaque of spindle pole body
+8290,F-actin capping protein complex
+98576,lumenal side of membrane
+44163,host cytoskeleton
+98859,actin filament bundle of actin-based cell projection
+16942,insulin-like growth factor binding protein complex
+19897,extrinsic component of plasma membrane
+9532,plastid stroma
+36338,viral membrane
+98982,GABA-ergic synapse
+32280,symmetric synapse
+60077,inhibitory synapse
+98985,"asymmetric, glutamatergic, excitatory synapse"
+45120,pronucleus
+32176,split septin rings
+9521,photosystem
+30863,cortical cytoskeleton
+99569,presynaptic cytoskeleton
+36449,microtubule minus-end
+5912,adherens junction
+97440,apical dendrite
+150002,distal dendrite
+1990635,proximal dendrite
+5783,endoplasmic reticulum
+97610,cell surface furrow
+5770,late endosome
+99034,anchored component of postsynaptic endosome membrane
+98950,intrinsic component of postsynaptic early endosome membrane
+98951,intrinsic component of postsynaptic recycling endosome membrane
+1990228,sulfurtransferase complex
+1990221,L-cysteine desulfurase complex
+228,nuclear chromosome
+805,X chromosome
+793,condensed chromosome
+71746,"IgA immunoglobulin complex, circulating"
+120,RNA polymerase I transcription regulator complex
+38201,TOR complex
+1903958,nitric-oxide synthase complex
+1990658,transnitrosylase complex
+421,autophagosome membrane
+30670,phagocytic vesicle membrane
+5816,spindle pole body
+30897,HOPS complex
+30658,transport vesicle membrane
+30663,COPI-coated vesicle membrane
+30665,clathrin-coated vesicle membrane
+30660,Golgi-associated vesicle membrane
+30662,coated vesicle membrane
+61174,type I terminal bouton
+98936,intrinsic component of postsynaptic membrane
+31312,extrinsic component of organelle membrane
+1990752,microtubule end
+98687,chromosomal region
+98946,intrinsic component of presynaptic endocytic zone membrane
+5882,intermediate filament
+36064,ciliary basal body
+61702,inflammasome complex
+31244,extrinsic component of cell outer membrane
+347,THO complex
+5815,microtubule organizing center
+43226,organelle
+118,histone deacetylase complex
+90545,CHD-type complex
+1990195,macrolide transmembrane transporter complex
+5634,nucleus
+98566,transport vesicle lumen
+5796,Golgi lumen
+5697,telomerase holoenzyme complex
+32589,neuron projection membrane
+97060,synaptic membrane
+97427,microtubule bundle
+44174,host cell endosome
+1990078,replication inhibiting complex
+30428,cell septum
+42597,periplasmic space
+44292,dendrite terminus
+30426,growth cone
+5622,intracellular anatomical structure
+30173,integral component of Golgi membrane
+1990693,intrinsic component of Golgi cis cisterna membrane
+1990695,intrinsic component of Golgi trans cisterna membrane
+1990694,intrinsic component of Golgi medial cisterna membrane
+31009,plastid ADPG pyrophosphorylase complex
+19898,extrinsic component of membrane
+70775,H3 histone acetyltransferase complex
+1902562,H4 histone acetyltransferase complex
+31264,death-inducing signaling complex
+46727,capsomere
+36409,histone H3-K14 acetyltransferase complex
+31967,organelle envelope
+62023,collagen-containing extracellular matrix
+71183,protocadherin-alpha-protocadherin-gamma complex
+55037,recycling endosome
+98845,postsynaptic endosome
+30427,site of polarized growth
+51286,cell tip
+36405,anchored component of cell outer membrane
+31246,intrinsic component of periplasmic side of cell outer membrane
+16607,nuclear speck
+1990099,pre-primosome complex
+98852,lytic vacuole membrane
+97525,spliceosomal snRNP complex
+97450,astrocyte end-foot
+30139,endocytic vesicle
+30669,clathrin-coated endocytic vesicle membrane
+42405,nuclear inclusion body
+35838,growing cell tip
+99738,cell cortex region
+5788,endoplasmic reticulum lumen
+44391,ribosomal subunit
+32173,septin collar
+9503,thylakoid light-harvesting complex
+44291,cell-cell contact zone
+1990077,primosome complex
+99030,anchored component of postsynaptic specialization membrane
+99146,intrinsic component of postsynaptic density membrane
+99166,intrinsic component of postsynaptic specialization membrane of symmetric synapse
+33256,I-kappaB/NF-kappaB complex
+98948,intrinsic component of postsynaptic specialization membrane
+60198,clathrin-sculpted vesicle
+99503,secretory vesicle
+30312,external encapsulating structure
+5825,half bridge of spindle pole body
+31528,microvillus membrane
+31975,envelope
+235,astral microtubule
+30120,vesicle coat
+17059,serine C-palmitoyltransferase complex
+1905348,endonuclease complex
+31594,neuromuscular junction
+34703,cation channel complex
+1990586,divisome complex
+72379,ER membrane insertion complex
+35976,transcription factor AP-1 complex
+43511,inhibin complex
+44302,dentate gyrus mossy fiber
+43036,starch grain
+5840,ribosome
+36418,intrinsic component of mycolate outer membrane
+45203,integral component of cell outer membrane
+42599,lamellar body
+72562,blood microparticle
+34081,polyketide synthase complex
+30054,cell junction
+30016,myofibril
+34357,photosynthetic membrane
+44309,neuron spine
+98794,postsynapse
+45246,cytosolic tricarboxylic acid cycle enzyme complex
+45242,isocitrate dehydrogenase complex (NAD+)
+5879,axonemal microtubule
+5856,cytoskeleton
+5923,bicellular tight junction
+31502,dolichyl-phosphate-mannose-protein mannosyltransferase complex
+30055,cell-substrate junction
+43076,megasporocyte nucleus
+35267,NuA4 histone acetyltransferase complex
+97136,Bcl-2 family protein complex
+9274,peptidoglycan-based cell wall
+97636,intrinsic component of autophagosome membrane
+35770,ribonucleoprotein granule
+97346,INO80-type complex
+60187,cell pole
+1905286,serine-type peptidase complex
+785,chromatin
+5576,extracellular region
+5794,Golgi apparatus
+98642,network-forming collagen trimer
+97441,basal dendrite
+39715,nuclear viral factory
+98562,cytoplasmic side of membrane
+45334,clathrin-coated endocytic vesicle
+97574,lateral part of cell
+98521,inhibitory neuromuscular junction
+5819,spindle
+30062,mitochondrial tricarboxylic acid cycle enzyme complex
+42709,succinate-CoA ligase complex
+45172,germline ring canal
+70469,respirasome
+30008,TRAPP complex
+48770,pigment granule
+1990742,microvesicle
+48180,activin complex
+8024,cyclin/CDK positive transcription elongation factor complex
+5861,troponin complex
+16610,nitrogenase complex
+98538,lumenal side of transport vesicle membrane
+30892,mitotic cohesin complex
+798,nuclear cohesin complex
+16471,vacuolar proton-transporting V-type ATPase complex
+44162,host cell cytoplasmic vesicle membrane
+229,cytoplasmic chromosome
+35032,"phosphatidylinositol 3-kinase complex, class III"
+1903440,amylin receptor complex
+30125,clathrin vesicle coat
+1990684,protein-lipid-RNA complex
+1902912,pyruvate kinase complex
+43189,H4/H2A histone acetyltransferase complex
+16604,nuclear body
+35453,extrinsic component of plastid inner membrane
+35449,extrinsic component of plastid thylakoid membrane
+71159,NF-kappaB complex
+36454,growth factor complex
+70701,mucus layer
+45179,apical cortex
+9898,cytoplasmic side of plasma membrane
+5915,zonula adherens
+5826,actomyosin contractile ring
+9528,plastid inner membrane
+99064,integral component of postsynaptic endosome membrane
+98635,protein complex involved in cell-cell adhesion
+31010,ISWI-type complex
+97708,intracellular vesicle
+5811,lipid droplet
+48471,perinuclear region of cytoplasm
+5823,central plaque of spindle pole body
+30893,meiotic cohesin complex
+30666,endocytic vesicle membrane
+16587,Isw1 complex
+16472,sodium ion-transporting two-sector ATPase complex
+31105,septin complex
+31514,motile cilium
+30077,plasma membrane light-harvesting complex
+99060,integral component of postsynaptic specialization membrane
+32116,SMC loading complex
+5963,magnesium-dependent protein serine/threonine phosphatase complex
+31520,plasma membrane of cell tip
+9547,plastid ribosome
+31026,glutamate synthase complex
+110086,meiotic actomyosin contractile ring
+97449,astrocyte projection
+55028,cortical microtubule
+5737,cytoplasm
+48492,ribulose bisphosphate carboxylase complex
+99086,synaptonemal structure
+10598,NAD(P)H dehydrogenase complex (plastoquinone)
+70161,anchoring junction
+98565,lumenal side of endosome membrane
+98022,"viral capsid, fiber"
+31360,intrinsic component of thylakoid membrane
+31224,intrinsic component of membrane
+5742,mitochondrial outer membrane translocase complex
+5947,mitochondrial alpha-ketoglutarate dehydrogenase complex
+45252,oxoglutarate dehydrogenase complex
+43033,isoamylase complex
+42763,intracellular immature spore
+9516,leucoplast
+48500,signal recognition particle
+34385,triglyceride-rich plasma lipoprotein particle
+9289,pilus
+42611,MHC protein complex
+44384,host outer membrane
+33017,sarcoplasmic reticulum membrane
+35805,egg coat
+5886,plasma membrane
+31985,Golgi cisterna
+99091,"postsynaptic specialization, intracellular component"
+32777,Piccolo NuA4 histone acetyltransferase complex
+42646,plastid nucleoid
+44298,cell body membrane
+44665,MLL1/2 complex
+61850,growth cone leading edge
+30286,dynein complex
+31906,late endosome lumen
+31354,intrinsic component of plastid outer membrane
+31351,integral component of plastid membrane
+32580,Golgi cisterna membrane
+31414,N-terminal protein acetyltransferase complex
+45171,intercellular bridge
+5721,pericentric heterochromatin
+36056,filtration diaphragm
+15935,small ribosomal subunit
+71664,catenin-TCF7L2 complex
+1990907,beta-catenin-TCF complex
+32158,septin band
+32160,septin filament array
+5813,centrosome
+43292,contractile fiber
+70160,tight junction
+33651,host cell plastid
+30874,nucleolar chromatin
+98836,cytoskeleton of dendritic spine
+98871,postsynaptic actin cytoskeleton
+312,plastid small ribosomal subunit
+1904144,phosphatidylinositol phosphate phosphatase complex
+10369,chromocenter
+45495,pole plasm
+1990015,ensheathing process
+71256,translocon complex
+33652,host cell chloroplast
+71749,polymeric IgA immunoglobulin complex
+44297,cell body
+5918,septate junction
+1904090,peptidase inhibitor complex
+1990005,granular vesicle
+5782,peroxisomal matrix
+5677,chromatin silencing complex
+10330,cellulose synthase complex
+97232,lamellar body membrane
+31237,intrinsic component of periplasmic side of plasma membrane
+71575,integral component of external side of plasma membrane
+90395,plant cell papilla
+44303,axon collateral
+44352,pinosome
+98890,extrinsic component of postsynaptic membrane
+31970,organelle envelope lumen
+44161,host cell cytoplasmic vesicle
+98539,cytoplasmic side of transport vesicle membrane
+62242,double membrane vesicle viral factory membrane
+31211,endoplasmic reticulum palmitoyltransferase complex
+5769,early endosome
+33646,host intracellular part
+44732,mitotic spindle pole body
+9897,external side of plasma membrane
+98980,presynaptic density
+220,"vacuolar proton-transporting V-type ATPase, V0 domain"
+935,division septum
+2178,palmitoyltransferase complex
+44156,host cell junction
+70938,contractile ring
+43073,germ cell nucleus
+99634,postsynaptic specialization membrane
+1990233,intramolecular phosphotransferase complex
+98527,neuromuscular junction of somatic muscle
+89717,spanning component of membrane
+71628,intrinsic component of fungal-type vacuolar membrane
+1902937,inward rectifier potassium channel complex
+30929,ADPG pyrophosphorylase complex
+42555,MCM complex
+31352,intrinsic component of plastid inner membrane
+99522,region of cytosol
+330,plant-type vacuole lumen
+99513,polymeric cytoskeletal fiber
+99501,exocytic vesicle membrane
+97413,Lewy body
+97730,non-motile cilium
+33100,NuA3 histone acetyltransferase complex
+43659,symbiosome
+70992,translation initiation complex
+5713,recombination nodule
+10339,external side of cell wall
+43660,bacteroid-containing symbiosome
+34646,organelle-enclosing lipid monolayer
+33097,amyloplast membrane
+120208,telodendria
+1903768,taste receptor complex
+44157,host cell projection
+9705,plant-type vacuole membrane
+31978,plastid thylakoid lumen
+44160,host thylakoid membrane
+33653,host cell chloroplast part
+1990039,hypolemmal cisterna
+31261,DNA replication preinitiation complex
+16469,proton-transporting two-sector ATPase complex
+98554,cytoplasmic side of endoplasmic reticulum membrane
+32432,actin filament bundle
+70822,Sin3-type complex
+16459,myosin complex
+71754,"IgM immunoglobulin complex, circulating"
+120111,neuron projection cytoplasm
+31232,extrinsic component of external side of plasma membrane
+31974,membrane-enclosed lumen
+55035,plastid thylakoid membrane
+42641,actomyosin
+97517,contractile actin filament bundle
+98021,"viral capsid, decoration"
+176,nuclear exosome (RNase complex)
+306,extrinsic component of vacuolar membrane
+930,gamma-tubulin complex
+62039,biofilm matrix
+98898,dense core granule lumen
+5818,aster
+98966,perisynaptic extracellular matrix
+98862,cluster of actin-based cell projections
+44184,host cell late endosome
+31045,dense core granule
+16465,chaperonin ATPase complex
+1990531,phospholipid-translocating ATPase complex
+35371,microtubule plus-end
+1990563,extracellular exosome complex
+30931,heterotetrameric ADPG pyrophosphorylase complex
+30117,membrane coat
+45282,plasma membrane succinate dehydrogenase complex
+2139,stereocilia coupling link
+35869,ciliary transition zone
+140220,pathogen-containing vacuole
+16007,mitochondrial derivative
+150086,multiple synapse bouton
+783,nuclear telomere cap complex
+136,mannan polymerase complex
+1903503,ATPase inhibitor complex
+35145,exon-exon junction complex
+51285,cell cortex of cell tip
+786,nucleosome
+31313,extrinsic component of endosome membrane
+9329,acetate CoA-transferase complex
+5827,polar microtubule
+123,histone acetyltransferase complex
+439,transcription factor TFIIH core complex
+1902500,vacuolar HOPS complex
+5849,mRNA cleavage factor complex
+19028,viral capsid
+90734,site of DNA damage
+311,plastid large ribosomal subunit
+32839,dendrite cytoplasm
+97648,G protein-coupled receptor complex
+31314,extrinsic component of mitochondrial inner membrane
+99243,extrinsic component of synaptic membrane
+1990249,"nucleotide-excision repair, DNA damage recognition complex"
+106094,nuclear membrane microtubule tethering complex
+313,organellar ribosome
+44217,other organism part
+71751,secretory IgA immunoglobulin complex
+71750,dimeric IgA immunoglobulin complex
+31074,nucleocytoplasmic transport complex
+44853,plasma membrane raft
+934,porous cell septum
+31240,external side of cell outer membrane
+33178,"proton-transporting two-sector ATPase complex, catalytic domain"
+106083,nuclear membrane protein complex
+5575,cellular_component
+42101,T cell receptor complex
+5669,transcription factor TFIID complex
+139,Golgi membrane
+5858,axonemal dynein complex
+9508,plastid chromosome
+98984,neuron to neuron synapse
+5829,cytosol
+15934,large ribosomal subunit
+31252,cell leading edge
+9529,plastid intermembrane space
+98892,extrinsic component of postsynaptic specialization membrane
+31903,microbody membrane
+32127,dense core granule membrane
+32154,cleavage furrow
+97651,"phosphatidylinositol 3-kinase complex, class I"
+31907,microbody lumen
+97684,dinoflagellate antapex
+61645,endocytic patch
+1739,sex chromatin
+14069,postsynaptic density
+9279,cell outer membrane
+33177,"proton-transporting two-sector ATPase complex, proton-transporting domain"
+43197,dendritic spine
+97612,dinoflagellate sulcus
+5824,outer plaque of spindle pole body
+1903502,translation repressor complex
+97218,sieve plate
+34719,SMN-Sm protein complex
+97518,parallel actin filament bundle
+32010,phagolysosome
+30864,cortical actin cytoskeleton
+97179,protease inhibitor complex
+32045,guanyl-nucleotide exchange factor complex
+5727,extrachromosomal circular DNA
+1904511,cytoplasmic microtubule plus-end
+71782,endoplasmic reticulum tubular network
+16460,myosin II complex
+32992,protein-carbohydrate complex
+1990011,laminated body
+1114,protein-DNA-RNA complex
+110085,mitotic actomyosin contractile ring
+44175,host cell endosome membrane
+44167,host cell endoplasmic reticulum membrane
+98648,collagen anchoring fibril
+31002,actin rod
+775,"chromosome, centromeric region"
+98956,intrinsic component of dense core granule membrane
+9317,acetyl-CoA carboxylase complex
+90553,unicellular trichome tip
+61830,concave side of sperm head
+20010,conoid
+48223,hemicellulose network
+61822,ciliary cap
+62160,spongiome
+43672,nexine
+60107,annuli extracellular matrix
+98833,presynaptic endocytic zone
+120121,tripartite attachment complex
+20032,basal ring of apical complex
+43595,endospore cortex
+97566,left tetrad
+97224,sperm connecting piece
+140511,mitotic nuclear bridge stalk
+31254,cell trailing edge
+97568,median body
+36063,acroblast
+1990014,orthogonal array
+97564,right lateral basal body pair
+32126,eisosome
+97545,axonemal outer doublet
+97002,mitochondrial inner boundary membrane
+5615,extracellular space
+35748,myelin sheath abaxonal region
+43662,peribacteroid fluid
+33101,cellular bud membrane
+5654,nucleoplasm
+48217,pectic matrix
+800,lateral element
+46818,dense nuclear body
+97569,lateral shield
+1891,phagocytic cup
+9425,bacterial-type flagellum basal body
+70115,organellar chromatophore intermembrane space
+120135,distal portion of axoneme
+97478,leaflet of membrane bilayer
+1990916,Isp3 layer of spore wall
+16363,nuclear matrix
+120219,subapical part of cell
+9426,"bacterial-type flagellum basal body, distal rod"
+9510,plasmodesmatal desmotubule
+5621,cellular bud scar
+32153,cell division site
+110093,nucleus lagging edge
+97613,dinoflagellate epicone
+72324,ascus epiplasm
+31674,I band
+61823,ring centriole
+120098,procentriole
+97217,sieve area
+36224,pairing center
+90641,microsporidian-type endospore
+33012,porosome
+43680,filiform apparatus
+97197,tetraspanin-enriched microdomain
+98843,postsynaptic endocytic zone
+33270,paranode region of axon
+33268,node of Ranvier
+97204,phagocytic cup base
+61827,sperm head
+90636,outer dense plaque of desmosome
+1990047,spindle matrix
+55044,symplast
+32584,growth cone membrane
+2177,manchette
+97735,DIM/DIP cell wall layer
+20039,pellicle
+60418,yolk plasma
+9525,phragmosome
+9424,bacterial-type flagellum hook
+35843,endonuclear canal
+1400,mating projection base
+120043,stereocilium shaft
+97595,ventral disc crossbridge
+140022,cnida
+97225,sperm midpiece
+97203,phagocytic cup lip
+1990030,pericellular basket
+97540,axonemal central pair
+46868,mesosome
+1990013,presynaptic grid
+32179,germ tube
+90689,cleavage furrow leading edge
+1990826,nucleoplasmic periphery of the nuclear pore complex
+43678,intine
+97445,presynaptic active zone dense projection
+9429,"bacterial-type flagellum basal body, proximal rod"
+1651,dense fibrillar component
+9422,bacterial-type flagellum hook-filament junction
+70825,micropyle
+31673,H zone
+97229,sperm end piece
+5631,chitosan layer of spore wall
+1990716,axonemal central apparatus
+120206,photoreceptor distal connecting cilium
+1990900,ciliary pocket collar
+44322,endoplasmic reticulum quality control compartment
+35749,myelin sheath adaxonal region
+1650,fibrillar center
+90688,cleavage furrow rim
+9419,pilus tip
+9431,"bacterial-type flagellum basal body, MS ring"
+60110,basal layer of collagen and cuticulin-based cuticle extracellular matrix
+16328,lateral plasma membrane
+9549,cellulose microfibril
+97313,bacterial biofilm matrix surface
+30486,smooth muscle dense body
+1990717,axonemal central bridge
+35253,ciliary rootlet
+120205,photoreceptor proximal connecting cilium
+20016,ciliary pocket
+20038,subpellicular network
+43219,lateral loop
+120120,bilobe structure
+44099,polar tube
+5706,polytene chromosome ectopic fiber
+71944,cell periphery
+120220,basal body patch
+36457,keratohyalin granule
+1990876,cytoplasmic side of nuclear pore
+407,phagophore assembly site
+90651,apical cytoplasm
+120106,"mitotic actomyosin contractile ring, distal actin filament layer"
+106125,reservosome matrix
+97614,dinoflagellate hypocone
+90635,extracellular core region of desmosome
+32123,deep fiber
+1990225,rhoptry neck
+30315,T-tubule
+33150,cytoskeletal calyx
+10319,stromule
+1990031,pinceau fiber
+1990836,lysosomal matrix
+120212,sperm head-tail coupling apparatus
+1772,immunological synapse
+70971,endoplasmic reticulum exit site
+48222,glycoprotein network
+61835,ventral surface of cell
+20031,polar ring of apical complex
+60111,alae of collagen and cuticulin-based cuticle extracellular matrix
+60106,cortical layer of collagen and cuticulin-based cuticle extracellular matrix
+120105,"mitotic actomyosin contractile ring, intermediate layer"
+5702,polytene chromosome weak point
+1990875,nucleoplasmic side of nuclear pore
+90642,microsporidian-type exospore
+97567,right tetrad
+90543,Flemming body
+5632,inner layer of spore wall
+85036,extrahaustorial matrix
+1990783,periphagosomal region of cytoplasm
+90692,mitochondrial membrane scission site
+61908,phagophore
+1990038,Lewy body corona
+43668,exine
+31672,A band
+97038,perinuclear endoplasmic reticulum
+43218,compact myelin
+120134,proximal portion of axoneme
+97594,ventral disc dorsal microribbon
+1990805,central cylinder
+97596,ventral disc supernumerary microtubule array
+48224,lignin network
+70057,prospore membrane spindle pole body attachment site
+31912,oral apparatus
+97433,dense body
+61825,podosome core
+60105,epicuticle of collagen and cuticulin-based cuticle extracellular matrix
+140512,mitotic nuclear bridge midzone
+45178,basal part of cell
+70645,Ubisch body
+44327,dendritic spine head
+801,central element
+5933,cellular bud
+43159,acrosomal matrix
+97544,ciliary shaft
+9428,"bacterial-type flagellum basal body, distal rod, P ring"
+1990018,tail portion of tanycyte
+90725,peripheral region of growth cone
+44326,dendritic spine neck
+9504,cell plate
+60108,annular furrow extracellular matrix
+44290,mitochondrial intracristal space
+43194,axon initial segment
+44195,nucleoplasmic reticulum
+120307,Hechtian strand
+9542,granum
+30017,sarcomere
+943,retrotransposon nucleocapsid
+43592,exosporium
+60109,medial layer of collagen and cuticulin-based cuticle extracellular matrix
+30061,mitochondrial crista
+242,pericentriolar material
+97422,tubular endosome
+36117,hyaluranon cable
+5726,perichromatin fibrils
+97448,spine mat
+10287,plastoglobule
+43198,dendritic shaft
+32437,cuticular plate
+90658,cone matrix sheath
+150004,dendritic spine origin
+120260,ciliary microtubule quartet
+97542,ciliary tip
+106126,reservosome membrane
+97227,sperm annulus
+43675,sculpture element
+35183,female germline ring canal inner rim
+43220,Schmidt-Lanterman incisure
+34399,nuclear periphery
+802,transverse filament
+32178,medial membrane band
+12505,endomembrane system
+30018,Z disc
+33774,basal labyrinth
+1990794,basolateral part of cell
+97653,unencapsulated part of cell
+1917,photoreceptor inner segment
+97356,perinucleolar compartment
+32579,apical lamina of hyaline layer
+45169,fusome
+120044,stereocilium base
+71597,cellular birth scar
+97591,ventral disc lateral crest
+1990073,perforation plate
+90726,cortical dynamic polarity patch
+43034,costamere
+140599,mitotic nuclear bridge midzone membrane domain
+9546,plasmodesmatal cytoplasmic sleeve
+30478,actin cap
+9427,"bacterial-type flagellum basal body, distal rod, L ring"
+9541,etioplast prolamellar body
+48226,Casparian strip
+30496,midbody
+43265,ectoplasm
+1990037,Lewy body core
+43203,axon hillock
+43670,foot layer
+9433,"bacterial-type flagellum basal body, C ring"
+90652,basolateral cytoplasm
+90637,inner dense plaque of desmosome
+35686,sperm fibrous sheath
+48786,presynaptic active zone
+9574,preprophase band
+43669,ectexine
+34451,centriolar satellite
+35182,female germline ring canal outer rim
+43676,tectum
+120102,bacterial-type flagellum secretion apparatus
+97562,left lateral basal body pair
+43188,cell septum edging
+14801,longitudinal sarcoplasmic reticulum
+45177,apical part of cell
+61834,actin filament branch point
+110092,nucleus leading edge
+9418,pilus shaft
+106124,reservosome lumen
+9986,cell surface
+9930,longitudinal side of cell surface
+5930,axoneme
+97047,DNA replication termination region
+62201,actin wave
+70865,investment cone
+5712,chiasma
+20008,rhoptry
+43593,endospore coat
+36007,scintillon
+1990016,neck portion of tanycyte
+46691,intracellular canaliculus
+32433,filopodium tip
+20007,apical complex
+1990295,post-anaphase microtubule array
+31910,cytostome
+1990819,actin fusion focus
+97423,mitochondrion-associated adherens complex
+97226,sperm mitochondrial sheath
+97546,ciliary base
+61826,podosome ring
+30694,"bacterial-type flagellum basal body, rod"
+5652,nuclear lamina
+55120,striated muscle dense body
+42587,glycogen granule
+97593,ventral disc microtubule array
+120083,rough endoplasmic reticulum cisterna
+48225,suberin network
+31430,M band
+140510,mitotic nuclear bridge
+5630,dityrosine layer of spore wall
+71341,medial cortical node
+110071,cellularization cleavage furrow invagination front
+33172,gas vesicle shell
+90552,unicellular trichome apex
+31911,cytoproct
+90724,central region of growth cone
+70258,inner membrane pellicle complex
+33269,internode region of axon
+43204,perikaryon
+97228,sperm principal piece
+30875,rDNA protrusion
+71808,satellite fibril
+1990718,axonemal central pair projection
+44304,main axon
+44280,subplasmalemmal coating
+1652,granular component
+31592,centrosomal corona
+14705,C zone
+97592,ventral disc overlap zone
+70687,macropinocytic cup cytoskeleton
+99079,actin body
+32426,stereocilium tip
+97268,cytoophidium
+9524,phragmoplast
+9420,bacterial-type flagellum filament
+150034,distal axon
+42718,yolk granule
+120104,"mitotic actomyosin contractile ring, proximal layer"
+44224,juxtaparanode region of axon
+43673,sexine
+36477,somatodendritic compartment
+43209,myelin sheath
+9548,plasmodesmatal plasma membrane
+60417,yolk
+120107,bacterial-type flagellum rotor complex
+43671,endexine
+43674,columella
+120280,ciliary pro-basal body
+97563,left middle basal body pair
+43245,extraorganismal space
+9421,bacterial-type flagellum filament cap
+34992,microtubule organizing center attachment site
+62074,pollen aperture
+60104,surface coat of collagen and cuticulin-based cuticle extracellular matrix
+19037,viral assembly intermediate
+97565,right middle basal body pair
+43196,varicosity
+97543,ciliary inversin compartment
+97541,axonemal basal plate
+90405,unicellular trichome branch
+120100,bacterial-type flagellum motor
+30143,COPI-coated inter-Golgi transport vesicle
+30142,COPI-coated Golgi to ER transport vesicle
+31357,integral component of chloroplast inner membrane
+19824,P6 peroxisome
+19820,P2 peroxisome
+19823,P5 peroxisome
+19822,P4 peroxisome
+9514,glyoxysome
+20015,glycosome
+19821,P3 peroxisome
+19819,P1 peroxisome
+42580,mannosome
+31243,intrinsic component of external side of cell outer membrane
+1527,microfibril
+61836,intranuclear rod
+61800,fibronectin fibril
+71953,elastic fiber
+98643,banded collagen fibril
+98647,collagen beaded filament
+31900,chromoplast outer membrane
+36013,cyanelle outer membrane
+9707,chloroplast outer membrane
+36421,extrinsic component of external side of mycolate outer membrane
+120259,7SK snRNP
+5683,U7 snRNP
+99073,mitochondrion-derived vesicle
+97721,ciliary vesicle
+45009,chitosome
+120002,fusiform vesicle
+331,contractile vacuole
+20026,merozoite dense granule
+33117,esterosome
+43702,carotenoid vesicle
+33095,aleurone grain
+33675,pericanalicular vesicle
+44310,osmiophilic body
+97487,"multivesicular body, internal vesicle"
+62247,chloroplast vesicle
+44840,gut granule
+1990006,amorphous vesicle
+97547,synaptic vesicle protein transport vesicle
+1990257,piccolo-bassoon transport vesicle
+33107,Cvt vesicle
+97409,glial cytoplasmic inclusion
+97407,Bunina body
+97408,fibrillary inclusion
+97420,skein-like inclusion
+97416,Lewy body-like hyaline inclusion
+97417,nematosome
+16235,aggresome
+97419,Pick body
+97412,hyaline inclusion
+70088,PHA granule
+97418,neurofibrillary tangle
+34426,etioplast membrane
+5899,insulin receptor complex
+35354,Toll-like receptor 1-Toll-like receptor 2 protein complex
+42022,interleukin-12 receptor complex
+48179,activin receptor complex
+1990712,HFE-transferrin receptor complex
+5897,interleukin-9 receptor complex
+1990779,glycoprotein Ib-IX-V complex
+30526,granulocyte macrophage colony-stimulating factor receptor complex
+35631,CD40 receptor complex
+5895,interleukin-5 receptor complex
+30876,interleukin-20 receptor complex
+32002,interleukin-28 receptor complex
+5892,acetylcholine-gated channel complex
+38141,ERBB4-ERBB4 complex
+43384,pre-T cell receptor complex
+35355,Toll-like receptor 2-Toll-like receptor 6 protein complex
+38139,ERBB4-EGFR complex
+38197,type I interferon receptor complex
+45323,interleukin-1 receptor complex
+5900,oncostatin-M receptor complex
+72536,interleukin-23 receptor complex
+38142,EGFR:ERBB2 complex
+16516,interleukin-4 receptor complex
+5896,interleukin-6 receptor complex
+5898,interleukin-13 receptor complex
+5894,interleukin-3 receptor complex
+30988,high molecular weight kininogen receptor complex
+70110,ciliary neurotrophic factor receptor complex
+70724,BMP receptor complex
+38140,ERBB4-ERBB3 complex
+45092,interleukin-18 receptor complex
+38144,ERBB4:ERBB2 complex
+38143,ERBB3:ERBB2 complex
+70021,transforming growth factor beta ligand-receptor complex
+5893,interleukin-2 receptor complex
+71193,Kv4.2-KChIP2 channel complex
+71197,Kv4.2-Kv4.3 channel complex
+71192,Kv4.2-KChIP1 channel complex
+71198,Kv4.1-DPP6 channel complex
+71202,Kv4.3-DPP10 channel complex
+71196,Kv4.3-KChIP1 channel complex
+71199,Kv4.1-DPP10 channel complex
+71200,Kv4.2-DPP6 channel complex
+71195,Kv4.2-KChIP4 channel complex
+71194,Kv4.2-KChIP3 channel complex
+98855,HCN channel complex
+71201,Kv4.3-DPP6 channel complex
+71129,alphaV-beta3 integrin-LPP3 complex
+71093,alpha5-beta1 integrin-fibronectin-tissue transglutaminase complex
+48493,plasma membrane-derived thylakoid ribulose bisphosphate carboxylase complex
+97025,MPP7-DLG1-LIN7 complex
+70519,alpha4-beta1 integrin-CD63 complex
+19183,histamine-gated chloride channel complex
+71052,alpha9-beta1 integrin-ADAM1 complex
+71131,alphaV-beta3 integrin-laminin alpha-4 complex
+71094,alpha6-beta4 integrin-CD9 complex
+70450,interleukin4-interleukin-4 receptor complex
+71099,alphaV-beta6 integrin-TGFbeta-3 complex
+35867,alphav-beta3 integrin-IGF-1-IGF1R complex
+5890,sodium:potassium-exchanging ATPase complex
+16010,dystrophin-associated glycoprotein complex
+71101,alpha4-beta1 integrin-JAM2 complex
+34995,SC5b-7 complex
+71060,alpha7-beta1 integrin-CD151 complex
+71102,alpha4-beta1 integrin-paxillin complex
+71054,alpha9-beta1 integrin-ADAM3 complex
+16027,inaD signaling complex
+71078,fibronectin-tissue transglutaminase complex
+71067,alphav-beta3 integrin-ADAM23 complex
+70029,alphav-beta3 integrin-osteopontin complex
+5579,membrane attack complex
+71088,alpha5-beta1 integrin-tissue transglutaminase complex
+71117,alpha5-beta1 integrin-fibronectin-NOV complex
+16011,dystroglycan complex
+45278,plasma membrane respiratory chain complex IV
+71097,alphaV-beta3 integrin-paxillin-Pyk2 complex
+45262,"plasma membrane proton-transporting ATP synthase complex, catalytic core F(1)"
+71123,alpha9-beta1 integrin-VEGF-C complex
+70765,gamma-secretase complex
+2095,caveolar macromolecular signaling complex
+33181,plasma membrane proton-transporting V-type ATPase complex
+71138,alpha5-beta5-fibronectin-SFRP2 complex
+70464,alphav-beta3 integrin-collagen alpha3(VI) complex
+70718,alphaPDGFR-SHP-2 complex
+70031,alphav-beta5 integrin-osteopontin complex
+71084,alpha2-beta1 integrin-CD47 complex
+34662,CFTR-NHERF-ezrin complex
+5889,potassium:proton exchanging ATPase complex
+70030,alphav-beta1 integrin-osteopontin complex
+71124,alpha1-beta1 integrin-tyrosine-protein phosphatase non-receptor type 2 complex
+71133,alpha9-beta1 integrin-ADAM8 complex
+16342,catenin complex
+35868,alphav-beta3 integrin-HMGB1 complex
+70515,alphaIIb-beta3 integrin-talin complex
+70764,gamma-secretase-Delta1 complex
+71128,alpha5-beta1 integrin-osteopontin complex
+70014,sucrase-isomaltase complex
+70023,interleukin-12-interleukin-12 receptor complex
+1990207,EmrE multidrug transporter complex
+70465,alpha1-beta1 integrin-alpha3(VI) complex
+5922,connexin complex
+70334,alpha6-beta4 integrin-laminin 5 complex
+70357,alphav-beta3 integrin-CD47 complex
+70769,alphaIIb-beta3 integrin-CIB complex
+71113,alphaIIb-beta3 integrin-ICAM-4 complex
+9324,D-amino-acid dehydrogenase complex
+71057,alphav-beta3 integrin-ADAM15 complex
+9921,auxin efflux carrier complex
+45264,"plasma membrane proton-transporting ATP synthase complex, coupling factor F(o)"
+71122,alpha9-beta1 integrin-VEGF-A complex
+70333,alpha6-beta4 integrin-Shc-Grb2 complex
+71090,alphaIIb-beta3 integrin-fibronectin-tissue transglutaminase complex
+45268,"plasma membrane proton-transporting ATP synthase, catalytic core"
+71070,alpha4-beta1 integrin-thrombospondin-2 complex
+71083,alphaV-beta3 integrin-CD47-FCER2 complex
+33573,high-affinity iron permease complex
+70521,alpha4-beta1 integrin-CD82 complex
+1990270,platelet-derived growth factor receptor-ligand complex
+45272,plasma membrane respiratory chain complex I
+45266,"plasma membrane proton-transporting ATP synthase, stator stalk"
+71135,alpha7-beta1 integrin-focal adhesion kinase complex
+71092,alpha3-beta1 integrin-tissue transglutaminase complex
+71086,alphaIIb-beta3 integrin-CD9-CD47-platelet glycoprotein Ib complex
+30096,plasma membrane-derived thylakoid photosystem II
+43020,NADPH oxidase complex
+1518,voltage-gated sodium channel complex
+30094,plasma membrane-derived photosystem I
+70520,alpha4-beta1 integrin-CD81 complex
+71095,alpha3-beta1 integrin-thrombospondin complex
+71087,alpha11-beta1 integrin-collagen type I complex
+70618,Grb2-Sos complex
+70620,EGFR-Grb2-Sos complex
+34673,inhibin-betaglycan-ActRII complex
+8282,inward rectifying potassium channel
+71098,alpha6-beta4 integrin-Fyn complex
+71064,alphaE-beta7 integrin-E-cadherin complex
+71055,alpha9-beta1 integrin-ADAM9 complex
+45284,plasma membrane fumarate reductase complex
+71130,alpha5-beta1 integrin-LPP3 complex
+71100,alphaV-beta8 integrin-MMP14-TGFbeta-1 complex
+70719,alphaPDGFR-PLC-gamma-1-PI3K-SHP-2 complex
+71114,alphaV-beta3 integrin-tumstatin complex
+71096,alphaV-beta3 integrin-gelsolin complex
+1990176,MalFGK2 complex
+1990184,amino acid transport complex
+70558,alphaM-beta2 integrin-CD63 complex
+16012,sarcoglycan complex
+35866,alphav-beta3 integrin-PKCalpha complex
+5834,heterotrimeric G-protein complex
+30132,clathrin coat of coated pit
+71056,alpha9-beta1 integrin-ADAM15 complex
+71136,alpha7-beta1 integrin-laminin alpha-2 complex
+1990398,Cus cation efflux complex
+71065,alpha9-beta1 integrin-vascular cell adhesion molecule-1 complex
+71116,alpha6-beta1 integrin-CYR61 complex
+45260,plasma membrane proton-transporting ATP synthase complex
+70763,Delta1 complex
+62136,low-density lipoprotein receptor complex
+71091,alpha1-beta1 integrin-tissue transglutaminase complex
+70466,alpha2-beta1 integrin-alpha3(VI) complex
+70436,Grb2-EGFR complex
+70435,Shc-EGFR complex
+71137,alphaV-beta3 integrin-CD98 complex
+71121,alpha9-beta1 integrin-VEGF-D complex
+16014,dystrobrevin complex
+71068,alpha9-beta1 integrin-ADAM12 complex
+71134,alpha9-beta1 integrin-thrombospondin-1 complex
+97538,ciliary necklace
+71069,alpha4-beta1 integrin-thrombospondin-1 complex
+44799,NarGHI complex
+71061,alpha6-beta4 integrin-CD151 complex
+31913,contractile vacuole pore
+71126,alphaV-beta6 integrin-osteopontin complex
+71089,alphaV-beta3 integrin-tissue transglutaminase complex
+70017,alphav-beta3 integrin-thrombospondin complex
+45270,"plasma membrane proton-transporting ATP synthase, central stalk"
+71082,alpha9-beta1 integrin-tenascin complex
+70770,alphaIIb-beta3 integrin-CD47-FAK complex
+71080,alpha3-beta1 integrin-basigin complex
+16013,syntrophin complex
+16935,glycine-gated chloride channel complex
+1990392,EFF-1 complex
+45276,plasma membrane respiratory chain complex III
+71079,alpha2-beta1 integrin-chondroadherin complex
+70518,alpha4-beta1 integrin-CD53 complex
+71120,alpha4-beta1 integrin-CD47 complex
+71119,alpha7-beta1 integrin-nicotinamide riboside kinase complex
+71127,alpha9-beta1 integrin-osteopontin complex
+223,"plasma membrane proton-transporting V-type ATPase, V1 domain"
+33281,TAT protein transport complex
+34997,alphav-beta5 integrin-vitronectin complex
+71053,alpha9-beta1 integrin-ADAM2 complex
+30122,AP-2 adaptor complex
+71132,alphaX-beta2 integrin-ICAM-4 complex
+71118,alphaV-beta3 integrin-NOV complex
+44731,Ost-alpha/Ost-beta complex
+70771,alphaIIb-beta3 integrin-CD47-Src complex
+71058,alpha3-beta1 integrin-CD151 complex
+35003,subapical complex
+71059,alpha6-beta1 integrin-CD151 complex
+1990203,MdtBC Complex
+70720,Grb2-SHP-2 complex
+71085,alphaIIb-beta3 integrin-CD9 complex
+71115,alpha5-beta1 integrin-endostatin complex
+148,"1,3-beta-D-glucan synthase complex"
+222,"plasma membrane proton-transporting V-type ATPase, V0 domain"
+71112,alpha4-beta4 integrin-EMILIN-1 complex
+1990851,Wnt-Frizzled-LRP5/6 complex
+71081,alpha3-beta1 integrin-CD63 complex
+71125,alphaV-beta3 integrin-EGFR complex
+70621,EGFR-Shc-Grb2-Sos complex
+16600,flotillin complex
+45274,plasma membrane respiratory chain complex II
+70619,Shc-Grb2-Sos complex
+71062,alphav-beta3 integrin-vitronectin complex
+70024,CD19-Vav-PIK3R1 complex
+70437,Grb2-Shc complex
+30668,merozoite dense granule membrane
+33162,melanosome membrane
+33118,esterosome membrane
+120202,rod photoreceptor disc membrane
+32578,aleurone grain membrane
+33110,Cvt vesicle membrane
+106175,phagolysosome vesicle membrane
+30661,chitosome membrane
+90730,Las1 complex
+9365,protein histidine kinase complex
+99125,PAK family kinase-Sog2 complex
+110115,Cdr2 medial cortical node complex
+31588,nucleotide-activated protein kinase complex
+1990360,PKM2 protein kinase complex
+113,nucleotide-excision repair factor 4 complex
+110,nucleotide-excision repair factor 1 complex
+70522,ERCC4-ERCC1 complex
+70912,Ddb1-Ckn1 complex
+70913,Ddb1-Wdr21 complex
+71942,XPC complex
+112,nucleotide-excision repair factor 3 complex
+70312,RAD52-ERCC4-ERCC1 complex
+111,nucleotide-excision repair factor 2 complex
+5675,transcription factor TFIIH holo complex
+140552,TEAD-YAP complex
+32444,activin responsive factor complex
+97221,M/G1 phase-specific MADS box-forkhead transcription factor complex
+70514,SRF-myogenin-E12 complex
+36488,CHOP-C/EBP complex
+5674,transcription factor TFIIF complex
+30907,MBF transcription complex
+89716,Pip2-Oaf1 complex
+71943,Myc-Max complex
+5673,transcription factor TFIIE complex
+30232,insulin control element activator complex
+1990647,C/EBP complex
+71144,heteromeric SMAD protein complex
+16513,core-binding factor complex
+1990433,CSL-Notch-Mastermind transcription factor complex
+33309,SBF transcription complex
+99053,activating signal cointegrator 1 complex
+5672,transcription factor TFIIA complex
+70985,transcription factor TFIIK complex
+62071,Pi Mi complex
+1990617,CHOP-ATF4 complex
+70847,core mediator complex
+35189,Rb-E2F complex
+1990513,CLOCK-BMAL transcription complex
+1990590,ATF1-ATF4 transcription factor complex
+1990664,Nkx-2.5 complex
+33276,transcription factor TFTC complex
+34718,SMN-Gemin2 complex
+16602,CCAAT-binding factor complex
+1990378,upstream stimulatory factor complex
+1990589,ATF4-CREB1 transcription factor complex
+70721,ISGF3 complex
+62244,double membrane vesicle viral factory lumen
+44172,host cell endoplasmic reticulum-Golgi intermediate compartment
+44187,host cell lysosome
+44177,host cell Golgi apparatus
+72492,host cell mitochondrial intermembrane space
+20030,infected host cell surface knob
+44186,host cell lipid droplet
+44190,host cell mitochondrial envelope
+20003,symbiont-containing vacuole
+44220,host cell perinuclear region of cytoplasm
+120149,host cell peroxisome
+72493,host cell endosome lumen
+33650,host cell mitochondrion
+44164,host cell cytosol
+20036,Maurer's cleft
+44159,host thylakoid
+85026,tubovesicular membrane network
+44166,host cell endoplasmic reticulum lumen
+33282,protein C inhibitor-acrosin complex
+9654,photosystem II oxygen evolving complex
+1990604,IRE1-TRAF2-ASK1 complex
+71986,Ragulator complex
+106234,outer membrane protein complex
+97658,Asi complex
+30089,phycobilisome
+17090,meprin A complex
+71439,clathrin complex
+9783,photosystem II antenna complex
+813,ESCRT I complex
+34098,VCP-NPL4-UFD1 AAA ATPase complex
+46696,lipopolysaccharide receptor complex
+36502,Derlin-1-VIMP complex
+31205,endoplasmic reticulum Sec complex
+30906,"retromer, cargo-selective complex"
+9319,cytochrome o ubiquinol oxidase complex
+1990621,ESCRT IV complex
+61742,chaperone-mediated autophagy translocation complex
+1990862,nuclear membrane complex Bqt3-Bqt4
+10006,Toc complex
+106103,COPII vesicles tethering complex
+1990063,Bam protein complex
+43541,UDP-N-acetylglucosamine transferase complex
+9782,photosystem I antenna complex
+1990231,STING complex
+5785,signal recognition particle receptor complex
+62079,ATG2-ATG18 complex
+2180,5-lipoxygenase complex
+140622,ER-to-endosome phospholipid transfer complex
+815,ESCRT III complex
+36513,Derlin-1 retrotranslocation complex
+44570,starch utilization system complex
+32936,SREBP-SCAP complex
+9923,fatty acid elongase complex
+61779,Tapasin-ERp57 complex
+5787,signal peptidase complex
+9538,photosystem I reaction center
+42825,TAP complex
+44695,Dsc E3 ubiquitin ligase complex
+31897,Tic complex
+42765,GPI-anchor transamidase complex
+71595,Nem1-Spo7 phosphatase complex
+42824,MHC class I peptide loading complex
+30904,retromer complex
+31207,Sec62/Sec63 complex
+35369,pre-B cell receptor complex
+814,ESCRT II complex
+32969,endosomal scaffold complex
+34424,Vps55/Vps68 complex
+10278,chloroplast outer membrane translocon
+506,glycosylphosphatidylinositol-N-acetylglucosaminyltransferase (GPI-GnT) complex
+9539,photosystem II reaction center
+1990629,phospholamban complex
+30905,"retromer, tubulation complex"
+32937,SREBP-SCAP-Insig complex
+72546,EMC complex
+1990332,Ire1 complex
+1990850,H-gal-GP complex
+30095,chloroplast photosystem II
+44386,integral to host endoplasmic reticulum membrane
+97634,integral component of phagophore assembly site membrane
+140615,ATP-dependent citrate lyase complex
+32144,4-aminobutyrate transaminase complex
+34274,Atg12-Atg5-Atg16 complex
+1990302,Bre1-Rad6 ubiquitin ligase complex
+9349,riboflavin synthase complex
+5953,CAAX-protein geranylgeranyltransferase complex
+9382,imidazoleglycerol-phosphate synthase complex
+1990306,RSP5-BUL ubiquitin ligase complex
+1990303,UBR1-RAD6 ubiquitin ligase complex
+17122,protein N-acetylglucosaminyltransferase complex
+1990230,iron-sulfur cluster transfer complex
+44673,"7,8-didemethyl-8-hydroxy-5-deazariboflavin synthase complex"
+120097,glycosylphosphatidylinositol-mannosyltransferase II complex
+9333,cysteine synthase complex
+1990529,glycosylphosphatidylinositol-mannosyltransferase I complex
+1904423,dehydrodolichyl diphosphate synthase complex
+44674,methyl coenzyme M reductase complex
+1990304,MUB1-RAD6-UBR2 ubiquitin ligase complex
+9347,aspartate carbamoyltransferase complex
+5969,serine-pyruvate aminotransferase complex
+5948,acetolactate synthase complex
+5946,"alpha,alpha-trehalose-phosphate synthase complex (UDP-forming)"
+5836,fatty-acyl-CoA synthase complex
+5968,Rab-protein geranylgeranyltransferase complex
+70916,inositol phosphoceramide synthase complex
+48269,methionine adenosyltransferase complex
+1990305,RAD6-UBR2 ubiquitin ligase complex
+5965,protein farnesyltransferase complex
+9348,ornithine carbamoyltransferase complex
+44311,exoneme
+42735,protein body
+10168,ER body
+44227,methane-oxidizing organelle
+32047,mitosome
+5801,cis-Golgi network
+5793,endoplasmic reticulum-Golgi intermediate compartment
+20009,microneme
+44222,anammoxosome
+33099,attachment organelle
+1990462,omegasome
+20022,acidocalcisome
+70074,mononeme
+97693,ocelloid
+31094,platelet dense tubular network
+5739,mitochondrion
+61468,karyomere
+44223,pirellulosome
+33009,nucleomorph
+42566,hydrogenosome
+71212,subsynaptic reticulum
+5601,classical-complement-pathway C3/C5 convertase complex
+97059,CNTFR-CLCF1 complex
+90443,FAR/SIN/STRIPAK complex
+70864,sperm individualization complex
+1990499,raps-insc complex
+18444,translation release factor complex
+34748,Par3-APC-KIF3A complex
+44697,HICS complex
+31521,spitzenkorper
+33193,Lsd1/2 complex
+97537,Y-shaped link
+939,inner kinetochore
+43291,RAVE complex
+30082,B800-850 antenna complex
+1990957,NPHP complex
+97373,MCM core complex
+5602,complement component C1 complex
+97361,CIA complex
+36286,eisosome filament
+2929,MECO complex
+417,HIR complex
+5577,fibrinogen complex
+30993,axonemal heterotrimeric kinesin-II complex
+120269,ciliary centrin arm
+31511,Mis6-Sim4 complex
+1990923,PET complex
+71521,Cdc42 GTPase complex
+70441,G-protein beta/gamma-Btk complex
+30990,intraciliary transport particle
+110131,Aim21-Tda2 complex
+408,EKC/KEOPS complex
+19008,molybdopterin synthase complex
+1990630,IRE1-RACK1-PP2A complex
+1990788,GLI-SUFU complex
+34464,BBSome
+34973,Sid2-Mob1 complex
+5854,nascent polypeptide-associated complex
+70559,lysosomal multienzyme complex
+1990315,Mcs4 RR-MAPKKK complex
+2193,MAML1-RBP-Jkappa- ICN1 complex
+34044,exomer complex
+5831,steroid hormone aporeceptor complex
+1990356,sumoylated E2 ligase complex
+140224,SLAC complex
+120171,Cdc24p-Far1p-Gbetagamma complex
+31389,Rad17 RFC-like complex
+98046,type V protein secretion system complex
+97076,transforming growth factor beta activated kinase 1 complex
+70744,interleukin-27 complex
+98654,CENP-A recruiting complex
+1990728,mitotic spindle assembly checkpoint MAD1-MAD2 complex
+1990964,actin cytoskeleton-regulatory complex
+36038,MKS complex
+34744,APC-IQGAP1-Cdc42 complex
+62073,histone mRNA stem-loop binding complex
+1536,radial spoke stalk
+31390,Ctf18 RFC-like complex
+1990509,PYM-mago-Y14 complex
+106002,mCRD-mediated mRNA stability complex
+1990665,AnxA2-p11 complex
+8074,"guanylate cyclase complex, soluble"
+2199,zona pellucida receptor complex
+31422,RecQ family helicase-topoisomerase III complex
+70745,interleukin-35 complex
+61576,acyl-CoA ceramide synthase complex
+61703,pyroptosome complex
+5862,muscle thin filament tropomyosin
+35693,NOS2-CD74 complex
+33551,monopolin complex
+33596,TSC1-TSC2 complex
+98820,trans-synaptic protein complex
+5835,fatty acid synthase complex
+1990393,3M complex
+10316,pyrophosphate-dependent phosphofructokinase complex
+31395,bursicon neuropeptide hormone complex
+97347,TAM protein secretion complex
+1990526,Ste12p-Dig1p-Dig2p complex
+62092,Yae1-Lto1 complex
+1990062,RPAP3/R2TP/prefoldin-like complex
+1990871,Vma12-Vma22 assembly complex
+17102,methionyl glutamyl tRNA synthetase complex
+8537,proteasome activator complex
+1990661,S100A8 complex
+17101,aminoacyl-tRNA synthetase multienzyme complex
+30877,beta-catenin destruction complex
+1990666,PCSK9-LDLR complex
+34996,RasGAP-Fyn-Lyn-Yes complex
+43850,RecFOR complex
+97710,"viral terminase, small subunit"
+5931,axonemal nexin link
+44816,Nsk1-Dlc1 complex
+1990100,DnaB-DnaC complex
+61838,CENP-T-W-S-X complex
+70332,CD20-Lck-Lyn-Fyn complex
+2133,polycystin complex
+62048,lymphotoxin complex
+1905742,Ras guanyl-nucleotide exchange factor complex
+97149,centralspindlin complex
+61700,GATOR2 complex
+1990909,Wnt signalosome
+2167,VRK3/VHR/ERK complex
+1990682,CSF1-CSF1R complex
+1990533,Dom34-Hbs1 complex
+38045,large latent transforming growth factor-beta complex
+70743,interleukin-23 complex
+35649,Nrd1 complex
+1990125,DiaA complex
+30256,type I protein secretion system complex
+1990527,Tec1p-Ste12p-Dig1p complex
+33186,CAF-1 complex
+71075,CUGBP1-eIF2 complex
+120124,membrane fusion priming complex
+1990528,Rvs161p-Rvs167p complex
+2096,polkadots
+1990131,Gtr1-Gtr2 GTPase complex
+9344,nitrite reductase complex [NAD(P)H]
+1990065,Dxr protein complex
+106093,EDS1 disease-resistance complex
+31617,NMS complex
+120099,procentriole replication complex
+99126,transforming growth factor beta complex
+22624,proteasome accessory complex
+35859,Seh1-associated complex
+1990861,Ubp3-Bre5 deubiquitination complex
+31209,SCAR complex
+70422,G-protein beta/gamma-Raf-1 complex
+19036,viral transcriptional complex
+97255,R2TP complex
+110078,TTT complex
+1990130,GATOR1 complex
+1990298,bub1-bub3 complex
+110142,ubiquinone biosynthesis complex
+30081,B800-820 antenna complex
+89713,Cbf1-Met4-Met28 complex
+46806,viral scaffold
+10317,"pyrophosphate-dependent phosphofructokinase complex, alpha-subunit complex"
+940,outer kinetochore
+1990143,CoA-synthesizing protein complex
+97619,PTEX complex
+70331,CD20-Lck-Fyn complex
+70214,CSK-GAP-A.p62 complex
+70937,CRD-mediated mRNA stability complex
+120228,outer dynein arm docking complex
+1990597,AIP1-IRE1 complex
+10318,"pyrophosphate-dependent phosphofructokinase complex, beta-subunit complex"
+1903269,ornithine carbamoyltransferase inhibitor complex
+5616,larval serum protein complex
+34743,APC-IQGAP complex
+15627,type II protein secretion system complex
+34750,Scrib-APC-beta-catenin complex
+33104,type VI protein secretion system complex
+30080,B875 antenna complex
+97058,CRLF-CLCF1 complex
+36398,TCR signalosome
+106333,subcortical maternal complex
+43514,interleukin-12 complex
+44677,methyl-tetrahydromethanopterin:coenzyme M methyltransferase complex
+44777,single-stranded DNA-binding protein complex
+71563,Myo2p-Vac17p-Vac8p transport complex
+30257,type III protein secretion system complex
+44676,formyl-methanofuran dehydrogenase (molybdenum enzyme) complex
+19197,phosphoenolpyruvate-dependent sugar phosphotransferase complex
+140007,KICSTOR complex
+1535,radial spoke head
+97495,H-NS-Hha complex
+31680,G-protein beta/gamma-subunit complex
+110157,reelin complex
+19035,viral integration complex
+1990423,RZZ complex
+32766,NHE3/E3KARP/ACTN4 complex
+1990811,MWP complex
+30314,junctional membrane complex
+97452,GAIT complex
+98561,methyl accepting chemotaxis protein complex
+1990706,MAD1 complex
+31518,CBF3 complex
+1990730,VCP-NSFL1C complex
+1990112,RQC complex
+62049,protein phosphatase inhibitor complex
+32449,CBM complex
+43684,type IV secretion system complex
+46798,viral portal complex
+97057,TRAF2-GSTP1 complex
+99078,BORC complex
+55087,Ski complex
+1990727,tubulin folding cofactor complex
+5885,Arp2/3 protein complex
+140451,counting factor complex
+120103,centriolar subdistal appendage
+61957,NVT complex
+1990696,USH2 complex
+36501,UFD1-NPL4 complex
+44672,acetyl-CoA decarbonylase/synthase-carbon monoxide dehydrogenase complex
+1990660,calprotectin complex
+36375,Kibra-Ex-Mer complex
+106003,amyloid-beta complex
+1990463,lateral cortical node
+44675,formyl-methanofuran dehydrogenase (tungsten enzyme) complex
+1990341,thrombospondin complex
+1990667,PCSK9-AnxA2 complex
+45298,tubulin complex
+1990733,titin-telethonin complex
+61927,TOC-TIC supercomplex I
+97078,FAL1-SGD1 complex
+5851,eukaryotic translation initiation factor 2B complex
+30992,intraciliary transport particle B
+97539,ciliary transition fiber
+34741,APC-tubulin-IQGAP1 complex
+31838,haptoglobin-hemoglobin complex
+31262,Ndc80 complex
+71817,MMXD complex
+106249,Nicalin-NOMO complex
+34746,APC-IQGAP1-CLIP-170 complex
+61574,ASAP complex
+43293,apoptosome
+62167,complement component C1q complex
+39658,TBK1-IKKE-DDX3 complex
+5850,eukaryotic translation initiation factor 2 complex
+34745,APC-IQGAP1-Rac1 complex
+30015,CCR4-NOT core complex
+31251,PAN complex
+43493,viral terminase complex
+31941,filamentous actin
+2144,cytosolic tRNA wobble base thiouridylase complex
+1990615,Kelch-containing formin regulatory complex
+34749,Scrib-APC complex
+1990346,BID-BCL-xl complex
+140225,DNA topoisomerase III-beta-TDRD3 complex
+71203,WASH complex
+8091,spectrin
+120216,matrilin complex
+1990200,SsuD-SsuE complex
+120155,MIH complex
+1990622,CHOP-ATF3 complex
+97344,Rix1 complex
+30991,intraciliary transport particle A
+2142,stereocilia ankle link complex
+17086,3-methyl-2-oxobutanoate dehydrogenase (lipoamide) complex
+31522,cell envelope Sec protein transport complex
+974,Prp19 complex
+35658,Mon1-Ccz1 complex
+16272,prefoldin complex
+1990252,Syp1 complex
+70826,paraferritin complex
+16281,eukaryotic translation initiation factor 4F complex
+5833,hemoglobin complex
+1534,radial spoke
+31250,anaerobic ribonucleoside-triphosphate reductase complex
+22623,proteasome-activating nucleotidase complex
+32311,angiogenin-PRI complex
+34270,Cvt complex
+5853,eukaryotic translation elongation factor 1 complex
+38059,IKKalpha-IKKalpha complex
+1990745,EARP complex
+70695,FHF complex
+33588,elongator holoenzyme complex
+120123,ubiquitin activating enzyme complex
+71152,G-protein alpha(q)-synembrin complex
+5954,calcium- and calmodulin-dependent protein kinase complex
+5846,nuclear cap binding complex
+34716,Gemin3-Gemin4-Gemin5 complex
+35301,Hedgehog signaling complex
+32517,SOD1-calcineurin complex
+31421,invertasome
+131,incipient cellular bud site
+30014,CCR4-NOT complex
+34977,ABIN2-NFKB1-MAP3K8 complex
+5956,protein kinase CK2 complex
+71154,G-protein alpha(i)1-synembrin complex
+9350,ethanolamine ammonia-lyase complex
+9366,enterobactin synthetase complex
+72669,tRNA-splicing ligase complex
+9375,ferredoxin hydrogenase complex
+9338,exodeoxyribonuclease V complex
+44609,DBIRD complex
+34657,GID complex
+8043,intracellular ferritin complex
+34615,GCH1 complex
+33593,BRCA2-MAGE-D1 complex
+70850,TACC/TOG complex
+32299,ribonuclease H2 complex
+71155,G-protein alpha(13)-synembrin complex
+9356,aminodeoxychorismate synthase complex
+52718,tRNA-specific adenosine-34 deaminase complex
+5952,cAMP-dependent protein kinase complex
+10170,glucose-1-phosphate adenylyltransferase complex
+9327,NAD(P)+ transhydrogenase complex (AB-specific)
+5845,mRNA cap binding complex
+9337,sulfite reductase complex (NADPH)
+31431,Dbf4-dependent protein kinase complex
+33607,SOD1-Bcl-2 complex
+9318,exodeoxyribonuclease VII complex
+1990328,RPB4-RPB7 complex
+71153,G-protein alpha(o)-synembrin complex
+30956,glutamyl-tRNA(Gln) amidotransferase complex
+34717,Gemin6-Gemin7-unrip complex
+32996,Bcl3-Bcl10 complex
+8231,repressor ecdysone receptor complex
+8232,activator ecdysone receptor complex
+98944,postsynaptic recycling endosome membrane
+98896,postsynaptic early endosome membrane
+71797,LUBAC complex
+1990353,Fused-Smurf ubiquitin ligase complex
+97505,Rad6-Rad18 complex
+1990352,BRE1 E3 ubiquitin ligase complex
+33503,HULC complex
+1990452,Parkin-FBXW7-Cul1 ubiquitin ligase complex
+97589,archaeal-type flagellum
+45320,chloroplast proton-transporting ATP synthase complex
+33174,"chloroplast proton-transporting ATP synthase complex, catalytic core CF(1)"
+30085,"PSII associated light-harvesting complex II, peripheral complex, LHCIIb subcomplex"
+9656,"PSII associated light-harvesting complex II, peripheral complex"
+33175,"chloroplast proton-transporting ATP synthase complex, coupling factor CF(o)"
+30093,chloroplast photosystem I
+9544,chloroplast ATP synthase complex
+9655,"PSII associated light-harvesting complex II, core complex"
+34777,recycling endosome lumen
+36021,endolysosome lumen
+31905,early endosome lumen
+324,fungal-type vacuole
+327,lytic vacuole within protein storage vacuole
+10282,senescence-associated vacuole
+106123,reservosome
+31475,myosin V complex
+31480,myosin X complex
+31476,myosin VI complex
+31483,myosin XIII complex
+31486,myosin XVI complex
+31477,myosin VII complex
+31481,myosin XI complex
+31478,myosin VIII complex
+31479,myosin IX complex
+31487,myosin XVII complex
+31488,myosin XVIII complex
+45160,myosin I complex
+31474,myosin IV complex
+31485,myosin XV complex
+31484,myosin XIV complex
+42385,myosin III complex
+31482,myosin XII complex
+32585,multivesicular body membrane
+43626,PCNA complex
+44775,"DNA polymerase III, beta sliding clamp processivity factor complex"
+35842,old cell tip after activation of bipolar cell growth
+1990148,glutamate dehydrogenase complex
+1902560,GMP reductase complex
+5960,glycine cleavage complex
+1902515,thioredoxin-disulfide reductase complex
+9321,alkyl hydroperoxide reductase complex
+44678,CoB-CoM heterodisulfide reductase complex
+9331,glycerol-3-phosphate dehydrogenase complex
+62077,"phenylacetyl-CoA 1,2-epoxidase complex"
+9334,3-phenylpropionate dioxygenase complex
+1904852,trimethylamine-N-oxide reductase (cytochrome c) complex
+32921,sarcosine oxidase complex
+9339,glycolate oxidase complex
+1990202,FMN reductase complex
+9390,dimethyl sulfoxide reductase complex
+1902792,pyrroline-5-carboxylate reductase complex
+9326,formate dehydrogenase complex
+1990205,taurine dioxygenase complex
+30700,glycine reductase complex
+62151,catalase complex
+30386,ferredoxin-thioredoxin reductase complex
+9322,trimethylamine-N-oxide reductase complex
+15050,methane monooxygenase complex
+5971,ribonucleoside-diphosphate reductase complex
+1902693,superoxide dismutase complex
+1990201,alkanesulfonate monooxygenase complex
+2197,xanthine dehydrogenase complex
+44679,methanophenazine reducing hydrogenase complex
+97454,Schwann cell microvillus
+97456,terminal loop
+97455,spiny bracelet of Nageotte
+97387,capitate projection
+70693,P-TEFb-cap methyltransferase complex
+44613,nuclear pore central transport channel
+32039,integrator complex
+31604,"nuclear proteasome core complex, alpha-subunit complex"
+70531,BRCA1-A complex
+1990333,"mitotic checkpoint complex, CDC20-MAD2 subcomplex"
+1990713,survivin complex
+33066,Rad51B-Rad51C complex
+16592,mediator complex
+34978,PDX1-PBX1b-MRG1 complex
+44612,nuclear pore linkers
+42272,nuclear RNA export factor complex
+35808,meiotic recombination initiation complex
+33203,DNA helicase A complex
+106069,synapsis initiation complex
+31298,replication fork protection complex
+31601,nuclear proteasome core complex
+33597,mitotic checkpoint complex
+5664,nuclear origin of replication recognition complex
+32545,CURI complex
+70557,PCNA-p21 complex
+34692,E.F.G complex
+34981,FHL3-CREB complex
+34457,Mpp10 complex
+71819,DUBm complex
+71176,MAML2-RBP-Jkappa-ICN2 complex
+43240,Fanconi anaemia nuclear complex
+30958,RITS complex
+31533,mRNA cap methyltransferase complex
+31523,Myb complex
+31607,"nuclear proteasome core complex, beta-subunit complex"
+5662,DNA replication factor A complex
+70274,RES complex
+62119,LinE complex
+33620,Mei2 nuclear dot complex
+71180,MAML3-RBP-Jkappa-ICN2 complex
+70552,BRISC complex
+70353,GATA1-TAL1-TCF3-Lmo2 complex
+31610,"nuclear proteasome regulatory particle, base subcomplex"
+44615,nuclear pore nuclear basket
+34388,Pwp2p-containing subcomplex of 90S preribosome
+34455,t-UTP complex
+90572,RNA polymerase III transcription repressor complex
+33062,Rhp55-Rhp57 complex
+5643,nuclear pore
+32798,Swi5-Sfr1 complex
+1990354,activated SUMO-E1 ligase complex
+70517,DNA replication factor C core complex
+1990477,MTREC complex
+1990453,nucleosome disassembly/reassembly complex
+71178,MAML2-RBP-Jkappa-ICN4 complex
+30895,apolipoprotein B mRNA editing enzyme complex
+70310,ATR-ATRIP complex
+70467,RC-1 DNA recombination complex
+8180,COP9 signalosome
+34064,Tor2-Mei2-Ste11 complex
+70876,SOSS complex
+90573,RNA polymerase IV transcription repressor complex
+48189,Lid2 complex
+71182,MAML3-RBP-Jkappa-ICN4 complex
+33167,ARC complex
+30896,checkpoint clamp complex
+34974,Swi5-Swi2 complex
+5958,DNA-dependent protein kinase-DNA ligase 4 complex
+72589,box H/ACA scaRNP complex
+346,transcription export complex
+44614,nuclear pore cytoplasmic filaments
+31429,box H/ACA snoRNP complex
+43564,Ku70:Ku80 complex
+33557,Slx1-Slx4 complex
+70390,transcription export complex 2
+1990469,Rhino-Deadlock-Cutoff Complex
+817,COMA complex
+62238,Smp focus
+31598,nuclear proteasome regulatory particle
+70354,GATA2-TAL1-TCF3-Lmo2 complex
+32302,MutSbeta complex
+31595,nuclear proteasome complex
+70767,BRCA1-Rad51 complex
+32807,DNA ligase IV complex
+90661,box H/ACA telomerase RNP complex
+1990512,Cry-Per complex
+818,nuclear MIS12/MIND complex
+70533,BRCA1-C complex
+42729,DASH complex
+31613,"nuclear proteasome regulatory particle, lid subcomplex"
+62141,nuclear exosome targeting complex
+30685,nucleolar preribosome
+71177,MAML2-RBP-Jkappa-ICN3 complex
+70877,microprocessor complex
+43625,delta DNA polymerase complex
+70545,PeBoW complex
+34980,FHL2-CREB complex
+32390,MutLbeta complex
+31499,TRAMP complex
+89701,U2AF complex
+2111,BRCA2-BRAF35 complex
+34456,UTP-C complex
+71181,MAML3-RBP-Jkappa-ICN3 complex
+110103,RNA polymerase II termination complex
+44776,"DNA polymerase III, core complex"
+34753,nuclear aryl hydrocarbon receptor complex
+32389,MutLalpha complex
+70532,BRCA1-B complex
+43845,"DNA polymerase III, proofreading complex"
+90570,RNA polymerase I transcription repressor complex
+31380,nuclear RNA-directed RNA polymerase complex
+70418,DNA-dependent protein kinase complex
+31510,SUMO activating enzyme complex
+33064,XRCC2-RAD51D complex
+70516,CAK-ERCC2 complex
+35059,RCAF complex
+90574,RNA polymerase V transcription repressor complex
+70421,DNA ligase III-XRCC1 complex
+33063,Rad51B-Rad51C-Rad51D-XRCC2 complex
+214,tRNA-intron endonuclease complex
+30870,Mre11 complex
+5655,nucleolar ribonuclease P complex
+70313,RGS6-DNMT1-DMAP1 complex
+32301,MutSalpha complex
+70762,nuclear pore transmembrane ring
+43846,"DNA polymerase III, clamp loader complex"
+31080,nuclear pore outer ring
+70209,ASTRA complex
+43847,"DNA polymerase III, clamp loader chi/psi subcomplex"
+62128,MutSgamma complex
+5656,nuclear pre-replicative complex
+71179,MAML3-RBP-Jkappa-ICN1 complex
+33065,Rad51C-XRCC3 complex
+43599,nuclear DNA replication factor C complex
+44611,nuclear pore inner ring
+71821,FANCM-MHF complex
+71175,MAML2-RBP-Jkappa-ICN1 complex
+43601,nuclear replisome
+71204,histone pre-mRNA 3'end processing complex
+8622,epsilon DNA polymerase complex
+34400,gerontoplast
+62116,phenyloplast
+9501,amyloplast
+20011,apicoplast
+9842,cyanelle
+9509,chromoplast
+9537,proplastid
+9513,etioplast
+9507,chloroplast
+39623,T=25 icosahedral viral capsid
+39628,T=169 icosahedral viral capsid
+39618,T=pseudo3 icosahedral viral capsid
+39627,T=147 icosahedral capsid
+39617,T=3 icosahedral viral capsid
+39615,T=1 icosahedral viral capsid
+39619,T=4 icosahedral viral capsid
+39621,T=13 icosahedral viral capsid
+39629,T=219 icosahedral capsid
+39622,T=16 icosahedral viral capsid
+39620,T=7 icosahedral viral capsid
+39616,T=2 icosahedral viral capsid
+9328,phenylalanine-tRNA ligase complex
+71513,phosphopantothenoylcysteine decarboxylase complex
+9345,glycine-tRNA ligase complex
+97342,ripoptosome
+10007,magnesium chelatase complex
+9316,3-isopropylmalate dehydratase complex
+1904176,carbon phosphorus lyase complex
+1902508,2-iminoacetate synthase complex
+44569,[Ni-Fe] hydrogenase complex
+9320,phosphoribosylaminoimidazole carboxylase complex
+1990358,xylanosome
+1905379,beta-N-acetylhexosaminidase complex
+5966,cyclic-nucleotide phosphodiesterase complex
+15,phosphopyruvate hydratase complex
+98009,"viral terminase, large subunit"
+106055,"mannosyl-oligosaccharide 1,2-alpha-mannosidase complex"
+1990710,MutS complex
+172,ribonuclease MRP complex
+44681,sulfopyruvate decarboxylase complex
+106232,hydroxyisourate hydrolase complex
+36087,glutathione synthase complex
+10169,thioglucosidase complex
+5951,carbamoyl-phosphate synthase complex
+1904974,heparanase complex
+35550,urease complex
+9341,beta-galactosidase complex
+9332,glutamate-tRNA ligase complex
+1903600,glutaminase complex
+9346,ATP-independent citrate lyase complex
+31391,Elg1 RFC-like complex
+1902793,glutamate decarboxylase complex
+17109,glutamate-cysteine ligase complex
+8247,1-alkyl-2-acetylglycerophosphocholine esterase complex
+5950,anthranilate synthase complex
+98572,stromal side of plastid thylakoid membrane
+98569,internal side of mycolate outer membrane
+31241,periplasmic side of cell outer membrane
+98571,lumenal side of plastid thylakoid membrane
+98570,stromal side of plastid inner membrane
+30678,mitochondrial ribonuclease P complex
+45025,mitochondrial degradosome
+9841,mitochondrial endopeptidase Clp complex
+99128,mitochondrial iron-sulfur cluster assembly complex
+5763,mitochondrial small ribosomal subunit
+61671,Cbp3p-Cbp6 complex
+5967,mitochondrial pyruvate dehydrogenase complex
+2169,"3-methylcrotonyl-CoA carboxylase complex, mitochondrial"
+31019,mitochondrial mRNA editing complex
+17087,mitochondrial processing peptidase complex
+5757,mitochondrial permeability transition pore complex
+34245,mitochondrial DNA-directed RNA polymerase complex
+2187,mitochondrial creatine kinase complex
+43294,mitochondrial glutamate synthase complex (NADH)
+5760,gamma DNA polymerase complex
+16507,mitochondrial fatty acid beta-oxidation multienzyme complex
+42719,mitochondrial intermembrane space protein transporter complex
+5762,mitochondrial large ribosomal subunit
+34985,Ecsit-NDUFAF1 complex
+17133,mitochondrial electron transfer flavoprotein complex
+106098,NAGS/NAGK complex
+19910,mitochondrial pyruvate dehydrogenase (lipoamide) phosphatase complex
+97014,ciliary plasm
+106143,tRNA (m7G46) methyltransferase complex
+31515,tRNA (m1A) methyltransferase complex
+43528,tRNA (m2G10) methyltransferase complex
+46612,"lysosomal proton-transporting V-type ATPase, V1 domain"
+71556,integral component of lumenal side of endoplasmic reticulum membrane
+71458,integral component of cytoplasmic side of endoplasmic reticulum membrane
+62051,lipopolysaccharide transport system
+1902556,phosphatidylinositol transporter complex
+31317,tripartite ATP-independent periplasmic transporter complex
+61852,"retrograte transporter complex, Golgi to ER"
+1990429,peroxisomal importomer complex
+1990350,glucose transporter complex
+1990413,eyespot apparatus
+70056,prospore membrane leading edge
+140221,pathogen-containing vacuole membrane
+110146,magnetosome membrane
+36362,ascus membrane
+5628,prospore membrane
+48475,coated membrane
+140549,spore inner membrane
+42175,nuclear outer membrane-endoplasmic reticulum membrane network
+34045,phagophore assembly site membrane
+5642,annulate lamellae
+99037,anchored component of presynaptic endosome membrane
+99036,anchored component of neuronal dense core vesicle membrane
+99035,anchored component of spine apparatus membrane
+98993,anchored component of synaptic vesicle membrane
+70114,organellar chromatophore outer membrane
+70118,organellar chromatophore thylakoid membrane
+70113,organellar chromatophore inner membrane
+5872,minus-end kinesin complex
+16938,kinesin I complex
+16939,kinesin II complex
+5873,plus-end kinesin complex
+31359,integral component of chloroplast outer membrane
+42585,germinal vesicle
+1990389,CUE1-UBC7 ubiquitin-conjugating enzyme complex
+35370,UBC13-UEV1A complex
+31372,UBC13-MMS2 complex
+5609,laminin-4 complex
+61801,laminin-5B complex
+5606,laminin-1 complex
+5611,laminin-6 complex
+5608,laminin-3 complex
+1990340,laminin-15 complex
+5610,laminin-5 complex
+1990338,laminin-14 complex
+1990339,laminin-522 complex
+43257,laminin-8 complex
+43260,laminin-11 complex
+43258,laminin-9 complex
+43261,laminin-12 complex
+5612,laminin-7 complex
+5607,laminin-2 complex
+43259,laminin-10 complex
+43594,outer endospore membrane
+30084,"PSI associated light-harvesting complex I, LHCIb subcomplex"
+30083,"PSI associated light-harvesting complex I, LHCIa subcomplex"
+97520,"nucleotide-excision repair, preincision complex"
+1990177,IHF-DNA complex
+1990178,HU-DNA complex
+97522,protein-DNA ISRE complex
+44834,retroviral intasome
+1990097,SeqA-DNA complex
+70565,telomere-telomerase complex
+34206,enhanceosome
+97519,DNA recombinase complex
+97550,transcription preinitiation complex
+97513,myosin II filament
+5863,striated muscle myosin thick filament
+2947,tumor necrosis factor receptor superfamily complex
+140368,decoy receptor complex
+1905543,interleukin-15 receptor complex
+1905540,interleukin-7 receptor complex
+1905571,interleukin-10 receptor complex
+70195,growth hormone receptor complex
+38104,nodal receptor complex
+2116,semaphorin receptor complex
+1990620,ANPR-A receptor complex
+35692,macrophage migration inhibitory factor receptor complex
+33096,amyloplast envelope
+9941,chloroplast envelope
+33112,cyanelle envelope
+31898,chromoplast envelope
+34425,etioplast envelope
+36391,medial cortex septin ring
+32172,germ tube septin ring
+32168,hyphal septin ring
+144,cellular bud neck septin ring
+32175,mating projection septin ring
+32169,prospore septin ring
+32170,pseudohyphal septin ring
+46540,U4/U6 x U5 tri-snRNP complex
+71009,U4atac/U6atac x U5 tri-snRNP complex
+98685,Schaffer collateral - CA1 synapse
+98690,glycinergic synapse
+140240,perforant pathway to dendrate granule cell synapse
+98692,noradrenergic synapse
+98691,dopaminergic synapse
+99192,cerebellar Golgi cell to granule cell synapse
+99154,serotonergic synapse
+98979,polyadic synapse
+97471,mossy fiber rosette
+106033,spine synapse
+5802,trans-Golgi network
+5795,Golgi stack
+9360,DNA polymerase III complex
+16035,zeta DNA polymerase complex
+9355,DNA polymerase V complex
+5658,alpha DNA polymerase:primase complex
+98753,anchored component of the cytoplasmic side of the plasma membrane
+31362,anchored component of external side of plasma membrane
+55036,virion membrane
+19033,viral tegument
+98024,"virus tail, fiber"
+98031,"icosahedral viral capsid, collar"
+98025,"virus tail, baseplate"
+98026,"virus tail, tube"
+98028,"virus tail, shaft"
+39625,viral inner capsid
+46729,viral procapsid
+98061,"viral capsid, internal space"
+98027,"virus tail, sheath"
+19013,viral nucleocapsid
+98029,"icosahedral viral capsid, spike"
+98023,"virus tail, tip"
+39642,virion nucleoid
+39624,viral outer capsid
+39626,viral intermediate capsid
+98030,"icosahedral viral capsid, neck"
+98015,virus tail
+44383,host chromosome
+110001,toxin-antitoxin complex
+36411,H-NS-Cnu complex
+31633,xanthophore
+30868,smooth endoplasmic reticulum membrane
+31095,platelet dense tubular network membrane
+1903349,omegasome membrane
+46859,hydrogenosomal membrane
+33106,cis-Golgi network membrane
+33116,endoplasmic reticulum-Golgi intermediate compartment membrane
+33163,microneme membrane
+98897,spine apparatus membrane
+33111,attachment organelle membrane
+97488,"multivesicular body, internal vesicle membrane"
+33102,acidocalcisome membrane
+30867,rough endoplasmic reticulum membrane
+1990024,C bouton
+61175,type II terminal bouton
+97467,type III terminal bouton
+1990025,F bouton
+1990795,rod bipolar cell terminal bouton
+1990026,hippocampal mossy fiber expansion
+1990796,photoreceptor cell terminal bouton
+1990027,S bouton
+32999,Fc-alpha receptor I complex
+33000,Fc-gamma receptor I complex
+32998,Fc-epsilon receptor I complex
+33001,Fc-gamma receptor III complex
+71546,pi-body
+71547,piP-body
+809,cytoplasmic origin of replication recognition complex
+98830,presynaptic endosome
+97443,sorting endosome
+36019,endolysosome
+326,protein storage vacuole
+10240,plastid pyruvate dehydrogenase complex
+45250,cytosolic pyruvate dehydrogenase complex
+34664,Ig heavy chain-bound endoplasmic reticulum chaperone complex
+1990425,ryanodine receptor complex
+34663,endoplasmic reticulum chaperone complex
+70385,egasyn-beta-glucuronidase complex
+32865,ERMES complex
+17177,glucosidase II complex
+70939,Dsl1/NZR complex
+34099,luminal surveillance complex
+43529,GET complex
+98522,neuromuscular junction of skeletal muscle fiber
+44230,host cell envelope
+43664,host peribacteroid membrane
+20004,symbiont-containing vacuolar space
+44221,host cell synapse
+43656,host intracellular region
+44229,host cell periplasmic space
+44228,host cell surface
+140593,host apoplast
+43665,host peribacteroid fluid
+44158,host cell wall
+20005,symbiont-containing vacuole membrane
+44084,host cell membrane pore complex
+44538,host cell periphery
+20006,symbiont-containing vacuolar membrane network
+44231,host cell presynaptic membrane
+44155,host caveola
+35792,host cell postsynaptic membrane
+30140,trans-Golgi network transport vesicle
+98894,extrinsic component of presynaptic endocytic zone membrane
+98891,extrinsic component of presynaptic active zone membrane
+30937,collagen type XVII trimer
+90733,tenascin complex
+1990971,EMILIN complex
+1990972,multimerin complex
+34592,synaptic vesicle lumen
+106172,COPI-coated vesicle lumen
+31979,plasma membrane-derived thylakoid lumen
+106173,COPII-coated vesicle lumen
+70931,Golgi-associated vesicle lumen
+106174,phagolysosome vesicle lumen
+34422,aleurone grain lumen
+60202,clathrin-sculpted acetylcholine transport vesicle lumen
+34493,melanosome lumen
+98899,spine apparatus lumen
+34467,esterosome lumen
+70082,clathrin-sculpted monoamine transport vesicle lumen
+1904856,cytolytic granule lumen
+61201,clathrin-sculpted gamma-aminobutyric acid transport vesicle lumen
+60204,clathrin-sculpted glutamate transport vesicle lumen
+43223,cytoplasmic SCF ubiquitin ligase complex
+30891,VCB complex
+124,SAGA complex
+125,PCAF complex
+30914,STAGA complex
+46695,SLIK (SAGA-like) complex
+98555,lumenal side of rough endoplasmic reticulum membrane
+98558,lumenal side of smooth endoplasmic reticulum membrane
+99067,integral component of presynaptic endosome membrane
+85041,arbuscule
+43663,host bacteroid-containing symbiosome
+98646,collagen sheet
+97482,muscle cell postsynaptic specialization
+99629,postsynaptic specialization of symmetric synapse
+2081,outer acrosomal membrane
+2079,inner acrosomal membrane
+31164,contractile vacuolar membrane
+44841,gut granule membrane
+31143,pseudopodium
+90406,pollen tube
+98846,podocyte foot
+36194,muscle cell projection
+70685,macropinocytic cup
+5937,mating projection
+98854,podocyte primary projection
+35618,root hair
+44393,microspike
+97511,dendritic cell dendrite
+35230,cytoneme
+70451,cell hair
+1726,ruffle
+32059,bleb
+16028,rhabdomere
+1990905,dinoflagellate peduncle
+1931,uropod
+344,plastid-encoded plastid RNA polymerase complex B
+343,plastid-encoded plastid RNA polymerase complex A
+42025,host cell nucleus
+72517,host cell viral assembly compartment
+345,cytosolic DNA-directed RNA polymerase complex
+44754,autolysosome
+44193,host cell mitochondrial outer membrane
+44202,host cell nuclear outer membrane
+32164,hyphal septin cap
+32171,germ tube septin cap
+42652,"mitochondrial respiratory chain complex I, peripheral segment"
+42653,"mitochondrial respiratory chain complex I, membrane segment"
+140092,bBAF complex
+140288,GBAF complex
+16586,RSC-type complex
+140093,esBAF complex
+35060,brahma complex
+71564,npBAF complex
+140091,mBAF complex
+16514,SWI/SNF complex
+71565,nBAF complex
+110016,B-WICH complex
+42649,prothylakoid
+9843,cyanelle thylakoid
+31471,ethanolamine degradation polyhedral organelle
+31472,propanediol degradation polyhedral organelle
+31470,carboxysome
+32046,micropexophagy-specific membrane apparatus
+5619,ascospore wall
+30445,yeast-form cell wall
+30446,hyphal cell wall
+1990325,collagen type XXVII trimer
+5588,collagen type V trimer
+1990323,collagen type XXIV trimer
+5584,collagen type I trimer
+5585,collagen type II trimer
+5586,collagen type III trimer
+5592,collagen type XI trimer
+71015,U12-type prespliceosome
+71018,U12-type catalytic step 2 spliceosome
+71022,U12-type post-spliceosomal complex
+71016,U12-type precatalytic spliceosome
+71019,U12-type post-mRNA release spliceosomal complex
+71017,U12-type catalytic step 1 spliceosome
+1990578,perinuclear endoplasmic reticulum membrane
+33016,rhoptry membrane
+9515,granal stacked thylakoid
+9533,chloroplast stromal thylakoid
+42757,giant axon
+1990032,parallel fiber
+44301,climbing fiber
+44300,cerebellar mossy fiber
+44299,C-fiber
+35000,oligosaccharyltransferase III complex
+34998,oligosaccharyltransferase I complex
+34999,oligosaccharyltransferase II complex
+19907,cyclin-dependent protein kinase activating kinase holoenzyme complex
+5832,chaperonin-containing T-complex
+62011,mitochondrial respiratory chain complex IV pre-assembly complex
+33254,vacuolar transporter chaperone complex
+1990565,HSP90-CDC37 chaperone complex
+1990320,collagen type XXI trimer
+1990319,collagen type XX trimer
+5596,collagen type XIV trimer
+5597,collagen type XVI trimer
+5595,collagen type XII trimer
+5594,collagen type IX trimer
+1990321,collagen type XXII trimer
+1990318,collagen type XIX trimer
+1905759,post-anaphase array microtubule
+1901588,dendritic microtubule
+20025,subpellicular microtubule
+33289,intraconoid microtubule
+5880,nuclear microtubule
+34360,chylomicron remnant
+34359,mature chylomicron
+1990941,mitotic spindle kinetochore microtubule
+99400,caveola neck
+99401,caveola bulb
+98826,endoplasmic reticulum tubular network membrane
+9323,ribosomal-protein-alanine N-acetyltransferase complex
+5591,collagen type VIII trimer
+5599,collagen type X trimer
+140364,GW body
+1990633,mutator focus
+71598,neuronal ribonucleoprotein granule
+140363,TIS granule
+140365,RNP body
+10494,cytoplasmic stress granule
+120279,Z granule
+932,P-body
+33391,chromatoid body
+1990913,sperm head plasma membrane
+9925,basal plasma membrane
+120267,pellicular membrane
+5905,clathrin-coated pit
+60342,photoreceptor inner segment membrane
+16324,apical plasma membrane
+16323,basolateral plasma membrane
+120003,hinge region between urothelial plaques of apical plasma membrane
+16327,apicolateral plasma membrane
+31676,plasma membrane-derived thylakoid membrane
+1990075,periciliary membrane compartment
+275,"mitochondrial proton-transporting ATP synthase complex, catalytic sector F(1)"
+5744,TIM23 mitochondrial import inner membrane translocase complex
+5756,"mitochondrial proton-transporting ATP synthase, central stalk"
+31942,i-AAA complex
+1405,"PAM complex, Tim23 associated import motor"
+5747,mitochondrial respiratory chain complex I
+5749,"mitochondrial respiratory chain complex II, succinate dehydrogenase complex (ubiquinone)"
+42721,TIM22 mitochondrial import inner membrane insertion complex
+42720,mitochondrial inner membrane peptidase complex
+35632,mitochondrial prohibitin complex
+140275,MIB complex
+5754,"mitochondrial proton-transporting ATP synthase, catalytic core"
+5750,mitochondrial respiratory chain complex III
+5745,m-AAA complex
+61617,MICOS complex
+5751,mitochondrial respiratory chain complex IV
+274,"mitochondrial proton-transporting ATP synthase, stator stalk"
+276,"mitochondrial proton-transporting ATP synthase complex, coupling factor F(o)"
+32478,heterotetrameric decaprenyl diphosphate synthase complex
+1990524,INA complex
+1990246,uniplex complex
+1990677,mitochondrial inner membrane assembly complex
+5753,mitochondrial proton-transporting ATP synthase complex
+98593,goblet cell theca
+140453,protein aggregate center
+2102,podosome
+776,kinetochore
+42151,nematocyst
+98682,arciform density
+31411,gas vesicle
+5814,centriole
+46858,chlorosome
+44312,crystalloid
+5730,nucleolus
+30075,bacterial thylakoid
+45170,spectrosome
+120293,dynein axonemal particle
+98536,deuterosome
+1990934,nucleolus-like body
+1990732,pyrenoid
+34515,proteasome storage granule
+42645,mitochondrial nucleoid
+1990973,transmembrane actin-associated (TAN) line
+43590,bacterial nucleoid
+98681,synaptic ribbon
+97727,blepharoplast
+32019,mitochondrial cloud
+62159,contractile vacuole complex
+98752,integral component of the cytoplasmic side of the plasma membrane
+85042,periarbuscular membrane
+44173,host cell endoplasmic reticulum-Golgi intermediate compartment membrane
+20002,host cell plasma membrane
+44188,host cell lysosomal membrane
+44178,host cell Golgi membrane
+85037,extrahaustorial membrane
+85039,hyphal membrane
+33645,host cell endomembrane system
+98674,extrinsic component of neuronal dense core vesicle membrane
+16914,follicle-stimulating hormone complex
+97073,interferon regulatory factor 5 complex
+97085,interferon regulatory factor 3-interferon regulatory factor 5 complex
+97074,interferon regulatory factor 7 complex
+97072,interferon regulatory factor 3 complex
+97075,interferon regulatory factor 3-interferon regulatory factor 7 complex
+71736,"IgG immunoglobulin complex, circulating"
+71739,"IgD immunoglobulin complex, circulating"
+71743,"IgE immunoglobulin complex, circulating"
+71755,IgM B cell receptor complex
+71004,U2-type prespliceosome
+97560,left caudal flagellum
+36126,sperm flagellum
+97609,longitudinal flagellum
+97561,right caudal flagellum
+97608,transverse flagellum
+97558,left ventral flagellum
+97559,right ventral flagellum
+97554,left anterior flagellum
+97555,right anterior flagellum
+97556,left posteriolateral flagellum
+97557,right posteriolateral flagellum
+14803,longitudinal sarcoplasmic reticulum lumen
+14804,terminal cisterna lumen
+70722,Tle3-Aes complex
+70440,Mad-Max-mSin3B complex
+70176,DRM complex
+1990711,beta-catenin-ICAT complex
+70439,Mad-Max-mSin3A complex
+17054,negative cofactor 2 complex
+70443,Mad-Max complex
+9380,excinuclease repair complex
+97196,Shu complex
+1990612,Sad1-Kms1 LINC complex
+5640,nuclear outer membrane
+5637,nuclear inner membrane
+43596,nuclear replication fork
+43597,cytoplasmic replication fork
+140266,Woronin body
+44170,host cell smooth endoplasmic reticulum
+44168,host cell rough endoplasmic reticulum
+99058,integral component of postsynaptic endocytic zone membrane
+99028,anchored component of postynaptic endocytic zone membrane
+1903144,actomyosin contractile ring actin filament
+1903145,actin filament of cell cortex of cell tip
+16282,eukaryotic 43S preinitiation complex
+33290,eukaryotic 48S preinitiation complex
+33985,acidocalcisome lumen
+1904724,tertiary granule lumen
+34492,hydrogenosome lumen
+34494,microneme lumen
+5759,mitochondrial matrix
+1904813,ficolin-1-rich granule lumen
+31096,platelet dense tubular network lumen
+44842,gut granule lumen
+31981,nuclear lumen
+97489,"multivesicular body, internal vesicle lumen"
+120238,sperm glycocalyx
+120239,vascular endothelial glycocalyx
+30114,slime layer
+90123,lysosomal glycocalyx
+120234,stereocilium coat
+120240,platelet glycocalyx
+42603,capsule
+46861,glyoxysomal membrane
+46860,glycosome membrane
+5743,mitochondrial inner membrane
+5741,mitochondrial outer membrane
+71541,"eukaryotic translation initiation factor 3 complex, eIF3m"
+71540,"eukaryotic translation initiation factor 3 complex, eIF3e"
+31305,integral component of mitochondrial inner membrane
+31307,integral component of mitochondrial outer membrane
+31309,integral component of nuclear outer membrane
+804,W chromosome
+806,Y chromosome
+98577,inactive sex chromosome
+1741,XY body
+98579,active sex chromosome
+807,Z chromosome
+62113,early phagosome lumen
+45247,cytosolic electron transfer flavoprotein complex
+120217,DNA gyrase complex
+9340,DNA topoisomerase IV complex
+31165,integral component of contractile vacuolar membrane
+1990906,accessory outer segment
+32420,stereocilium
+97447,dendritic tree
+70852,cell body fiber
+60091,kinocilium
+97462,Lewy neurite
+1990761,growth cone lamellipodium
+1902737,dendritic filopodium
+44317,rod spherule
+97733,photoreceptor cell cilium
+97463,gemmule
+1990812,growth cone filopodium
+1990769,proximal neuron projection
+120200,rod photoreceptor outer segment
+120199,cone photoreceptor outer segment
+9531,secondary cell wall
+9530,primary cell wall
+61498,intermediate layer of mitotic spindle pole body
+99065,integral component of spine apparatus membrane
+99066,integral component of neuronal dense core vesicle membrane
+5779,integral component of peroxisomal membrane
+30285,integral component of synaptic vesicle membrane
+90740,integral component of pigment granule membrane
+97631,integral component of omegasome membrane
+5639,integral component of nuclear inner membrane
+1990701,integral component of endoplasmic reticulum-Golgi intermediate compartment (ERGIC) membrane
+98804,non-motile cilium membrane
+20018,ciliary pocket membrane
+42622,photoreceptor outer segment membrane
+120201,cone photoreceptor disc membrane
+98560,cytoplasmic side of late endosome membrane
+98559,cytoplasmic side of early endosome membrane
+44305,calyx of Held
+99096,vestibular calyx terminal
+44316,cone cell pedicle
+1990623,Herring body
+60987,lipid tube
+145,exocyst
+17119,Golgi transport complex
+938,GARP complex
+33263,CORVET complex
+70388,"procollagen-proline 4-dioxygenase complex, alpha(III) type"
+70387,"procollagen-proline 4-dioxygenase complex, alpha(II) type"
+70386,"procollagen-proline 4-dioxygenase complex, alpha(I) type"
+97741,mastigoneme
+97740,paraflagellar rod
+97442,CA3 pyramidal cell dendrite
+44307,dendritic branch
+150001,primary dendrite
+71683,sensory dendrite
+70578,RISC-loading complex
+1990476,"synaptic vesicle, resting pool"
+1990475,"synaptic vesicle, recycling pool"
+1990474,"synaptic vesicle, readily releasable pool"
+106176,clathrin-coated endocytic vesicle lumen
+1904564,Nbp35-Cfd1 ATPase complex
+19812,type I site-specific deoxyribonuclease complex
+62091,Ycf2/FtsHi complex
+9376,HslUV protease complex
+140525,antipodal site
+839,Hrd1p ubiquitin ligase ERAD-L complex
+838,Hrd1p ubiquitin ligase ERAD-M complex
+9550,primary plasmodesma
+9551,secondary plasmodesma
+14802,terminal cisterna
+16029,subrhabdomeral cisterna
+71781,endoplasmic reticulum cisternal network
+30849,autosome
+5700,polytene chromosome
+106095,m7G(5')pppN diphosphatase complex
+1904096,protein tyrosine phosphatase complex
+1904097,acid phosphatase complex
+43494,CLRC complex
+35102,PRC1 complex
+5680,anaphase-promoting complex
+43224,nuclear SCF ubiquitin ligase complex
+33768,SUMO-targeted ubiquitin ligase complex
+31436,BRCA1-BARD1 complex
+140261,BCOR complex
+36396,RNA N6-methyladenosine methyltransferase complex
+35657,eRF1 methyltransferase complex
+44680,methylthiol:coenzyme M methyltransferase complex
+43853,methanol-CoM methyltransferase complex
+140020,DNA methyltransferase complex
+34709,methylosome
+61701,bacterial outer membrane vesicle
+70062,extracellular exosome
+97189,apoptotic body
+71914,prominosome
+97691,bacterial extracellular vesicle
+1990342,heterochromatin island
+31934,mating-type region heterochromatin
+5725,intercalary heterochromatin
+1990343,heterochromatin domain
+35985,senescence-associated heterochromatin focus
+33553,rDNA heterochromatin
+99115,"chromosome, subtelomeric region"
+1990033,dendritic branch point
+31561,cellular bud tip polarisome
+31560,cellular bud neck polarisome
+31562,hyphal tip polarisome
+31563,mating projection tip polarisome
+72495,host cell Cajal body
+44203,host cell nuclear lamina
+44204,host cell nuclear matrix
+75341,host cell PML body
+44199,host cell nuclear envelope
+44095,host cell nucleoplasm
+19034,viral replication complex
+44196,host cell nucleolus
+30691,Noc2p-Noc3p complex
+30690,Noc1p-Noc2p complex
+30692,Noc4p-Nop14p complex
+31092,platelet alpha granule membrane
+2080,acrosomal membrane
+42589,zymogen granule membrane
+101003,ficolin-1-rich granule membrane
+31088,platelet dense granule membrane
+70821,tertiary granule membrane
+35579,specific granule membrane
+42584,chromaffin granule membrane
+35577,azurophil granule membrane
+97431,mitotic spindle pole
+90619,meiotic spindle pole
+99160,postsynaptic intermediate filament cytoskeleton
+99189,postsynaptic spectrin-associated cytoskeleton
+150050,postsynaptic septin cytoskeleton
+70044,synaptobrevin 2-SNAP-25-syntaxin-1a complex
+70047,synaptobrevin 2-SNAP-25-syntaxin-4 complex
+70049,endobrevin-SNAP-25-syntaxin-2 complex
+70068,VAMP4-syntaxin-6-syntaxin-16-Vti1a complex
+70065,cellubrevin-VAMP4-syntaxin-16 complex
+70067,syntaxin-6-syntaxin-16-Vti1a complex
+70356,synaptotagmin-synaptobrevin 2-SNAP-25-syntaxin-1a-syntaxin-1b-Rab3a complex
+70046,synaptobrevin 2-SNAP-25-syntaxin-3 complex
+70768,synaptotagmin-synaptobrevin 2-SNAP-25-syntaxin-1a-syntaxin-1b-Unc13 complex
+70045,synaptobrevin 2-SNAP-25-syntaxin-2 complex
+70554,synaptobrevin 2-SNAP-25-syntaxin-3-complexin complex
+70032,synaptobrevin 2-SNAP-25-syntaxin-1a-complexin I complex
+70766,endobrevin-synaptobrevin 2-alpha-SNAP-NSF-syntaxin-4 complex
+97654,platelet SNARE complex
+70355,synaptotagmin-synaptobrevin 2-SNAP-25-syntaxin-1a-syntaxin-1b-Rab3a-complexin II complex
+70048,endobrevin-SNAP-25-syntaxin-1a complex
+70066,cellubrevin-VAMP4-endobrevin-syntaxin-6 complex
+70033,synaptobrevin 2-SNAP-25-syntaxin-1a-complexin II complex
+34362,low-density lipoprotein particle
+33583,rhabdomere membrane
+31258,lamellipodium membrane
+31259,uropod membrane
+31527,filopodium membrane
+70686,macropinocytic cup membrane
+36195,muscle cell projection membrane
+70250,mating projection membrane
+32587,ruffle membrane
+31526,brush border membrane
+31260,pseudopodium membrane
+150006,urease activator complex
+120231,DNA recombinase auxiliary factor complex
+35098,ESC/E(Z) complex
+35517,PR-DUB complex
+32284,plastid biotin carboxylase complex
+44599,AP-5 adaptor complex
+30124,AP-4 adaptor complex
+30123,AP-3 adaptor complex
+1902517,glycerol-3-phosphate-transporting ATPase complex
+1990154,enzyme IIA-maltose transporter complex
+1990193,BtuCD complex
+1990191,cobalamin transport complex
+1990222,ProVWX complex
+1990197,ATP-dependent methionine-importing complex
+35796,"ATP-binding cassette (ABC) transporter complex, transmembrane substrate-binding subunit-containing"
+1990199,MsbA transporter complex
+55051,"ATP-binding cassette (ABC) transporter complex, integrated substrate binding"
+55052,"ATP-binding cassette (ABC) transporter complex, substrate-binding subunit-containing"
+1990060,maltose transport complex
+1990434,lower tip-link density
+1990435,upper tip-link density
+98954,presynaptic endosome membrane
+55038,recycling endosome membrane
+36020,endolysosome membrane
+9357,protein-N(PI)-phosphohistidine-sugar phosphotransferase complex
+110067,ammonium transmembrane transporter complex
+1990662,S100A9 complex
+62155,curli secretion complex
+1903103,potassium:proton antiporter complex
+61841,high-affinity iron exporter complex
+1990281,efflux pump complex
+61993,calcium:proton antiporter complex
+34365,discoidal high-density lipoprotein particle
+34366,spherical high-density lipoprotein particle
+34682,integrin alphav-beta1 complex
+34687,integrin alphaL-beta2 complex
+34683,integrin alphav-beta3 complex
+34691,integrin alphaE-beta7 complex
+34665,integrin alpha1-beta1 complex
+34666,integrin alpha2-beta1 complex
+34679,integrin alpha9-beta1 complex
+34689,integrin alphaX-beta2 complex
+34680,integrin alpha10-beta1 complex
+34688,integrin alphaM-beta2 complex
+34681,integrin alpha11-beta1 complex
+34684,integrin alphav-beta5 complex
+34667,integrin alpha3-beta1 complex
+34675,integrin alpha6-beta1 complex
+34677,integrin alpha7-beta1 complex
+34674,integrin alpha5-beta1 complex
+34685,integrin alphav-beta6 complex
+34690,integrin alphaD-beta2 complex
+34676,integrin alpha6-beta4 complex
+34668,integrin alpha4-beta1 complex
+70442,integrin alphaIIb-beta3 complex
+34669,integrin alpha4-beta7 complex
+34686,integrin alphav-beta8 complex
+34678,integrin alpha8-beta1 complex
+97444,spine apparatus
+2186,cytosolic creatine kinase complex
+61832,basal ectoplasmic specialization
+46581,intercellular canaliculus
+61831,apical ectoplasmic specialization
+43296,apical junction complex
+30057,desmosome
+5921,gap junction
+33010,paranodal junction
+5916,fascia adherens
+97570,cyst wall
+55040,periplasmic flagellum
+42629,mast cell granule
+44194,cytolytic granule
+43246,megasome
+1990385,meiotic spindle midzone
+1990023,mitotic spindle midzone
+120282,autolysosome lumen
+328,fungal-type vacuole lumen
+34423,autophagosome lumen
+35578,azurophil granule lumen
+71023,trans spliceosomal complex
+44530,supraspliceosomal complex
+31091,platelet alpha granule
+70820,tertiary granule
+36000,mucocyst
+98594,mucin granule
+1669,acrosomal vesicle
+42588,zymogen granule
+101002,ficolin-1-rich granule
+32593,insulin-responsive compartment
+42581,specific granule
+42583,chromaffin granule
+42827,platelet dense granule
+33093,Weibel-Palade body
+42582,azurophil granule
+60473,cortical granule
+70319,Golgi to plasma membrane transport vesicle
+70381,endosome to plasma membrane transport vesicle
+71006,U2-type catalytic step 1 spliceosome
+71021,U2-type post-spliceosomal complex
+71005,U2-type precatalytic spliceosome
+243,commitment complex
+71007,U2-type catalytic step 2 spliceosome
+71008,U2-type post-mRNA release spliceosomal complex
+31464,Cul4A-RING E3 ubiquitin ligase complex
+419,RNA polymerase V complex
+5665,"RNA polymerase II, core complex"
+16591,"RNA polymerase II, holoenzyme"
+5736,RNA polymerase I complex
+5666,RNA polymerase III complex
+418,RNA polymerase IV complex
+71254,cytoplasmic U snRNP body
+43614,multi-eIF complex
+5844,polysome
+1990124,messenger ribonucleoprotein complex
+70761,pre-snoRNP complex
+1990572,TERT-RMRP complex
+16456,"X chromosome located dosage compensation complex, transcription activating"
+44207,translation initiation ternary complex
+120203,rod photoreceptor disc lumen
+34591,rhoptry lumen
+110145,magnetosome lumen
+97686,dinoflagellate apical horn
+98998,extrinsic component of postsynaptic early endosome membrane
+99005,extrinsic component of postsynaptic recycling endosome membrane
+98525,excitatory neuromuscular junction of somatic myotube
+98666,G protein-coupled serotonin receptor complex
+1990508,CKM complex
+1902694,superoxide dismutase copper chaperone complex
+1990235,diamine N-acetyltransferase complex
+9519,middle lamella
+62129,chitin-based extracellular matrix
+1990377,organomineral extracellular matrix
+70505,pollen coat
+62130,adhesive extracellular matrix
+32983,kainate selective glutamate receptor complex
+31615,"cytosolic proteasome regulatory particle, lid subcomplex"
+98683,cochlear hair cell ribbon synapse
+98684,photoreceptor ribbon synapse
+31083,BLOC-1 complex
+31084,BLOC-2 complex
+31085,BLOC-3 complex
+61828,apical tubulobulbar complex
+61829,basal tubulobulbar complex
+97132,cyclin D2-CDK6 complex
+97123,cyclin A1-CDK2 complex
+1990860,Pho85-Pho80 CDK-cyclin complex
+97133,cyclin D3-CDK6 complex
+97121,cyclin A1-CDK1 complex
+2944,cyclin K-CDK12 complex
+97127,cyclin B3-CDK2 complex
+97125,cyclin B1-CDK1 complex
+97131,cyclin D1-CDK6 complex
+31387,MPF complex
+97126,cyclin B2-CDK1 complex
+97134,cyclin E1-CDK2 complex
+97129,cyclin D2-CDK4 complex
+97122,cyclin A2-CDK1 complex
+97130,cyclin D3-CDK4 complex
+97128,cyclin D1-CDK4 complex
+2945,cyclin K-CDK13 complex
+97135,cyclin E2-CDK2 complex
+97124,cyclin A2-CDK2 complex
+308,cytoplasmic cyclin-dependent protein kinase holoenzyme complex
+43655,host extracellular space
+43657,host cell
+99059,integral component of presynaptic active zone membrane
+99029,anchored component of presynaptic active zone membrane
+1990327,collagen type XXV trimer
+1990322,collagen type XXIII trimer
+5600,collagen type XIII trimer
+34732,transcription factor TFIIIB-alpha complex
+34733,transcription factor TFIIIB-beta complex
+71762,heavy chain immunoglobulin complex
+71760,IgY immunoglobulin complex
+71759,IgX immunoglobulin complex
+71761,IgZ immunoglobulin complex
+71758,IgW immunoglobulin complex
+98853,endoplasmic reticulum-vacuole membrane contact site
+120095,vacuole-isolation membrane contact site
+140268,endoplasmic reticulum-plasma membrane contact site
+71561,nucleus-vacuole junction
+44233,mitochondria-associated endoplasmic reticulum membrane
+1990816,vacuole-mitochondrion membrane contact site
+44284,mitochondrial crista junction
+140284,endoplasmic reticulum-endosome membrane contact site
+44289,mitochondrial inner-outer membrane contact site
+34735,transcription factor TFIIIC2 complex
+34740,TFIIIC-TOP1-SUB1 complex
+127,transcription factor TFIIIC complex
+70264,transcription factor TFIIIE complex
+34734,transcription factor TFIIIC1 complex
+35454,extrinsic component of stromal side of plastid inner membrane
+97652,"phosphatidylinositol 3-kinase complex, class II"
+38039,G protein-coupled receptor heterodimeric complex
+38038,G protein-coupled receptor homodimeric complex
+1902712,G protein-coupled GABA receptor complex
+1903143,adrenomedullin receptor complex
+61497,inner plaque of mitotic spindle pole body
+33565,ESCRT-0 complex
+5870,actin capping protein of dynactin complex
+99617,matrix side of mitochondrial inner membrane
+98575,lumenal side of lysosomal membrane
+98547,lumenal side of Golgi membrane
+120148,host cell centrosome
+71142,homomeric SMAD protein complex
+98861,actin filament bundle of filopodium
+97516,microvillar actin bundle
+98860,actin filament bundle of stereocilium
+16442,RISC complex
+42568,insulin-like growth factor binary complex
+42567,insulin-like growth factor ternary complex
+97660,SCF-Cdc4 ubiquitin ligase complex
+97667,SCF-Rcy1/Pof6 ubiquitin ligase complex
+97675,SCF-Hrt3/Pof7 ubiquitin ligase complex
+97663,SCF-Dia2/Pof3 ubiquitin ligase complex
+97666,SCF-Met30/Pof1 ubiquitin ligase complex
+97662,SCF-Das1 ubiquitin ligase complex
+97672,SCF-Pof5 ubiquitin ligase complex
+97661,SCF-Ctf13 ubiquitin ligase complex
+97671,SCF-YDR131C ubiquitin ligase complex
+97669,SCF-Skp2 ubiquitin ligase complex
+97673,SCF-Ucc1 ubiquitin ligase complex
+97665,SCF-Mdm30 ubiquitin ligase complex
+97674,SCF-YLR352W ubiquitin ligase complex
+97664,SCF-Grr1/Pof2 ubiquitin ligase complex
+97670,SCF-Ufo1/Pof10 ubiquitin ligase complex
+97668,SCF-Saf1/Pof9 ubiquitin ligase complex
+31234,extrinsic component of cytoplasmic side of plasma membrane
+1905506,gerontoplast stroma
+9570,chloroplast stroma
+9577,elaioplast stroma
+9578,etioplast stroma
+9571,proplastid stroma
+9576,leucoplast stroma
+9575,chromoplast stroma
+34060,cyanelle stroma
+19031,viral envelope
+39641,viral inner membrane
+98983,"symmetric, GABA-ergic, inhibitory synapse"
+1990111,spermatoproteasome complex
+150048,cerebellar granule cell to Purkinje cell synapse
+150053,cerebellar climbing fiber to Purkinje cell synapse
+1940,male pronucleus
+1939,female pronucleus
+32177,cellular bud neck split septin rings
+61672,glutathione hydrolase complex
+120125,PNGase complex
+30981,cortical microtubule cytoskeleton
+62194,cytoplasmic microtubule minus-end
+5914,spot adherens junction
+150014,apical distal dendrite
+150015,apical proximal dendrite
+1990007,membrane stack
+5791,rough endoplasmic reticulum
+16529,sarcoplasmic reticulum
+5790,smooth endoplasmic reticulum
+9511,plasmodesmatal endoplasmic reticulum
+97611,dinoflagellate cingulum
+97685,dinoflagellate apical groove
+36053,glomerular endothelium fenestra
+43263,cellulosome
+55039,trichocyst
+5771,multivesicular body
+99032,anchored component of postsynaptic early endosome membrane
+99033,anchored component of postsynaptic recycling endosome membrane
+1990329,IscS-TusA complex
+1990330,IscS-IscU complex
+1902507,thiazole synthase complex
+1990140,MPT synthase complex
+1740,Barr body
+794,condensed nuclear chromosome
+62157,mitochondrial ATP-gated potassium channel complex
+71748,monomeric IgA immunoglobulin complex
+70860,RNA polymerase I core factor complex
+5668,RNA polymerase transcription factor SL1 complex
+500,RNA polymerase I upstream activating factor complex
+31932,TORC2 complex
+31931,TORC1 complex
+1990657,iNOS-S100A8/A9 complex
+120281,autolysosome membrane
+101004,cytolytic granule membrane
+61474,phagolysosome membrane
+35974,meiotic spindle pole body
+1902502,multivesicular body HOPS complex
+12508,Golgi to ER transport vesicle membrane
+70083,clathrin-sculpted monoamine transport vesicle membrane
+12509,inter-Golgi transport vesicle membrane
+60203,clathrin-sculpted glutamate transport vesicle membrane
+12510,trans-Golgi network transport vesicle membrane
+60201,clathrin-sculpted acetylcholine transport vesicle membrane
+12507,ER to Golgi transport vesicle membrane
+61176,type Ib terminal bouton
+61177,type Is terminal bouton
+5780,extrinsic component of intraperoxisomal membrane
+97632,extrinsic component of phagophore assembly site membrane
+31315,extrinsic component of mitochondrial outer membrane
+90498,extrinsic component of Golgi membrane
+31316,extrinsic component of nuclear outer membrane
+42406,extrinsic component of endoplasmic reticulum membrane
+98850,extrinsic component of synaptic vesicle membrane
+98929,extrinsic component of spine apparatus membrane
+97629,extrinsic component of omegasome membrane
+1905760,post-anaphase array microtubule end
+1905721,mitotic spindle astral microtubule end
+62199,"chromosome, centromeric inner repeat region"
+5703,polytene chromosome puff
+34507,"chromosome, centromeric outer repeat region"
+34506,"chromosome, centromeric core domain"
+5705,polytene chromosome interband
+5704,polytene chromosome band
+30915,Smc5-Smc6 complex
+99027,anchored component of presynaptic endocytic zone membrane
+45095,keratin filament
+5638,lamin filament
+45098,type III intermediate filament
+5883,neurofilament
+97426,glial filament
+1902676,right ventral basal body
+1902672,right anterior basal body
+1902675,left ventral basal body
+1902677,left caudal basal body
+1902678,right caudal basal body
+1902674,right posteriolateral basal body
+1902636,kinociliary basal body
+1902671,left anterior basal body
+1902673,left posteriolateral basal body
+31612,"cytosolic proteasome regulatory particle, base subcomplex"
+72558,NLRP1 inflammasome complex
+97169,AIM2 inflammasome complex
+72557,IPAF inflammasome complex
+72559,NLRP3 inflammasome complex
+140634,CARD8 inflammasome complex
+31245,extrinsic component of periplasmic side of cell outer membrane
+70449,elongin complex
+35101,FACT complex
+32044,DSIF complex
+32021,NELF complex
+32783,super elongation complex
+446,nucleoplasmic THO complex
+16593,Cdc73/Paf1 complex
+30134,COPII-coated ER to Golgi transport vesicle
+923,equatorial microtubule organizing center
+31021,interphase microtubule organizing center
+110143,magnetosome
+140494,migrasome
+97597,ventral disc
+19185,snRNA-activating protein complex
+90577,RNA polymerase IV transcription regulator complex
+16581,NuRD complex
+90578,RNA polymerase V transcription regulator complex
+1903865,sigma factor antagonist complex
+110129,SHREC2 complex
+1990198,ModE complex
+1990196,MacAB-TolC complex
+1905754,ascospore-type prospore nucleus
+31040,micronucleus
+48556,microsporocyte nucleus
+97571,left nucleus
+31039,macronucleus
+48555,generative cell nucleus
+97572,right nucleus
+48353,primary endosperm nucleus
+98564,trans-Golgi network transport vesicle lumen
+62246,exocytic vesicle lumen
+5945,6-phosphofructokinase complex
+43540,"6-phosphofructo-2-kinase/fructose-2,6-biphosphatase complex"
+9358,polyphosphate kinase complex
+2189,ribose phosphate diphosphokinase complex
+333,telomerase catalytic core complex
+70622,UDP-N-acetylglucosamine-lysosomal-enzyme N-acetylglucosaminephosphotransferase complex
+61694,alpha-D-ribose 1-methylphosphonate 5-triphosphate synthase complex
+97515,asexual spore wall
+97514,sexual spore wall
+43591,endospore external encapsulating structure
+30673,axolemma
+32591,dendritic spine membrane
+60171,stereocilium membrane
+32590,dendrite membrane
+1905720,cytoplasmic microtubule bundle
+99070,static microtubule bundle
+99071,dynamic microtubule bundle
+1901589,axon microtubule bundle
+71740,IgD B cell receptor complex
+71747,IgA B cell receptor complex
+71744,IgE B cell receptor complex
+71737,IgG B cell receptor complex
+1990084,DnaA-Dps complex
+1990083,DnaA-Hda complex
+1990085,Hda-beta clamp complex
+1990082,DnaA-L2 complex
+5865,striated muscle thin filament
+36128,CatSper complex
+8087,light-activated voltage-gated calcium channel complex
+1990454,L-type voltage-gated calcium channel complex
+30686,90S preribosome
+30688,"preribosome, small subunit precursor"
+30687,"preribosome, large subunit precursor"
+32040,small-subunit processome
+933,adventitious septum
+30287,cell wall-bounded periplasmic space
+30288,outer membrane-bounded periplasmic space
+36240,septal periplasm
+44296,dendritic tuft
+44294,dendritic growth cone
+44293,dendriole
+98788,dendritic knob
+46821,extrachromosomal DNA
+44100,sporoplasm
+70725,Yb body
+70477,endospore core
+70090,metaphase plate
+43600,cytoplasmic replisome
+34469,Golgi stack lumen
+1990702,integral component of Golgi cis cisterna membrane
+1990704,integral component of Golgi trans cisterna membrane
+1990703,integral component of Golgi medial cisterna membrane
+31463,Cul3-RING ubiquitin ligase complex
+31462,Cul2-RING ubiquitin ligase complex
+35361,Cul8-RING ubiquitin ligase complex
+31466,Cul5-RING ubiquitin ligase complex
+31467,Cul7-RING ubiquitin ligase complex
+1990406,CGRP receptor complex
+1990334,Bfa1-Bub2 complex
+1990877,Lst4-Lst7 complex
+30933,chloroplast ADPG pyrophosphorylase complex
+30932,amyloplast ADPG pyrophosphorylase complex
+70776,MOZ/MORF histone acetyltransferase complex
+1990331,Hpa2 acetyltransferase complex
+31265,CD95 death-inducing signaling complex
+31266,TRAIL death-inducing signaling complex
+98017,"viral capsid, major subunit"
+98018,"viral capsid, minor subunit"
+32477,homodimeric decaprenyl diphosphate synthase complex
+36410,Mst2 histone acetyltransferase complex
+70732,spindle envelope
+5635,nuclear envelope
+5740,mitochondrial envelope
+33166,hyaline layer
+98965,extracellular matrix of synaptic cleft
+99535,synapse-associated extracellular matrix
+5614,interstitial matrix
+33165,interphotoreceptor matrix
+5604,basement membrane
+60102,collagen and cuticulin-based cuticle extracellular matrix
+71185,protocadherin-alpha-v4-protocadherin-gamma-a3 complex
+71189,protocadherin-alpha-v7-protocadherin-gamma-a3 complex
+71186,protocadherin-alpha-v4-protocadherin-gamma-b2 complex
+71188,protocadherin-alpha-v7-protocadherin-gamma-a1 complex
+71190,protocadherin-alpha-v7-protocadherin-gamma-b2 complex
+71184,protocadherin-alpha-v4-protocadherin-gamma-a1 complex
+71191,protocadherin-alpha-v7-protocadherin-gamma-b4 complex
+71187,protocadherin-alpha-v4-protocadherin-gamma-b4 complex
+90653,apical recycling endosome
+98832,peri-centrosomal recycling endosome
+98837,postsynaptic recycling endosome
+90654,basolateral recycling endosome
+1411,hyphal tip
+5935,cellular bud neck
+43332,mating projection tip
+5934,cellular bud tip
+36406,anchored component of periplasmic side of cell outer membrane
+35062,omega speckle
+1990159,DnaB-DnaC-DnaT-PriA-PriC complex
+1990160,DnaB-DnaC-Rep-PriC complex
+1990158,DnaB-DnaC-DnaT-PriA-PriB complex
+1990157,DnaA-DnaB-DnaC complex
+329,fungal-type vacuole membrane
+5687,U4 snRNP
+5685,U1 snRNP
+5688,U6 snRNP
+5693,U12 snRNP
+5692,U11 snRNP
+34693,U11/U12 snRNP
+5682,U5 snRNP
+5691,U6atac snRNP
+71001,U4/U6 snRNP
+71003,penta-snRNP complex
+5686,U2 snRNP
+71002,U4atac/U6atac snRNP
+5690,U4atac snRNP
+71024,SL snRNP
+32133,chromosome passenger complex
+5869,dynactin complex
+8352,katanin complex
+70652,HAUS complex
+31500,Tea1 cell-end complex
+97451,glial limiting end-foot
+98745,Dcp1-Dcp2 complex
+34519,cytoplasmic RNA cap binding complex
+1902711,GABA-A receptor complex
+30671,clathrin-coated phagocytic vesicle membrane
+140602,nucleolar ring
+90404,pollen tube tip
+35841,new growing cell tip
+120157,PAR polarity complex
+1990317,Gin4 complex
+16533,protein kinase 5 complex
+5964,phosphorylase kinase complex
+1990316,Atg1/ULK1 kinase complex
+8385,IkappaB kinase complex
+1990722,DAPK1-calmodulin complex
+36024,protein C inhibitor-TMPRSS7 complex
+97182,protein C inhibitor-coagulation factor Xa complex
+97181,protein C inhibitor-coagulation factor V complex
+36030,protein C inhibitor-plasma kallikrein complex
+36027,protein C inhibitor-PLAU complex
+97183,protein C inhibitor-coagulation factor XI complex
+36028,protein C inhibitor-thrombin complex
+36025,protein C inhibitor-TMPRSS11E complex
+36029,protein C inhibitor-KLK3 complex
+36026,protein C inhibitor-PLAT complex
+99631,postsynaptic endocytic zone cytoplasmic component
+97575,lateral cell cortex
+98831,presynaptic active zone cytoplasmic component
+1990753,equatorial cell cortex
+61802,anterior cell cortex
+1904269,cell leading edge cell cortex
+61803,posterior cell cortex
+98834,presynaptic endocytic zone cytoplasmic component
+31097,medial cortex
+45180,basal cortex
+48237,rough endoplasmic reticulum lumen
+99020,perinuclear endoplasmic reticulum lumen
+99021,cortical endoplasmic reticulum lumen
+48238,smooth endoplasmic reticulum lumen
+32174,cellular bud neck septin collar
+9517,PSII associated light-harvesting complex II
+14704,intercalated disc
+44286,peg and socket contact
+1990102,DnaA-DiaA complex
+1990101,DnaA-oriC complex
+1990098,core primosome complex
+1990103,DnaA-HU complex
+99031,anchored component of postsynaptic density membrane
+99169,anchored component of postsynaptic specialization membrane of symmetric synapse
+33257,Bcl3/NF-kappaB2 complex
+70081,clathrin-sculpted monoamine transport vesicle
+60199,clathrin-sculpted glutamate transport vesicle
+60200,clathrin-sculpted acetylcholine transport vesicle
+43667,pollen wall
+42600,egg chorion
+30115,S-layer
+61496,half bridge of mitotic spindle pole body
+43598,cytoplasmic DNA replication factor C complex
+35997,rhabdomere microvillus membrane
+30313,cell envelope
+31020,plastid mRNA editing complex
+1990574,meiotic spindle astral microtubule
+61673,mitotic spindle astral microtubule
+35339,SPOTS complex
+2179,homodimeric serine palmitoyltransferase complex
+140638,small ribosomal subunit processing complex
+98688,parallel fiber to Purkinje cell synapse
+32281,AMPA glutamate receptor complex
+17071,intracellular cyclic nucleotide activated cation channel complex
+17146,NMDA selective glutamate receptor complex
+1904602,serotonin-activated cation-selective channel complex
+1990588,FtsBL complex
+1990587,FtsQBL complex
+72380,TRC complex
+71818,BAT3 complex
+1990243,atf1-pcr1 complex
+43513,inhibin B complex
+43512,inhibin A complex
+97457,hippocampal mossy fiber
+9568,amyloplast starch grain
+9569,chloroplast starch grain
+61200,clathrin-sculpted gamma-aminobutyric acid transport vesicle
+22626,cytosolic ribosome
+42788,polysomal ribosome
+36419,integral component of mycolate outer membrane
+97209,epidermal lamellar body
+1990503,dendritic lamellar body
+97208,alveolar lamellar body
+72563,endothelial microparticle
+34082,type II polyketide synthase complex
+34083,type III polyketide synthase complex
+120118,flagella connector
+98723,skeletal muscle myofibril
+97512,cardiac myofibril
+44308,axonal spine
+97465,somatic spine
+1990567,DPS complex
+17023,myosin phosphatase complex
+164,protein phosphatase type 1 complex
+72357,PTW/PP1 phosphatase complex
+45243,cytosolic isocitrate dehydrogenase complex (NAD+)
+45241,cytosolic alpha-ketoglutarate dehydrogenase complex
+97650,B axonemal microtubule
+97649,A axonemal microtubule
+1990719,C1 axonemal microtubule
+1990720,C2 axonemal microtubule
+33011,perinuclear theca
+15630,microtubule cytoskeleton
+70117,organellar chromatophore thylakoid lumen
+44647,host-symbiont bicellular tight junction
+97586,dolichyl-phosphate-mannose-protein mannosyltransferase Pmt4p homodimer complex
+97584,dolichyl-phosphate-mannose-protein mannosyltransferase Pmt5p-Pmt2p dimer complex
+97585,dolichyl-phosphate-mannose-protein mannosyltransferase Pmt5p-Pmt3p dimer complex
+97583,dolichyl-phosphate-mannose-protein mannosyltransferase Pmt1p-Pmt3p dimer complex
+97582,dolichyl-phosphate-mannose-protein mannosyltransferase Pmt1p-Pmt2p dimer complex
+45211,postsynaptic membrane
+48787,presynaptic active zone membrane
+42734,presynaptic membrane
+98844,postsynaptic endocytic zone membrane
+36062,presynaptic periactive zone
+98835,presynaptic endocytic zone membrane
+5925,focal adhesion
+5927,muscle tendon junction
+30056,hemidesmosome
+36389,bacterial pre-replicative complex
+43082,megagametophyte egg cell nucleus
+43079,antipodal cell nucleus
+43078,polar nucleus
+30679,cyanelle ribonuclease P complex
+97147,NOXA-BCL-2 complex
+97146,NOXA-BCL-xl complex
+97144,BAX complex
+97139,BID-BCL-2 complex
+97140,BIM-BCL-xl complex
+97148,BCL-2 complex
+97143,PUMA-BCL-xl complex
+97138,BAD-BCL-2 complex
+97141,BIM-BCL-2 complex
+97137,BAD-BCL-xl complex
+97145,BAK complex
+97142,PUMA-BCL-2 complex
+9512,cytochrome b6f complex
+9276,Gram-negative-bacterium-type cell wall
+9275,Gram-positive-bacterium-type cell wall
+97637,integral component of autophagosome membrane
+35996,rhabdomere microvillus
+5590,collagen type VII trimer
+97165,nuclear stress granule
+812,Swr1 complex
+31011,Ino80 complex
+1904930,amphisome membrane
+31428,box C/D RNP complex
+1990901,old cell pole
+44226,basal pole of neuron
+44225,apical pole of neuron
+1990902,new cell pole
+90712,basal pole of outer hair cell
+1990520,separase-securin complex
+1905370,serine-type endopeptidase complex
+35328,transcriptionally silent chromatin
+35327,transcriptionally active chromatin
+791,euchromatin
+61638,CENP-A containing chromatin
+70823,HDA1 complex
+1990483,Clr6 histone deacetylase complex I''
+70211,Snt2C complex
+70210,Rpd3L-Expanded complex
+34967,Set3 complex
+70824,SHREC complex
+31609,"cytosolic proteasome core complex, beta-subunit complex"
+99544,perisynaptic space
+43083,synaptic cleft
+98595,perivitelline space
+48046,apoplast
+150051,postsynaptic Golgi apparatus
+5587,collagen type IV trimer
+5671,Ada2/Gcn5/Ada3 transcription activator complex
+44545,NSL complex
+72487,MSL complex
+150016,basal distal dendrite
+150017,basal proximal dendrite
+39720,virogenic stroma
+39721,peristromal region viral factory
+46809,replication compartment
+1990061,bacterial degradosome
+98574,cytoplasmic side of lysosomal membrane
+32473,cytoplasmic side of mitochondrial outer membrane
+98548,cytoplasmic side of Golgi membrane
+98975,postsynapse of neuromuscular junction
+32009,early phagosome
+1990457,pexophagosome
+45336,clathrin-coated phagocytic vesicle
+31255,lateral part of motile cell
+120249,lateral wall of outer hair cell
+98526,inhibitory neuromuscular junction of somatic myotube
+72687,meiotic spindle
+72686,mitotic spindle
+30938,collagen type XVIII trimer
+5582,collagen type XV trimer
+5962,mitochondrial isocitrate dehydrogenase complex (NAD+)
+45244,succinate-CoA ligase complex (GDP-forming)
+35324,female germline ring canal
+35323,male germline ring canal
+70470,plasma membrane respirasome
+5746,mitochondrial respirasome
+1990071,TRAPPII protein complex
+1990072,TRAPPIII protein complex
+1990070,TRAPPI protein complex
+32195,post-lysosomal vacuole
+43700,pterinosome
+43701,cyanosome
+42470,melanosome
+43699,leucosome
+43698,iridosome
+98875,epididymosome
+43509,activin A complex
+43510,activin B complex
+48183,activin AB complex
+70692,CTDK-1 complex
+70691,P-TEFb complex
+1990584,cardiac Troponin complex
+31004,potassium ion-transporting ATPase complex
+90534,calcium ion-transporting ATPase complex
+16613,vanadium-iron nitrogenase complex
+16612,molybdenum-iron nitrogenase complex
+16611,iron-iron nitrogenase complex
+17117,single-stranded DNA-dependent ATP-dependent DNA helicase complex
+1990156,DnaB-DnaG complex
+1990161,DnaB helicase complex
+9379,Holliday junction helicase complex
+9361,succinate-CoA ligase complex (ADP-forming)
+98540,lumenal side of trans-Golgi network transport vesicle membrane
+34990,nuclear mitotic cohesin complex
+46611,lysosomal proton-transporting V-type ATPase complex
+98585,host cell synaptic vesicle membrane
+97348,host cell endocytic vesicle membrane
+262,mitochondrial chromosome
+32797,SMN complex
+1990726,Lsm1-7-Pat1 complex
+34715,pICln-Sm protein complex
+120115,Lsm2-8 complex
+34271,"phosphatidylinositol 3-kinase complex, class III, type I"
+34272,"phosphatidylinositol 3-kinase complex, class III, type II"
+70772,PAS complex
+150056,amylin receptor complex 1
+150057,amylin receptor complex 2
+150058,amylin receptor complex 3
+30130,clathrin coat of trans-Golgi network vesicle
+30129,clathrin coat of synaptic vesicle
+30128,clathrin coat of endocytic vesicle
+99182,presynaptic intermediate filament cytoskeleton
+99143,presynaptic actin cytoskeleton
+1990686,LDL-containing protein-lipid-RNA complex
+1990685,HDL-containing protein-lipid-RNA complex
+1990361,PKM2 pyruvate kinase complex
+42382,paraspeckles
+97504,Gemini of coiled bodies
+1990251,nuclear exosome focus
+16605,PML body
+71920,cleavage body
+35061,interchromatin granule
+15030,Cajal body
+16606,LYSP100-associated nuclear domain
+10445,nuclear dicing body
+35363,histone locus body
+71601,sphere organelle
+48476,Holliday junction resolvase complex
+9359,type II site-specific deoxyribonuclease complex
+32068,type IV site-specific deoxyribonuclease complex
+19813,type III site-specific deoxyribonuclease complex
+35525,NF-kappaB p50/p65 complex
+1990265,platelet-derived growth factor complex
+1990150,VEGF-A complex
+70702,inner mucus layer
+70703,outer mucus layer
+106037,apicomedial cortex
+1990780,cytoplasmic side of dendritic spine plasma membrane
+106186,"cytoplasmic side of plasma membrane, cell tip"
+98592,cytoplasmic side of apical plasma membrane
+44288,puncta adhaerentia
+36012,cyanelle inner membrane
+99063,integral component of postsynaptic recycling endosome membrane
+140366,galectin lattice
+1990724,galectin complex
+43160,acrosomal lumen
+8623,CHRAC
+31213,RSF complex
+90536,NoRC complex
+16590,ACF complex
+90535,WICH complex
+16589,NURF complex
+90537,CERF complex
+1990873,intrinsic component of plasma membrane of cell tip
+97598,sperm cytoplasmic droplet
+46816,virion transport vesicle
+12511,monolayer-surrounded lipid storage body
+5633,ascus lipid droplet
+1990723,cytoplasmic periphery of the nuclear pore complex
+61493,central plaque of mitotic spindle pole body
+34991,nuclear meiotic cohesin complex
+61202,clathrin-sculpted gamma-aminobutyric acid transport vesicle membrane
+36436,Isw1a complex
+36437,Isw1b complex
+16474,sodium ion-transporting V-type ATPase complex
+16473,sodium ion-transporting F-type ATPase complex
+32152,meiotic septin complex
+32151,mitotic septin complex
+97728,9+0 motile cilium
+30079,"light-harvesting complex, peripheral complex"
+30078,"light-harvesting complex, core complex"
+39718,double membrane vesicle viral factory
+39717,spherule viral factory
+39719,tube viral factory
+39716,viroplasm viral factory
+99062,integral component of postsynaptic early endosome membrane
+99061,integral component of postsynaptic density membrane
+99167,integral component of postsynaptic specialization membrane of symmetric synapse
+90695,Wpl/Pds5 cohesin loading/unloading complex
+90694,Scc2-Scc4 cohesin loading complex
+159,protein phosphatase type 2A complex
+30289,protein phosphatase 4 complex
+5955,calcineurin complex
+70867,mating projection tip membrane
+1902929,plasma membrane of growing cell tip
+1990324,collagen type XXVI trimer
+1990326,collagen type XXVIII trimer
+5589,collagen type VI trimer
+70289,extracellular ferritin complex
+44201,host cell nuclear inner membrane
+43253,chloroplast ribosome
+9342,glutamate synthase complex (NADPH)
+32157,prospore contractile ring
+31600,cytosolic proteasome regulatory particle
+97587,MutLgamma complex
+48188,Set1C/COMPASS complex
+70311,nucleosomal methylation activator complex
+44666,MLL3/4 complex
+10005,"cortical microtubule, transverse to long axis"
+16528,sarcoplasm
+1990917,ooplasm
+35451,extrinsic component of stromal side of plastid thylakoid membrane
+9573,chloroplast ribulose bisphosphate carboxylase complex
+71741,"IgD immunoglobulin complex, GPI-anchored"
+30998,linear element
+795,synaptonemal complex
+71685,NADH dehydrogenase complex (plastoquinone)
+120119,flagellum attachment zone
+98550,lumenal side of early endosome membrane
+98551,lumenal side of late endosome membrane
+98033,"icosahedral viral capsid, neck fiber"
+98032,"icosahedral viral capsid, collar fiber"
+31361,integral component of thylakoid membrane
+1990121,H-NS complex
+140596,TOM complex
+1401,SAM complex
+140595,MIM complex
+9353,mitochondrial oxoglutarate dehydrogenase complex
+10368,chloroplast isoamylase complex
+10367,extracellular isoamylase complex
+42764,ascospore-type prospore
+42601,endospore-forming forespore
+31986,proteinoplast
+9545,elaioplast
+5786,"signal recognition particle, endoplasmic reticulum targeting"
+48501,"signal recognition particle, plasma membrane targeting"
+80085,"signal recognition particle, chloroplast targeting"
+34363,intermediate-density lipoprotein particle
+34361,very-low-density lipoprotein particle
+140621,type I pilus
+98774,curli
+44096,type IV pilus
+30126,COPI vesicle coat
+30127,COPII vesicle coat
+32398,MHC class Ib protein complex
+42613,MHC class II protein complex
+42612,MHC class I protein complex
+39662,host cell outer membrane
+14702,free sarcoplasmic reticulum membrane
+14701,junctional sarcoplasmic reticulum membrane
+60387,fertilization envelope
+60388,vitelline envelope
+42383,sarcolemma
+97524,sperm plasma membrane
+1533,cornified envelope
+138,Golgi trans cisterna
+5797,Golgi medial cisterna
+137,Golgi cis cisterna
+33185,dolichol-phosphate-mannose synthase complex
+99165,"postsynaptic specialization of symmetric synapse, intracellular component"
+99092,"postsynaptic density, intracellular component"
+33255,SAS acetyltransferase complex
+42644,chloroplast nucleoid
+42647,proplastid nucleoid
+36186,early phagosome membrane
+32809,neuronal cell body membrane
+71339,MLL1 complex
+61916,leading edge of axonal growth cone
+61917,leading edge of dendritic growth cone
+5868,cytoplasmic dynein complex
+34752,cytosolic aryl hydrocarbon receptor complex
+97486,multivesicular body lumen
+1990674,Golgi cis cisterna membrane
+1990675,Golgi medial cisterna membrane
+1990676,Golgi trans cisterna membrane
+31417,NatC complex
+31416,NatB complex
+31415,NatA complex
+98549,somatic ring canal
+5723,alpha-heterochromatin
+5722,beta-heterochromatin
+5917,nephrocyte diaphragm
+36057,slit diaphragm
+22627,cytosolic small ribosomal subunit
+71665,gamma-catenin-TCF7L2 complex
+70369,beta-catenin-TCF7L2 complex
+32162,mating projection septin band
+32163,hyphal septin band
+32165,prospore septin filament array
+32166,chlamydospore septin filament array
+31616,spindle pole centrosome
+30485,smooth muscle contractile fiber
+61689,tricellular tight junction
+5731,nucleolus organizer region
+97424,nucleolus-associated heterochromatin
+98938,actin cytoskeleton of dendritic spine
+22629,chloroplast small ribosomal subunit
+1990455,PTEN phosphatase complex
+10370,perinucleolar chromocenter
+5701,polytene chromosome chromocenter
+60293,germ plasm
+97453,mesaxon
+71261,Ssh1 translocon complex
+5784,Sec61 translocon complex
+43025,neuronal cell body
+1990017,somatic portion of tanycyte
+5920,smooth septate junction
+5919,pleated septate junction
+445,THO complex part of transcription export complex
+43769,Tpg-containing telomere binding complex
+1990008,neurosecretory vesicle
+31093,platelet alpha granule lumen
+31089,platelet dense granule lumen
+34466,chromaffin granule lumen
+35580,specific granule lumen
+31908,glyoxysomal lumen
+34468,glycosome lumen
+61773,eNoSc complex
+30869,RENT complex
+61793,chromatin lock complex
+44567,primary cell wall cellulose synthase complex
+44568,secondary cell wall cellulose synthase complex
+97234,epidermal lamellar body membrane
+97233,alveolar lamellar body membrane
+30121,AP-1 adaptor complex
+1990914,integral component of periplasmic side of plasma membrane
+90705,trichome papilla
+90397,stigma papilla
+90396,leaf papilla
+1990021,Schaffer axon collateral
+1990020,recurrent axon collateral
+44354,macropinosome
+44353,micropinosome
+98893,extrinsic component of postsynaptic endocytic zone
+5758,mitochondrial intermembrane space
+5641,nuclear envelope lumen
+98584,host cell synaptic vesicle
+98541,cytoplasmic side of trans-Golgi network transport vesicle membrane
+62243,double membrane vesicle viral factory outer membrane
+62245,double membrane vesicle viral factory inner membrane
+98842,postsynaptic early endosome
+39643,host cell viral nucleoid
+30430,host cell cytoplasm
+71958,new mitotic spindle pole body
+71957,old mitotic spindle pole body
+98567,periplasmic side of plasma membrane
+98591,external side of apical plasma membrane
+98986,T-bar
+46610,"lysosomal proton-transporting V-type ATPase, V0 domain"
+51077,secondary cell septum
+936,primary cell septum
+44219,host cell plasmodesma
+1673,male germ cell nucleus
+99164,postsynaptic specialization membrane of symmetric synapse
+98839,postsynaptic density membrane
+1990232,phosphomannomutase complex
+61455,integral component of muscle cell projection membrane
+120101,bacterial-type flagellum stator complex
+120001,apical plasma membrane urothelial plaque
+44214,spanning component of plasma membrane
+70116,organellar chromatophore thylakoid
+31381,viral RNA-directed RNA polymerase complex
+1905103,integral component of lysosomal membrane
+71627,integral component of fungal-type vacuolar membrane
+1990566,I(KACh) inward rectifier potassium channel complex
+1990374,Kir2 inward rectifier potassium channel complex
+30930,homotetrameric ADPG pyrophosphorylase complex
+97362,MCM8-MCM9 complex
+99057,integral component of presynaptic endocytic zone membrane
+99523,presynaptic cytosol
+99524,postsynaptic cytosol
+35619,root hair tip
+35839,non-growing cell tip
+34495,protein storage vacuole lumen
+1520,outer dense fiber
+30672,synaptic vesicle membrane
+97415,cortical Lewy body
+97414,classical Lewy body
+1990467,NuA3a histone acetyltransferase complex
+1990468,NuA3b histone acetyltransferase complex
+33291,eukaryotic 80S initiation complex
+5715,late recombination nodule
+5714,early recombination nodule
+70263,external side of fungal-type cell wall
+70111,organellar chromatophore
+9706,chloroplast inner membrane
+34430,monolayer-surrounded lipid storage body outer lipid monolayer
+33105,chlorosome envelope
+33098,amyloplast inner membrane
+31899,chromoplast inner membrane
+120210,rod telodendria
+120209,cone telodendria
+1903767,sweet taste receptor complex
+44192,host cell mitochondrial inner membrane
+44176,host cell filopodium
+120026,host cell uropod
+32586,protein storage vacuole membrane
+45248,cytosolic oxoglutarate dehydrogenase complex
+33114,cyanelle thylakoid lumen
+9543,chloroplast thylakoid lumen
+33654,host cell chloroplast thylakoid membrane
+9840,chloroplastic endopeptidase Clp complex
+62140,hyphae septin collar
+30680,dimeric ribonuclease P complex
+1990040,sub-surface cisterna
+71162,CMG complex
+811,GINS complex
+1990490,archaeal proton-transporting A-type ATPase complex
+98556,cytoplasmic side of rough endoplasmic reticulum membrane
+98557,cytoplasmic side of smooth endoplasmic reticulum membrane
+31003,actin tubule
+16580,Sin3 complex
+33698,Rpd3L complex
+32221,Rpd3S/Clr6-CII complex
+42642,"actomyosin, myosin complex part"
+71757,hexameric IgM immunoglobulin complex
+71756,pentameric IgM immunoglobulin complex
+1904115,axon cytoplasm
+31236,extrinsic component of periplasmic side of plasma membrane
+140222,pathogen-containing vacuole lumen
+42650,prothylakoid membrane
+33115,cyanelle thylakoid membrane
+9535,chloroplast thylakoid membrane
+1725,stress fiber
+39670,"viral capsid, turret"
+101019,nucleolar exosome (RNase complex)
+32419,extrinsic component of lysosome membrane
+97042,extrinsic component of fungal-type vacuolar membrane
+97635,extrinsic component of autophagosome membrane
+931,gamma-tubulin large complex
+8275,gamma-tubulin small complex
+62040,fungal biofilm matrix
+97311,bacterial biofilm matrix
+99013,neuronal dense core vesicle lumen
+32117,horsetail-astral microtubule array
+796,condensin complex
+72534,perineuronal net
+5903,brush border
+32421,stereocilium bundle
+60053,neurofilament cytoskeleton
+72494,host multivesicular body
+98992,neuronal dense core vesicle
+1990220,GroEL-GroES complex
+1990530,Cdc50p-Drs2p complex
+1990562,syndecan-syntenin-ALIX complex
+110158,calpain complex
+45258,plasma membrane succinate dehydrogenase complex (ubiquinone)
+2141,stereocilia ankle link
+2140,stereocilia tip link
+32391,photoreceptor connecting cilium
+39679,viral occlusion body
+16006,Nebenkern
+16009,minor mitochondrial derivative
+16008,major mitochondrial derivative
+150088,"multiple synapse bouton, contacting multiple dendrites"
+150087,"multiple synapse bouton, contacting single dendrite"
+1990879,CST complex
+70187,shelterin complex
+140497,mannan polymerase II complex
+140498,mannan polymerase I complex
+1990501,exon-exon junction subcomplex mago-y14
+36266,Cdc48p-Npl4p-Vms1p AAA ATPase complex
+140472,cell cortex of non-growing cell tip
+1902716,cell cortex of growing cell tip
+140573,histone H3-containing nucleosome
+43505,CENP-A containing nucleosome
+70420,Ku-DNA ligase complex
+99007,extrinsic component of presynaptic endosome membrane
+32283,plastid acetate CoA-transferase complex
+1990537,mitotic spindle polar microtubule
+438,core TFIIH complex portion of holo TFIIH complex
+440,core TFIIH complex portion of NEF3 complex
+1902501,lysosomal HOPS complex
+5847,mRNA cleavage and polyadenylation specificity factor complex
+5848,mRNA cleavage stimulating factor complex
+19029,helical viral capsid
+31603,cytosolic proteasome core complex
+35861,site of double-strand break
+22628,chloroplast large ribosomal subunit
+61846,dendritic spine cytoplasm
+45249,cytosol pyruvate dehydrogenase (lipoamide) phosphatase complex
+99616,extrinsic component of matrix side of mitochondrial inner membrane
+9336,sulfate adenylyltransferase complex (ATP)
+1990133,molybdopterin cofactor (Moco) biosynthesis adenylyltransferase complex
+1990250,"transcription-coupled nucleotide-excision repair, DNA damage recognition complex"
+106084,mitotic nuclear membrane microtubule tethering complex
+5761,mitochondrial ribosome
+106139,symbiont cell surface
+44218,other organism cell membrane
+44753,amphisome
+71752,secretory dimeric IgA immunoglobulin complex
+42564,NLS-dependent protein nuclear import complex
+42565,RNA nuclear export complex
+5901,caveola
+90512,eisosome membrane domain/MCC
+937,dolipore septum
+98568,external side of mycolate outer membrane
+42105,alpha-beta T cell receptor complex
+42106,gamma-delta T cell receptor complex
+70556,TAF4B-containing transcription factor TFIID complex
+837,Doa10p ubiquitin ligase complex
+31606,"cytosolic proteasome core complex, alpha-subunit complex"
+32588,trans-Golgi network membrane
+44295,axonal growth cone
+36156,inner dynein arm
+36157,outer dynein arm
+42648,chloroplast chromosome
+98686,hippocampal mossy fiber to CA3 synapse
+22625,cytosolic large ribosomal subunit
+61851,leading edge of lamellipodium
+31972,chloroplast intermembrane space
+36014,cyanelle intermembrane space
+31973,chromoplast intermembrane space
+99147,extrinsic component of postsynaptic density membrane
+99168,extrinsic component of postsynaptic specialization membrane of symmetric synapse
+99012,neuronal dense core vesicle membrane
+110070,cellularization cleavage furrow
+5943,"phosphatidylinositol 3-kinase complex, class IA"
+5944,"phosphatidylinositol 3-kinase complex, class IB"
+97687,dinoflagellate antapical horn
+30479,actin cortical patch
+98578,condensed chromatin of inactivated sex chromosome
+99573,glutamatergic postsynaptic density
+36407,mycolate outer membrane
+97464,thorny excrescence
+140445,"chromosome, telomeric repeat region"
+97618,dinoflagellate sulcal notch
+61499,outer plaque of mitotic spindle pole body
+42807,central vacuole
+1990500,eif4e-cup complex
+97219,compound sieve plate
+97220,simple sieve plate
+34731,Lsm-containing SMN-Sm protein complex
+34730,SmD-containing SMN-Sm protein complex
+70648,formin-nucleated actin cable
+20020,food vacuole
+1990357,terminal web
+34066,Ric1-Rgp1 guanyl-nucleotide exchange factor complex
+5728,extrachromosomal rDNA circle
+5729,2-micrometer circle DNA
+1903754,cortical microtubule plus-end
+32541,cortical endoplasmic reticulum
+5859,muscle myosin complex
+71666,Slit-Robo signaling complex
+1990012,complex laminated body
+97523,transcription ternary complex
+142,cellular bud neck contractile ring
+44185,host cell late endosome membrane
+44171,host cell smooth endoplasmic reticulum membrane
+44169,host cell rough endoplasmic reticulum membrane
+98652,collagen type VII anchoring fibril
+90732,cofilin-actin rod
+779,"condensed chromosome, centromeric region"
+32282,plastid acetyl-CoA carboxylase complex

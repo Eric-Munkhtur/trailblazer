@@ -1,0 +1,2 @@
+model_service/vendor/** linguist-vendored=true
+app/static/** linguist-vendored=true
