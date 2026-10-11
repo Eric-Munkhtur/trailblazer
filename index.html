@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verdia · Agentic Assembly</title>
+    <title>Verdia · PrimeKG neural map</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -11,57 +11,65 @@
   </head>
   <body>
     <div id="scene"></div>
+    <div id="tip" class="tip hidden"></div>
+
+    <div id="boot" class="boot">
+      <div class="boot-inner">
+        <div class="logo"><span class="dot"></span>VERDIA</div>
+        <div id="boot-msg">Mapping PrimeKG…</div>
+      </div>
+    </div>
 
     <header class="brand">
       <div class="logo"><span class="dot"></span>VERDIA</div>
-      <div class="tag">Agentic Assembly · trial → knowledge graph</div>
+      <div class="tag" id="kg-status">PrimeKG neural map</div>
     </header>
 
     <aside class="panel left">
       <form id="run-form" class="run">
-        <label for="nct">ClinicalTrials.gov ID</label>
+        <label for="nct">ClinicalTrials.gov ID — or any drug, disease, gene</label>
         <div class="row">
           <input id="nct" placeholder="NCT02142738" autocomplete="off" spellcheck="false" />
-          <button id="run" type="submit">Assemble</button>
+          <button id="run" type="submit">Fire</button>
         </div>
         <div class="examples">
           <span>Try</span>
-          <button type="button" data-nct="NCT02142738" title="KEYNOTE-024 · pembrolizumab in NSCLC">KEYNOTE-024</button>
-          <button type="button" data-nct="NCT04368728" title="Pfizer/BioNTech COVID-19 vaccine">BNT162b2</button>
-          <button type="button" data-nct="NCT01035255" title="PARADIGM-HF · sacubitril/valsartan">PARADIGM-HF</button>
+          <button type="button" data-q="NCT02142738" title="KEYNOTE-024 · pembrolizumab in NSCLC">KEYNOTE-024</button>
+          <button type="button" data-q="NCT01035255" title="PARADIGM-HF · sacubitril/valsartan in heart failure">PARADIGM-HF</button>
+          <button type="button" data-q="NCT00000620" title="ACCORD · intensive glycemic control in type 2 diabetes">ACCORD</button>
+          <button type="button" data-q="metformin" title="Explore a PrimeKG node">metformin</button>
         </div>
         <div id="llm-status" class="llm-status"></div>
       </form>
 
       <div class="section-title">Agent trace</div>
       <ol id="steps" class="steps">
-        <li class="empty">Enter an NCT number to start the agent. It will retrieve the trial, extract the intervention and disease with an LLM, ground them in ChEMBL, MeSH and Open Targets, and assemble the graph live.</li>
+        <li class="empty">Every point is one of PrimeKG's 129,375 biomedical entities. Enter an NCT number: the agent reads the trial, grounds its drugs and diseases in PrimeKG, and fires signals from both sides until the wavefronts meet. Click any point to explore it.</li>
       </ol>
     </aside>
 
     <aside class="panel right">
       <div class="tabs">
-        <button class="tab active" data-tab="synthesis">Synthesis</button>
+        <button class="tab active" data-tab="connections">Connections</button>
         <button class="tab" data-tab="inspector">Inspector</button>
       </div>
-      <div id="tab-synthesis" class="tab-body">
-        <div class="placeholder">The agent's mechanistic synthesis appears here once the graph is assembled.</div>
+      <div id="tab-connections" class="tab-body">
+        <div class="placeholder">Pathways the agent discovers between the trial's interventions and diseases appear here.</div>
       </div>
       <div id="tab-inspector" class="tab-body hidden">
-        <div class="placeholder">Click any node in the graph to inspect it.</div>
+        <div class="placeholder">Click any neuron in the graph to inspect it.</div>
       </div>
     </aside>
 
     <footer class="dock">
       <div id="legend" class="legend"></div>
       <div class="controls">
-        <button id="layout" class="toggle on" title="Toggle between spatial layout and free force layout">Spatial</button>
-        <button id="labels" class="toggle on">Labels</button>
+        <button id="ambient" class="toggle on" title="Spontaneous background firing">Ambient</button>
         <button id="rotate" class="toggle on">Orbit</button>
-        <button id="fit">Fit</button>
-        <button id="export">Export JSON</button>
+        <button id="labels" class="toggle on">Labels</button>
+        <button id="home">Reset view</button>
+        <button id="clear">Clear</button>
       </div>
-      <div id="stats" class="stats"></div>
     </footer>
 
     <script type="module" src="/src/main.js"></script>

@@ -2,20 +2,18 @@
   "name": "verdia",
   "version": "0.1.0",
   "private": true,
-  "description": "Agentic Assembly: an AI agent that maps a ClinicalTrials.gov trial into a 3D knowledge graph",
+  "description": "An AI agent that grounds a ClinicalTrials.gov trial in the full PrimeKG knowledge graph and finds its connections as live neural signals in 3D",
   "type": "module",
   "scripts": {
+    "primekg": "node --max-old-space-size=6144 scripts/build-primekg.mjs",
     "dev": "concurrently -k -n api,web -c cyan,magenta \"node --watch server/index.js\" \"vite\"",
     "build": "vite build",
     "start": "vite build && NODE_ENV=production node server/index.js"
   },
   "dependencies": {
-    "3d-force-graph": "^1.80.1",
-    "d3-force-3d": "^3.0.6",
     "dotenv": "^18.0.7",
     "express": "^5.3.0",
-    "three": "^0.186.1",
-    "three-spritetext": "^1.10.0"
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "concurrently": "^10.0.6",
