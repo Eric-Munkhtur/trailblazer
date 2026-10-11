@@ -111,5 +111,3 @@ For public deployments, follow [deploy/README.md](deploy/README.md), including r
 HINT/TOP: Fu et al., [Patterns 2022](https://doi.org/10.1016/j.patter.2022.100445), [upstream repository](https://github.com/futianfan/clinical-trial-outcome-prediction), pinned at `8dc0497f23fdb84e2905da7655924a91e6e79798`. PrimeKG: Chandak, Huang & Zitnik, [Scientific Data 2023](https://doi.org/10.1038/s41597-023-01960-3). BioBERT: [dmis-lab](https://github.com/dmis-lab/biobert). Data services: ClinicalTrials.gov and PubChem.
 
 The existing [MIT license](LICENSE) applies to original Verdia code only. HINT/TOP code and assets have separate noncommercial terms; graph sources, model weights, and the paper's original HINT figure retain their own terms. See [THIRD_PARTY.md](THIRD_PARTY.md). No blanket MIT license is granted over the combined system or its datasets.
-
-AI coding and writing assistants helped with implementation, experiment orchestration, analysis, and drafting. Eric Munkhtur is the project author; the report records the work's limitations and unsuccessful experiments.
