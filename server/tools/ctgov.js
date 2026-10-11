@@ -30,6 +30,7 @@ export async function fetchTrial(nct) {
     enrollment: design.enrollmentInfo?.count,
     summary: p.descriptionModule?.briefSummary || '',
     conditions: p.conditionsModule?.conditions || [],
+    eligibilityCriteria: p.eligibilityModule?.eligibilityCriteria || '',
     keywords: p.conditionsModule?.keywords || [],
     interventions: (arms.interventions || []).map((i) => ({
       type: i.type,

@@ -1,0 +1,47 @@
+{
+  "arm": "original",
+  "seed": 0,
+  "best_epoch": 4,
+  "best_validation_loss": 0.6217528512125058,
+  "valid": {
+    "n": 446,
+    "n_positive": 208,
+    "roc_auc": 0.7114172592113769,
+    "average_precision": 0.6862279246232652,
+    "f1_at_0.5": 0.5989304812834224,
+    "precision_at_0.5": 0.6746987951807228,
+    "recall_at_0.5": 0.5384615384615384,
+    "confusion_matrix": [
+      [
+        184,
+        54
+      ],
+      [
+        96,
+        112
+      ]
+    ]
+  },
+  "test": {
+    "n": 1654,
+    "n_positive": 918,
+    "roc_auc": 0.6320184474756085,
+    "average_precision": 0.6829250175246367,
+    "f1_at_0.5": 0.6058437686344663,
+    "precision_at_0.5": 0.6693017127799736,
+    "recall_at_0.5": 0.5533769063180828,
+    "confusion_matrix": [
+      [
+        485,
+        251
+      ],
+      [
+        410,
+        508
+      ]
+    ]
+  },
+  "elapsed_seconds": 1743.4122918499634,
+  "best_checkpoint_sha256": "2a4811502a45831c215bf556349b98fbe2b6fc96a342fcd981a33e69a151d6d4",
+  "peak_gpu_allocated_bytes": 92582400
+}

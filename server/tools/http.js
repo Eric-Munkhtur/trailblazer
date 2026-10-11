@@ -1,8 +1,11 @@
 const cache = new Map();
+const TTL_MS = 15 * 60 * 1000;
 
 export async function getJSON(url, { timeout = 20000, init = {}, cacheKey } = {}) {
   const key = cacheKey ?? (init.method && init.method !== 'GET' ? null : url);
-  if (key && cache.has(key)) return cache.get(key);
+  const cached = key && cache.get(key);
+  if (cached && cached.expires > Date.now()) return cached.data;
+  if (cached) cache.delete(key);
 
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeout);
@@ -18,7 +21,10 @@ export async function getJSON(url, { timeout = 20000, init = {}, cacheKey } = {}
       throw err;
     }
     const data = await res.json();
-    if (key) cache.set(key, data);
+    if (key && JSON.stringify(data).length < 512000) {
+      while (cache.size >= 64) cache.delete(cache.keys().next().value);
+      cache.set(key, { data, expires: Date.now() + TTL_MS });
+    }
     return data;
   } catch (e) {
     if (e.name === 'AbortError') throw new Error(`Timed out after ${timeout}ms: ${url}`);

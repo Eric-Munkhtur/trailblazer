@@ -1,0 +1,6 @@
+{
+  "control_epoch0_validation_bce": 0.6349616734970845,
+  "candidate_epoch0_validation_bce": 0.6349616820502174,
+  "absolute_difference": 8.553132868627245e-09,
+  "tolerance": 1e-06
+}

@@ -1,60 +1,109 @@
-# Verdia · PrimeKG neural map
+# Verdia
 
-The whole of [PrimeKG](https://github.com/mims-harvard/PrimeKG) (129,375 biomedical entities, 4,050,249 relations), laid out in 3D by its own connectivity. Give it an NCT number: an AI agent reads the trial from ClinicalTrials.gov, extracts its interventions and diseases, grounds them as nodes in PrimeKG, and searches outward from both sides until the wavefronts meet. The nodes it reaches and the edges it reached them through light up in colour while the rest of the graph stays as it is; the strongest pathways between drug and disease are then drawn in red.
+**Explore a clinical trial's biological connections and run a Phase II outcome model.**
 
-## Run
+Eric Munkhtur · HackRU 2026 · Regeneron challenge
 
-```bash
-npm install
-npm run primekg        # one-time: downloads PrimeKG (~520 MB) from Harvard Dataverse and builds the graph and its layout (~1 min after download)
-cp .env.example .env   # add OPENAI_API_KEY or ANTHROPIC_API_KEY
-npm run dev            # http://localhost:5173
+[Live website](https://verdia-hackru-20839887.westus2.cloudapp.azure.com/) · [Research paper source](paper/verdia.tex) · [Experiments and results](research/README.md) · [Reproduction guide](docs/REPRODUCING.md) · [Demo guide](docs/DEMO.md)
+
+![Verdia mapping a trial and displaying a model score](deploy/evidence/graph-mapping.jpg)
+
+## Try it
+
+Open the website and search **NCT01132482** (sildenafil / cystic fibrosis) or **NCT01928927** (TRAFIC). The graph stays off until a search maps entities; clearing the query resets it. Searches reveal reached nodes and connections progressively.
+
+Predictions support **Phase II interventional drug trials with resolvable inputs**. Other phases and observational studies can still be explored in the graph. Unsupported inputs produce a specific explanation. If an archived TOP prediction exists, it is explicitly labeled as a saved historical result.
+
+## What happens after an NCT search
+
+1. Retrieve the study from ClinicalTrials.gov.
+2. Extract structured interventions and conditions, and match them to PrimeKG nodes.
+3. Search up to two graph links outward from each side, reconstruct up to 24 connecting paths, and animate the reached subgraph.
+4. Independently resolve drug structures with PubChem, map diseases using a dictionary built from TOP training inputs, and encode current eligibility text with BioBERT.
+5. Run our trained sentence-attention HINT and the matched original HINT control on the same inputs. Display both scores and downloadable input/model provenance.
+
+```mermaid
+flowchart LR
+    N[NCT identifier] --> CT[ClinicalTrials.gov]
+    CT --> G[Drug and disease grounding]
+    G --> KG[PrimeKG graph search]
+    KG --> V[3D paths and connections]
+    CT --> P[SMILES, disease codes, eligibility]
+    P --> M[HINT control and sentence-attention model]
+    M --> S[Scores and provenance]
 ```
 
-`npm start` builds the frontend and serves everything from the API server on port 8790 (set `PORT` in `.env` to change it; the dev proxy follows it).
+**The PrimeKG paths are not model inputs.** The graph is a separate exploration view. Its 3D positions are a layout, not molecular geometry. The production extraction path uses structured registry fields and lexical matching; no paid LLM is running. Optional LLM integrations remain in the source.
 
-`LLM_PROVIDER=mock npm run dev` runs an offline demo without an LLM: extraction comes from the trial's structured fields, grounding takes the top lexical match, and the synthesis step is a placeholder.
+## What we changed in HINT
 
-Besides NCT numbers, the search box takes a drug, disease, or gene name (find and inspect it) or `A -> B` (connect two nodes, e.g. `metformin -> Alzheimer disease`).
+HINT already combines molecular, disease, and eligibility encoders through an interaction graph. We changed **eligibility sentence pooling**:
 
-## Agent pipeline
+- **Sentence attention:** learn which cached BioBERT sentence vectors receive more weight; 1,536 added parameters.
+- **Conditioned attention:** use drug and disease representations to guide the sentence weights; 31,040 added parameters.
 
-| Step | What happens | In the graph |
-| --- | --- | --- |
-| Retrieve | ClinicalTrials.gov API v2 | — |
-| Extract & normalize | LLM: canonical drug names, combination components, modality, arm role, putative targets, diseases | — |
-| Ground | Lexical search over PrimeKG names proposes candidates; the LLM picks the node that denotes the same concept. Drugs without a DrugBank node are seeded at their LLM-proposed gene targets | Chosen seeds are coloured (violet for interventions, orange for diseases) and labelled |
-| Propagate | Bidirectional search, two hops from each side, over relation-weighted edges with a hub penalty | Replayed in cost time: a reached node appears in its side's colour, with the edge it was reached through, when its cumulative path cost says it should (0.9 s per unit). All of a seed's direct connections are drawn, and the 1,500 strongest second-hop ones per side; the counter and chart count every reached node. The trace reports how long the real search took (tens of milliseconds) |
-| Meet & lock | Meet-in-the-middle path reconstruction, diversified across pathway kinds | Meeting nodes appear in white once both wavefronts have reached them, with their routes back to both sides; up to 24 pathways are drawn in red |
-| Interpret | LLM explains the mechanistic pathways and proposes hypotheses and gaps | Key pathways in the Connections panel |
+Both begin with uniform pooling. BioBERT sentence vectors stay fixed during these training runs; the outcome model is trained further. We did not pretrain a new language model or add PrimeKG features to HINT.
 
-Pathways are classified as known indication, off-label use, contraindication, shared target, protein-interaction bridge, pathway bridge, phenotype overlap, shared disease genetics, disease hierarchy, therapeutic analogy, functional bridge, or multi-hop.
+### Recorded TOP Phase II results
 
-## The 3D space
+Matched continuations from the same authors' checkpoint; seed 0; five epochs; 4,005 training / 446 validation / 1,654 test trials. Checkpoint selection uses validation loss.
 
-Node positions are computed by `npm run primekg` with ForceAtlas2 (Jacomy et al. 2014) in three dimensions, in LinLog mode, which pulls densely interconnected communities together and pushes weakly connected ones apart (Noack 2007). Repulsion between all 129k nodes uses a Barnes–Hut octree, runs in parallel worker threads (`scripts/forcelayout.mjs`), and starts from a spectral embedding; the build is seeded, so the same PrimeKG release always gives the same map. No region is assigned by hand: drugs, diseases, genes, and GO terms end up where their edges put them.
+| Model | Test ROC-AUC | Continuous AP | F1 at 0.5 |
+|---|---:|---:|---:|
+| Original HINT continuation | 0.632018 | 0.682925 | 0.605844 |
+| Sentence attention | 0.632309 | 0.683349 | 0.605592 |
+| Conditioned attention | 0.630982 | 0.682502 | 0.596026 |
 
-The layout uses about 1.2M edges. Tissue-expression and drug–drug edges (2.9M) connect nearly everything to everything and are left out, except that each anatomy term is tied to its three most tissue-specific genes and nodes with no other edges keep their three most specific neighbours.
+**Neither modification demonstrated a reliable improvement.** The later conditioned experiment was exploratory after inspecting the earlier test results. These are single-seed comparisons. Separate fresh HINT training runs are documented in [research](research/README.md); they are not the matched control above.
 
-Each point is sized by its real degree. The fibres are a stratified sample of 140k real edges; they fade with length and with local density so the texture of clusters shows instead of a saturated core, and grow stronger as you zoom in.
+The site reports model scores, not calibrated clinical probabilities or separate efficacy/safety predictions. Benchmark accuracy describes an entire historical test set, not confidence that one trial's score is correct. The two example trials are historical demonstrations; current registry text can differ from the benchmark inputs. Live preprocessing has not been benchmarked end to end.
 
-## Interacting
+## Run the graph website locally
 
-- **Hover** a node to see all its edges (or an even per-relation sample of 1,500 for big hubs) with its neighbours highlighted.
-- **Click** a node, or any chip in the panels, to pin it: the inspector shows its description, DrugBank/MONDO features, and connections grouped by relation, and its best-connected neighbours are named in the graph.
-- **Connect to…** in the inspector (or `A -> B` in the search box) runs the neural search between any two nodes, without an LLM.
-- **Zoom** in and the most prominent nearby nodes (by degree within their type) are named.
-- Click a pathway card to isolate and trace it; toggle node types in the legend; Esc cancels.
+Use Node.js 22.12+ (deployment used 22.23.3).
 
-## Interface
+```bash
+npm ci
+npm run primekg
+LLM_PROVIDER=mock npm run dev
+```
 
-The look follows Zajno's *Smart Earth Protection* concept for NASA ([Dribbble](https://dribbble.com/shots/25860515-Educational-Website-on-Space-Pollution)): black, hairline rules, uppercase [Reddit Mono](https://fonts.google.com/specimen/Reddit+Mono), and a single red accent. Every readout is live data:
+Open `http://localhost:5173`. Vite serves the frontend and Node serves the API on 8790. `mock` means no paid language model; live registry requests still require internet. The first graph build downloads roughly 0.5 GB and needs more memory than serving the compact graph; build it on a development machine rather than the 4 GB hosting VM.
 
-- The wireframe sphere has the layout's 95th-percentile radius (R = 420); its far side is dashed, and it fades out as you zoom in. The graph is centred in the part of the stage the panels leave free.
-- The counters show PrimeKG's entity and relation totals. During a search they show the nodes reached (counted up in step with the replay), the real search time, and then the number of pathways.
-- The chart shows the degree distribution, with the inspected node marked. During a search it switches to the nodes each wavefront has reached over replay time, with the moment they meet.
-- The loading scale tracks the seven PrimeKG asset files as they download.
+The compact graph and layout are generated locally and gitignored. A fresh clone does **not** include model checkpoints or embedding caches. The graph runs without them; model prediction requires the separate setup in [Reproducing and serving the models](docs/REPRODUCING.md). Training, asset provisioning, and downloading BioBERT are deliberate steps, not part of `npm install`.
 
-## Data
+```bash
+npm run build
+```
 
-PrimeKG: Chandak, Huang & Zitnik, *Building a knowledge graph to enable precision medicine*, Scientific Data 2023. Files from [Harvard Dataverse](https://doi.org/10.7910/DVN/IXA7BM). The build writes the server graph (CSR adjacency, names, features) to `data/primekg/graph/` and the browser assets (positions, types, degrees, names, edge sample) to `public/primekg/`; both are gitignored.
+For public deployments, follow [deploy/README.md](deploy/README.md), including removal of descriptive feature text. The hosted website uses a 2-vCPU / 4-GB Azure Ubuntu VM with a private CPU model worker and Caddy HTTPS. See [model service details](model_service/README.md).
+
+## Repository map
+
+| Path | Contents |
+|---|---|
+| `src/`, `index.html` | Current Three.js interface and live result panels |
+| `server/` | Registry client, PrimeKG search, streaming, prediction queue |
+| `model_service/` | CPU inference worker, attention module, attributed upstream HINT code |
+| `scripts/` | Graph build and model evidence exporter |
+| `research/` | Training source snapshots, aggregate results, configs, histories, provenance |
+| `paper/` | Standalone LaTeX technical report |
+| `deploy/` | Deployment configuration and captured demo evidence |
+| `app/`, `prep/`, `artifacts/`, `results/`, root `requirements.txt` | Earlier Streamlit prototype retained from the existing GitHub repository; not the deployed site |
+| `docs/legacy/` | Earlier planning/design documents; not current performance claims |
+
+## Evidence and limitations
+
+- Source and asset identities, environment records, selected epochs, and training histories are included. [Source manifest](research/provenance/source-manifest.json).
+- Original prediction files, trained weights, TOP data, and embedding caches are retained locally; they are not newly distributed in this release. The manifest records identities for the MSI weights and per-trial outputs. Public aggregate metrics alone do not independently verify every prediction.
+- A fresh full reproduction from this packaged release has not been performed. Known historical script/path and seeding differences are documented.
+- Existing evidence includes browser inspection, successful production builds, and model-serving demonstrations. No new training, load test, or automated test suite was run for this publication.
+- No clinical validation, causal explanation claim, or demonstrated prediction improvement.
+
+## Credits and terms
+
+HINT/TOP: Fu et al., [Patterns 2022](https://doi.org/10.1016/j.patter.2022.100445), [upstream repository](https://github.com/futianfan/clinical-trial-outcome-prediction), pinned at `8dc0497f23fdb84e2905da7655924a91e6e79798`. PrimeKG: Chandak, Huang & Zitnik, [Scientific Data 2023](https://doi.org/10.1038/s41597-023-01960-3). BioBERT: [dmis-lab](https://github.com/dmis-lab/biobert). Data services: ClinicalTrials.gov and PubChem.
+
+The existing [MIT license](LICENSE) applies to original Verdia code only. HINT/TOP code and assets have separate noncommercial terms; graph sources, model weights, and the paper's original HINT figure retain their own terms. See [THIRD_PARTY.md](THIRD_PARTY.md). No blanket MIT license is granted over the combined system or its datasets.
+
+AI coding and writing assistants helped with implementation, experiment orchestration, analysis, and drafting. Eric Munkhtur is the project author; the report records the work's limitations and unsuccessful experiments.

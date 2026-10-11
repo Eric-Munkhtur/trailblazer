@@ -50,8 +50,10 @@ export function createTelemetry(kg, clock) {
   let scaleX = null;
 
   const counter = (k, label, value) => {
-    $(`#c${k}-l`).textContent = label;
-    $(`#c${k}`).textContent = value;
+    const labelEl = $(`#c${k}-l`);
+    const valueEl = $(`#c${k}`);
+    if (labelEl.textContent !== label) labelEl.textContent = label;
+    if (valueEl.textContent !== value) valueEl.textContent = value;
   };
 
   function degreeView() {
@@ -140,6 +142,18 @@ export function createTelemetry(kg, clock) {
   }
 
   return {
+    off() {
+      if (run) cancelAnimationFrame(run.raf);
+      run = null;
+      marked = null;
+      view = null;
+      counter(1, 'Nodes reached:', padded(0));
+      counter(2, 'Search time:', '—');
+      $('#c3').textContent = '00';
+      $('#c3-box').classList.add('hidden');
+      $('#chart').innerHTML = '';
+      $('#chart-l').textContent = 'Waiting for a search';
+    },
     idle() {
       if (run) cancelAnimationFrame(run.raf);
       run = null;

@@ -27,13 +27,16 @@ export async function loadPrimeKG(onProgress) {
     get('edges.u32').then((b) => new Uint32Array(b)),
     get('edges-rel.u8').then((b) => new Uint8Array(b)),
   ]);
+  // Display palette only: graph topology and entity categories stay unchanged.
+  const palette = { 'gene/protein': '#78b9dc', biological_process: '#7e9fdc', molecular_function: '#b49bdb' };
+  meta.types = meta.types.map((t) => ({ ...t, color: palette[t.name] || t.color }));
   return { meta, pos, types, degree, names, edges, edgeRels, N: types.length };
 }
 
 // The graph is drawn in muted type colours so that highlighted nodes (hovered neighbours here,
 // search results in the highlight layer) stand out in full colour.
 const NODE_VS = /* glsl */ `
-  uniform float uSize, uPixelRatio, uReveal, uBase, uMute;
+  uniform float uSize, uPixelRatio, uReveal, uBase, uMute, uCameraDistance;
   uniform float uMask[16];
   attribute vec3 aColor;
   attribute float aType, aHi, aSize, aAlpha, aOrder;
@@ -43,9 +46,10 @@ const NODE_VS = /* glsl */ `
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
     float mask = uMask[int(aType + 0.5)];
     float reveal = smoothstep(aOrder * 2.0, aOrder * 2.0 + 0.4, uReveal);
-    vAlpha = mask * reveal * min(1.0, uBase * aAlpha + aHi);
+    float depth = smoothstep(-500.0, 450.0, mv.z + uCameraDistance);
+    vAlpha = mask * reveal * min(1.0, uBase * aAlpha + aHi) * mix(0.32, 1.0, depth);
     float grey = dot(aColor, vec3(0.299, 0.587, 0.114));
-    vColor = mix(aColor, vec3(grey), uMute * (1.0 - aHi)) * (0.6 + 0.7 * aHi);
+    vColor = mix(aColor, vec3(grey), uMute * (1.0 - aHi)) * (0.85 + 0.55 * aHi);
     float size = uSize * aSize * (1.0 + aHi * 0.9);
     // Slightly flatter than true perspective so close-up points do not balloon.
     gl_PointSize = min(80.0, mask * size * uPixelRatio * pow(420.0 / -mv.z, 0.8));
@@ -58,22 +62,26 @@ const NODE_FS = /* glsl */ `
   void main() {
     float d = length(gl_PointCoord - 0.5);
     if (d > 0.5) discard;
-    gl_FragColor = vec4(vColor, pow(1.0 - d * 2.0, 1.6) * vAlpha);
+    float halo = exp(-d * d * 20.0) * (1.0 - smoothstep(0.35, 0.5, d));
+    float core = 1.0 - smoothstep(0.0, 0.18, d);
+    gl_FragColor = vec4(vColor * (1.0 + core * 0.35), halo * vAlpha);
   }`;
 
 // Fibres fade with length (long edges between distant clusters would otherwise dominate) and
 // with local density.
 const FIBER_VS = /* glsl */ `
   uniform float uMask[16];
-  uniform float uLength;
+  uniform float uLength, uCameraDistance;
   attribute vec3 aColor;
   attribute float aType, aLen, aAlpha;
   varying vec3 vColor;
   varying float vAlpha;
   void main() {
-    vColor = mix(aColor, vec3(0.7), 0.6);
+    vColor = mix(aColor, vec3(0.55), 0.18);
     float l = aLen / uLength;
-    vAlpha = uMask[int(aType + 0.5)] * aAlpha / (1.0 + l * l);
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    float depth = smoothstep(-500.0, 450.0, mv.z + uCameraDistance);
+    vAlpha = uMask[int(aType + 0.5)] * aAlpha * mix(0.25, 1.0, depth) / (1.0 + l * l);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }`;
 
@@ -319,15 +327,23 @@ const smooth = (a, b, x) => {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
 };
-const FIBER_OPACITY = 0.05;
+const FIBER_OPACITY = 0.035;
 // A second hop reaches tens of thousands of nodes; only its strongest are drawn.
 const DRAWN_PER_HOP = { 1: 3000, 2: 1500 };
 const EGO_MAX = 4000;
-const HINTS = 24;
+const HINTS = 10;
 const HINT_MIN = 1.45;
 
 export function createBrain(container, kg, { onHover, onClick } = {}) {
   const { N, pos, types, degree, meta } = kg;
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let orbitWanted = !reducedMotion.matches;
+  let interacting = false;
+  let resumeOrbitAt = 0;
+  let active = false;
+  let mapping = false;
+  let background = 0;
+  const revealedAt = new Map();
   const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
   const pixelRatio = Math.min(window.devicePixelRatio, 1.75);
   renderer.setPixelRatio(pixelRatio);
@@ -346,10 +362,14 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 1, 8000);
   camera.position.set(0, 0.25 * HOME, 0.97 * HOME);
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enabled = false;
   controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.autoRotate = true;
-  controls.autoRotateSpeed = 0.35;
+  controls.dampingFactor = 0.065;
+  controls.rotateSpeed = 0.65;
+  controls.zoomSpeed = 0.7;
+  controls.panSpeed = 0.65;
+  controls.autoRotate = orbitWanted;
+  controls.autoRotateSpeed = 0.22;
   controls.minDistance = 30;
   controls.maxDistance = 3000;
 
@@ -358,7 +378,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   composer.addPass(new RenderPass(scene, camera));
   composer.addPass(new OutputPass());
 
-  const shared = { uTime: { value: 0 }, uPixelRatio: { value: pixelRatio }, uMask: { value: new Array(16).fill(1) } };
+  const shared = { uCameraDistance: { value: HOME }, uTime: { value: 0 }, uPixelRatio: { value: pixelRatio }, uMask: { value: new Array(16).fill(1) } };
   const typeColors = meta.types.map((t) => new THREE.Color(t.color));
   const egoColors = typeColors.map((c) => c.clone().lerp(new THREE.Color(1, 1, 1), 0.15));
   const grid = densityGrid(pos, N);
@@ -387,7 +407,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   geo.setAttribute('aOrder', new THREE.BufferAttribute(order, 1));
   const hi = new THREE.BufferAttribute(new Float32Array(N), 1);
   geo.setAttribute('aHi', hi);
-  const nodeUniforms = { ...shared, uSize: { value: 1.8 }, uReveal: { value: 0 }, uBase: { value: 1 }, uMute: { value: 0.6 } };
+  const nodeUniforms = { ...shared, uSize: { value: 2.15 }, uReveal: { value: 0 }, uBase: { value: 1 }, uMute: { value: 0.22 } };
   const points = new THREE.Points(
     geo,
     new THREE.ShaderMaterial({ uniforms: nodeUniforms, vertexShader: NODE_VS, fragmentShader: NODE_FS, transparent: true, depthWrite: false }),
@@ -528,7 +548,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     composer.setSize(w, h);
     labelRenderer.setSize(w, h);
   }
-  window.addEventListener('resize', resize);
+  new ResizeObserver(resize).observe(container);
 
   // ---------- zoom-dependent labels ----------
   // Prominence is a node's degree percentile within its own type (anatomy terms carry thousands
@@ -566,7 +586,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   const hv = new THREE.Vector3();
   function updateHints() {
     const scored = [];
-    if (state.labels) {
+    if (active && !mapping && state.labels) {
       for (let k = 0; k < hintCandidates.length; k++) {
         const i = hintCandidates[k];
         if (labelObjs.has(i) || shared.uMask.value[types[i]] < 0.5) continue;
@@ -603,6 +623,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   const mouse = new THREE.Vector2();
   let pending = null;
   function pick(clientX, clientY) {
+    if (!active) return -1;
     const r = renderer.domElement.getBoundingClientRect();
     mouse.set(((clientX - r.left) / r.width) * 2 - 1, -((clientY - r.top) / r.height) * 2 + 1);
     raycaster.setFromCamera(mouse, camera);
@@ -616,6 +637,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     for (const hit of hits) {
       if (hit.distance > front * 1.15 + 20) break;
       if (mask[types[hit.index]] < 0.5) continue;
+      if (mapping && (!revealedAt.has(hit.index) || revealedAt.get(hit.index) > now())) continue;
       const s = Math.log10(1 + degree[hit.index]) - hit.distanceToRay / raycaster.params.Points.threshold;
       if (s > bestScore) {
         bestScore = s;
@@ -625,7 +647,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     return best;
   }
   renderer.domElement.addEventListener('pointermove', (e) => {
-    pending = [e.clientX, e.clientY];
+    if (active && !interacting && e.pointerType !== 'touch') pending = [e.clientX, e.clientY];
   });
   renderer.domElement.addEventListener('pointerleave', () => {
     pending = null;
@@ -635,42 +657,67 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   let down = null;
   renderer.domElement.addEventListener('pointerdown', (e) => (down = [e.clientX, e.clientY]));
   renderer.domElement.addEventListener('pointerup', (e) => {
-    if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5) return;
+    const start = down;
+    down = null;
+    if (!start || Math.hypot(e.clientX - start[0], e.clientY - start[1]) > 5) return;
     onClick?.(pick(e.clientX, e.clientY));
   });
+  renderer.domElement.addEventListener('pointercancel', () => { down = null; pending = null; });
   controls.addEventListener('start', () => {
+    interacting = true;
+    pending = null;
+    onHover?.(-1);
     controls.autoRotate = false;
     state.cam = null;
   });
+  controls.addEventListener('end', () => {
+    interacting = false;
+    resumeOrbitAt = performance.now() + 3500;
+  });
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) { orbitWanted = false; controls.autoRotate = false; }
+  });
+  let lastPick = 0;
+  let lastHints = 0;
+  let lastDeclutter = 0;
 
   // ---------- loop ----------
-  renderer.setAnimationLoop(() => {
+  function renderFrame() {
     timer.update();
-    const dt = Math.min(timer.getDelta(), 0.1);
+    if (!active || document.hidden) return;
+    const dt = Math.min(timer.getDelta(), 0.05);
+    const frameTime = performance.now();
     shared.uTime.value += dt;
-    nodeUniforms.uReveal.value = Math.min(3, nodeUniforms.uReveal.value + dt * 0.9);
+    nodeUniforms.uReveal.value = reducedMotion.matches ? 3 : Math.min(3, nodeUniforms.uReveal.value + dt * 0.9);
+    background += ((mapping ? 0.065 : 0.8) - background) * Math.min(1, dt * 2);
+    nodeUniforms.uBase.value = background;
+    controls.dampingFactor = 1 - Math.exp(-4 * dt);
+    controls.autoRotate = orbitWanted && !reducedMotion.matches && !interacting && !state.cam && frameTime >= resumeOrbitAt;
+    // Let damping decay before applying a camera flight, so the two never fight.
+    controls.update(dt);
 
     if (state.cam) {
       const c = state.cam;
-      const k = Math.min(1, (performance.now() - c.start) / c.ms);
-      const ease = 1 - Math.pow(1 - k, 3);
+      const k = c.ms === 0 ? 1 : Math.min(1, (frameTime - c.start) / c.ms);
+      const ease = k * k * k * (k * (k * 6 - 15) + 10);
       controls.target.lerpVectors(c.fromT, c.toT, ease);
       camera.position.lerpVectors(c.fromP, c.toP, ease);
-      if (k >= 1) state.cam = null;
+      camera.lookAt(controls.target);
+      if (k >= 1) { state.cam = null; resumeOrbitAt = frameTime + 1800; }
     }
-    controls.update();
     // Fewer fibres overlap per pixel up close, so each one is drawn stronger.
     const dist = camera.position.distanceTo(controls.target);
     const zoom = homeDist / Math.max(1, dist);
-    fiberUniforms.uOpacity.value = FIBER_OPACITY * Math.min(3, Math.max(1, Math.pow(zoom, 0.9)));
+    fiberUniforms.uOpacity.value = FIBER_OPACITY * background * Math.min(3, Math.max(1, Math.pow(zoom, 0.9)));
 
     const camR = camera.position.length();
+    shared.uCameraDistance.value = camR;
     const wireA = smooth(R * 1.5, R * 2.3, camR);
     wire.visible = outline.visible = wireA > 0.01;
     if (wire.visible) {
-      wireUniforms.uOpacity.value = 0.3 * wireA;
+      wireUniforms.uOpacity.value = 0.16 * wireA;
       wireUniforms.uCam.value.copy(camera.position);
-      outline.material.opacity = 0.45 * wireA;
+      outline.material.opacity = 0.25 * wireA;
       outline.position.copy(camera.position).multiplyScalar((R * R) / (camR * camR));
       outline.scale.setScalar(R * Math.sqrt(1 - (R * R) / (camR * camR)));
       outline.lookAt(camera.position);
@@ -680,7 +727,8 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       o.element.style.opacity = wireA;
     }
 
-    if (pending) {
+    if (pending && !interacting && !state.cam && frameTime - lastPick >= 80) {
+      lastPick = frameTime;
       const [x, y] = pending;
       pending = null;
       const i = pick(x, y);
@@ -693,11 +741,11 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     reach.flush();
     routes.flush();
     state.frame++;
-    if (state.frame % 8 === 0) updateHints();
+    if (frameTime - lastHints >= 220) { updateHints(); lastHints = frameTime; }
     composer.render();
     labelRenderer.render(scene, camera);
-    if (state.labels && state.frame % 4 === 0) declutter();
-  });
+    if (state.labels && frameTime - lastDeclutter >= 90) { declutter(); lastDeclutter = frameTime; }
+  }
 
   // Named labels (seeds, focus, pathway nodes) stack vertically instead of overlapping; zoom
   // hints never move and simply hide when they would collide with anything placed before them.
@@ -711,7 +759,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     for (const o of objs) {
       const el = o.element;
       proj.copy(o.position).project(camera);
-      if (proj.z > 1) continue;
+      if (proj.z > 1 || proj.z < -1) { el.style.opacity = '0'; continue; }
       if (!o.userData.w) {
         o.userData.w = el.offsetWidth;
         o.userData.h = el.offsetHeight;
@@ -722,9 +770,11 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       const lift = lh / 2 + 7;
       const x = ((proj.x + 1) / 2) * w - lw / 2;
       const y = ((1 - proj.y) / 2) * h - lh / 2 - lift;
+      if (x < inset.left + 4 || x + lw > w - inset.right - 4) { el.style.opacity = '0'; continue; }
       let dy = null;
       for (const k of o.userData.rank === 4 ? [0] : [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5]) {
         const top = y + k * lh;
+        if (top < inset.top + 4 || top + lh > h - inset.bottom - 4) continue;
         if (!placed.some((r) => x < r.x + r.w && x + lw > r.x && top < r.y + r.h && top + lh > r.y)) {
           dy = k * lh;
           break;
@@ -740,11 +790,11 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     }
   }
 
-  function flyTo(target, distance, ms = 1400) {
+  function flyTo(target, distance, ms = 1250) {
     const dir = camera.position.clone().sub(controls.target).normalize();
     state.cam = {
       start: performance.now(),
-      ms,
+      ms: reducedMotion.matches ? 0 : ms,
       fromT: controls.target.clone(),
       toT: target.clone(),
       fromP: camera.position.clone(),
@@ -761,13 +811,39 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   }
 
   return {
+    /** Pause rendering completely while no query is active. */
+    setActive(on, { search = false } = {}) {
+      active = on;
+      mapping = on && search;
+      controls.enabled = on;
+      container.dataset.active = String(on);
+      pending = null;
+      state.hover = -1;
+      if (!on) {
+        renderer.setAnimationLoop(null);
+        controls.autoRotate = false;
+        state.cam = null;
+        background = 0;
+        nodeUniforms.uReveal.value = 0;
+        revealedAt.clear();
+        renderer.clear();
+        onHover?.(-1);
+      } else {
+        timer.update();
+        renderer.setAnimationLoop(renderFrame);
+      }
+      updateHints();
+    },
     get time() {
       return now();
     },
     /** Colour the search's seed nodes, each in its side's colour. */
     seeds(list) {
       const t = now();
-      for (const { i, side } of list) reach.node(P(i), t, SIDE_COLORS[side].toArray(), 11);
+      for (const { i, side } of list) {
+        reach.node(P(i), t, SIDE_COLORS[side].toArray(), 11);
+        revealedAt.set(i, t);
+      }
     },
     /**
      * One hop of a wavefront (nodes sorted by path cost): the strongest reached nodes and the edges
@@ -783,6 +859,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       const n = Math.min(nodes.length, DRAWN_PER_HOP[hop] ?? 0);
       for (let k = 0; k < n; k++) {
         const [u, v] = [parents[k], nodes[k]];
+        revealedAt.set(v, Math.min(revealedAt.get(v) ?? Infinity, t + times[k]));
         reach.link(P(u), P(v), t + times[k], col, (first ? 0.6 : 0.3) / (1 + (span(u, v) / 260) ** 2));
         reach.node(P(v), t + times[k], col, first ? 5 : 3.2);
       }
@@ -840,6 +917,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
         const on = !selected || p.id === selected;
         const alpha = selected ? (on ? 1 : 0.12) : 0.8;
         p.nodes.forEach((n, k) => {
+          revealedAt.set(n, now());
           if (k) routes.link(P(p.nodes[k - 1]), P(n), t, col, alpha);
           routes.node(P(n), t, col, on ? 6 : 3);
         });
@@ -852,6 +930,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     },
     clearSignals() {
       reach.clear();
+      revealedAt.clear();
       reachedFrom.clear();
       reachFade = 1;
     },
@@ -859,7 +938,9 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       shared.uMask.value[t] = on ? 1 : 0;
     },
     setOrbit(on) {
-      controls.autoRotate = on;
+      orbitWanted = on;
+      resumeOrbitAt = 0;
+      controls.autoRotate = on && !reducedMotion.matches;
     },
     setLabels(on) {
       state.labels = on;

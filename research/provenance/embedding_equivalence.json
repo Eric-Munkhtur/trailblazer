@@ -1,0 +1,37 @@
+{
+  "sentences": [
+    "Patients must have histologically confirmed breast cancer.",
+    "Age >= 18 years old.",
+    " serum creatinine > 2.0 mg/dL",
+    "Pregnant or breastfeeding women are excluded.",
+    "Signed written informed consent prior to any study-specific procedures."
+  ],
+  "comparisons": [
+    {
+      "max_abs_diff": 6.556510925292969e-07,
+      "cosine": 1.00000024,
+      "n_tokens": 13
+    },
+    {
+      "max_abs_diff": 6.556510925292969e-07,
+      "cosine": 0.99999994,
+      "n_tokens": 9
+    },
+    {
+      "max_abs_diff": 6.258487701416016e-07,
+      "cosine": 0.99999994,
+      "n_tokens": 15
+    },
+    {
+      "max_abs_diff": 5.364418029785156e-07,
+      "cosine": 1.0,
+      "n_tokens": 11
+    },
+    {
+      "max_abs_diff": 5.364418029785156e-07,
+      "cosine": 1.00000012,
+      "n_tokens": 14
+    }
+  ],
+  "verdict": "EQUIVALENT (max_abs_diff < 1e-4 on all probes)"
+}

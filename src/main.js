@@ -1,5 +1,6 @@
 import { loadPrimeKG, createBrain } from './brain.js';
 import { createTelemetry } from './telemetry.js';
+import { createPredictionPanel } from './prediction.js';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -16,6 +17,44 @@ let pinned = -1;
 let hovered = -1;
 let hoverTimer = 0;
 let connectFrom = -1;
+let runVersion = 0;
+const initialConnections = $('#tab-connections').innerHTML;
+const initialInspector = $('#tab-inspector').innerHTML;
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const prediction = createPredictionPanel($('#tab-prediction'), (state, detail) => {
+  renderStep({ id: 'prediction', title: 'Predict trial outcome', status: state, detail });
+}, (nct) => { $('#nct').value = nct; submit(nct); });
+
+function graphState(state, title, detail = '') {
+  $('#scene').dataset.state = state;
+  $('#graph-state-title').textContent = title;
+  $('#graph-state-detail').textContent = detail;
+}
+
+function clearSearch() {
+  if (!brain) return;
+  cancelConnect();
+  reset();
+  brain.home();
+  $('#nct').value = '';
+  $('#steps').innerHTML = '<li class="empty">Enter a trial ID or choose a Phase II example to begin.</li>';
+  showTab('connections');
+  history.replaceState(null, '', location.pathname);
+}
+function activity(label, state = '') {
+  $('#activity-label').textContent = label;
+  $('#activity-label').dataset.state = state;
+}
+function busy(on) {
+  $('#run').disabled = on;
+  $('#run').textContent = on ? 'Mapping…' : 'Map trial';
+  $('#tab-connections').setAttribute('aria-busy', String(on));
+}
+function revealPanel(el) {
+  el.getAnimations().forEach((animation) => animation.cancel());
+  if (!reducedMotion.matches) el.animate([{ opacity: 0, transform: 'translateY(5px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 240, easing: 'cubic-bezier(.2,.7,.2,1)' });
+}
+
 
 // ---------- boot ----------
 
@@ -37,20 +76,22 @@ async function boot() {
     return;
   }
   brain = createBrain($('#scene'), kg, { onHover, onClick: (i) => (i >= 0 ? inspect(i) : deselect()) });
+  brain.setActive(false);
   brain.setInsets(insets(), { place: true });
+  if (reducedMotion.matches) { brain.setOrbit(false); $('#rotate').classList.remove('on'); $('#rotate').textContent = 'Orbit: off'; $('#rotate').setAttribute('aria-pressed', 'false'); }
   telemetry = createTelemetry(kg, () => brain.time);
   if (import.meta.env.DEV) window.verdia = { brain, kg, telemetry };
   $('#meta-nodes').textContent = `• ${kg.N.toLocaleString()}`;
   renderLegend();
-  telemetry.idle();
+  telemetry.off();
   $('#boot').classList.add('done');
   setTimeout(() => $('#boot').remove(), 1200);
 
   fetch('/api/health')
     .then((r) => r.json())
-    .then(({ llm, primekg }) => {
-      if (!primekg) return status('Server', 'PrimeKG not loaded · run npm run primekg and restart', true);
-      status('Agent LLM', llm.ready ? `${llm.provider}/${llm.model}` : 'no key · add OPENAI_API_KEY or ANTHROPIC_API_KEY to .env', !llm.ready || llm.provider === 'mock');
+    .then(({ llm, primekg, prediction }) => {
+      if (!primekg) return status('Server', 'Knowledge graph unavailable', true);
+      status('Mode', `${llm.provider === 'mock' ? 'Structured data' : llm.ready ? `${llm.provider}/${llm.model}` : 'Unavailable'} · ${prediction?.ready ? 'HINT online' : 'HINT offline'}`, !llm.ready);
     })
     .catch(() => status('Agent server', 'offline', true));
 
@@ -60,7 +101,7 @@ async function boot() {
   else if (params.get('q')) {
     $('#nct').value = params.get('q');
     submit(params.get('q'));
-  } else captionTimer = setTimeout(() => caption(`Every point is one of PrimeKG's ${kg.N.toLocaleString()} entities`), 900);
+  }
 }
 
 /** How much of the stage canvas the side panels cover, in pixels. */
@@ -69,8 +110,8 @@ function insets() {
   const left = $('.panel.left').getBoundingClientRect();
   const right = $('.panel.right').getBoundingClientRect();
   return {
-    left: left.width ? Math.max(0, left.right - stage.left) : 0,
-    right: right.width ? Math.max(0, stage.right - right.left) : 0,
+    left: left.width && left.bottom > stage.top && left.top < stage.bottom ? Math.max(0, left.right - stage.left) : 0,
+    right: right.width && right.bottom > stage.top && right.top < stage.bottom ? Math.max(0, stage.right - right.left) : 0,
     top: 0,
     bottom: 0,
   };
@@ -138,6 +179,9 @@ $('#run-form').addEventListener('submit', (e) => {
   e.preventDefault();
   submit($('#nct').value);
 });
+$('#nct').addEventListener('input', () => {
+  if (!$('#nct').value.trim()) clearSearch();
+});
 document.querySelectorAll('.examples button').forEach((b) =>
   b.addEventListener('click', () => {
     $('#nct').value = b.dataset.q;
@@ -150,7 +194,13 @@ const PAIR_TO = /^(.+?)\s+to\s+(.+)$/i;
 
 async function submit(raw) {
   const q = String(raw || '').trim();
-  if (!q || !brain) return;
+  const submittedAt = runVersion;
+  if (!brain) return;
+  if (!q) return clearSearch();
+  if (/^NCT/i.test(q) && !/^NCT\d{8}$/i.test(q)) {
+    reset();
+    return showError('Use NCT followed by eight digits, for example NCT01928927.');
+  }
   if (/^NCT\d{8}$/i.test(q)) {
     history.replaceState(null, '', `?q=${encodeURIComponent(q)}`);
     return run(q.toUpperCase());
@@ -159,10 +209,12 @@ async function submit(raw) {
   let pair = q.match(PAIR);
   if (!pair && PAIR_TO.test(q)) {
     const whole = await find(q);
+    if (submittedAt !== runVersion) return;
     if (!whole || whole.score < 3) pair = q.match(PAIR_TO);
   }
   if (pair) {
     const [a, b] = await Promise.all([find(pair[1]), find(pair[2])]);
+    if (submittedAt !== runVersion) return;
     if (a && b && a.i !== b.i) return connect(a.i, b.i);
     $('#steps').innerHTML = `<li class="empty">Could not find ${esc(!a ? pair[1] : pair[2])} in PrimeKG.</li>`;
     return;
@@ -178,33 +230,51 @@ const find = (q) =>
     .catch(() => null);
 
 function reset() {
+  runVersion++;
+  prediction.reset();
   source?.close();
+  source = null;
+  busy(false);
+  activity('Ready to explore');
+  $('#tab-connections').innerHTML = initialConnections;
+  $('#tab-inspector').innerHTML = initialInspector;
   caption(null);
   paths = [];
   summary = null;
   selectedPath = null;
   pinned = -1;
+  hovered = -1;
+  clearTimeout(hoverTimer);
+  $('#tip').classList.add('hidden');
+  brain.setActive(false);
+  graphState('idle', 'Graph is off', 'Enter a trial ID and press Map trial to begin.');
   brain.clearSignals();
   brain.clearPaths();
   brain.clearLabels();
   brain.clearEgo();
   brain.mark(-1);
   telemetry.mark(-1);
-  telemetry.idle();
+  telemetry.off();
   $('#tab-note').textContent = '';
   $('#trace-note').textContent = '';
+  $('#steps').innerHTML = '';
 }
 
 async function searchKG(q) {
   const connecting = connectFrom >= 0;
   if (!connecting) reset();
   $('#trace-note').textContent = 'Search';
+  const version = runVersion;
   $('#steps').innerHTML = '<li class="empty">Searching PrimeKG…</li>';
   const hits = await fetch(`/api/primekg/search?q=${encodeURIComponent(q)}&limit=14`).then((r) => r.json()).catch(() => []);
+  if (version !== runVersion) return;
   if (!Array.isArray(hits) || !hits.length) {
     $('#steps').innerHTML = `<li class="empty">No PrimeKG node matches “${esc(q)}”.</li>`;
     return;
   }
+  brain.setActive(true);
+  graphState('active', '', '');
+  telemetry.idle();
   const title = connecting ? `Connect ${esc(kg.names[connectFrom])} to…` : `PrimeKG matches for “${esc(q)}”`;
   $('#steps').innerHTML = `<li class="hits"><div class="title">${title}</div>${hits
     .map((h) => `<button class="hit" data-i="${h.i}"><span class="sw" style="background:${typeOf(h.i).color}"></span><span class="nm">${esc(h.name)}</span><span class="ty">${esc(typeOf(h.i).label)} · ${h.degree.toLocaleString()}</span></button>`)
@@ -221,9 +291,11 @@ function run(nct) {
   expectSummary = true;
   $('#trace-note').textContent = nct;
   $('#steps').innerHTML = '';
+  graphState('loading', 'Reading trial', 'The graph will light up as drugs and diseases are mapped.');
   $('#tab-connections').innerHTML = '<div class="placeholder">Agent is reading the trial…</div>';
-  showTab('connections');
+  showTab('prediction');
   stream(`/api/assemble?nct=${encodeURIComponent(nct)}`);
+  prediction.load(nct);
 }
 
 function connect(a, b) {
@@ -233,6 +305,7 @@ function connect(a, b) {
   history.replaceState(null, '', `?connect=${a},${b}`);
   $('#trace-note').textContent = 'A → B';
   $('#steps').innerHTML = '';
+  graphState('loading', 'Connecting entities', 'Starting from the two selected nodes.');
   $('#tab-connections').innerHTML = `<div class="trial pair">${chip(a)}<span>→</span>${chip(b)}</div><div class="placeholder">Firing from both nodes…</div>`;
   bindChips($('#tab-connections'));
   showTab('connections');
@@ -240,22 +313,27 @@ function connect(a, b) {
 }
 
 function stream(url) {
-  $('#run').disabled = true;
-  source = new EventSource(url);
+  busy(true);
+  activity('Reading and mapping…', 'running');
+  const current = new EventSource(url);
+  source = current;
   let finished = false;
-  source.onmessage = (m) => {
+  current.onmessage = (m) => {
+    if (source !== current) return;
     const ev = JSON.parse(m.data);
     handle(ev);
     if (ev.type === 'done' || ev.type === 'error') {
       finished = true;
-      source.close();
-      $('#run').disabled = false;
+      current.close();
+      busy(false);
+      if (ev.type === 'done') activity('Exploration complete');
     }
   };
-  source.onerror = () => {
-    source.close();
-    $('#run').disabled = false;
-    if (!finished) showError('Lost connection to the agent server. Is `npm run dev` running?');
+  current.onerror = () => {
+    current.close();
+    if (source !== current) return;
+    busy(false);
+    if (!finished) showError('The connection was interrupted or the explorer is busy. Please try again in a moment.');
   };
 }
 
@@ -263,6 +341,7 @@ function handle(ev) {
   switch (ev.type) {
     case 'step':
       renderStep(ev);
+      if ($('#scene').dataset.state === 'loading') graphState('loading', ev.title, ev.detail || 'Preparing the graph');
       break;
     case 'log': {
       const logs = document.querySelector(`#step-${ev.step} .logs`);
@@ -277,6 +356,9 @@ function handle(ev) {
       $('#tab-connections').innerHTML = `<div class="trial"><a href="${esc(ev.trial.url)}" target="_blank" rel="noopener">${esc(ev.trial.nct)} ↗</a><div>${esc(ev.trial.title)}</div></div><div class="placeholder">Grounding entities in PrimeKG…</div>`;
       break;
     case 'seeds':
+      if (!ev.seeds.length) break;
+      brain.setActive(true, { search: true });
+      graphState('active', '', '');
       for (const s of ev.seeds) brain.label(s.i, s.name, `seed ${s.side}`);
       brain.seeds(ev.seeds);
       break;
@@ -294,7 +376,7 @@ function handle(ev) {
     case 'paths':
       paths = ev.paths;
       brain.lockPaths(paths);
-      labelPaths(paths.slice(0, 8));
+      labelPaths(paths.slice(0, 3));
       telemetry.paths(paths.length);
       $('#tab-note').textContent = `${paths.length} found`;
       renderConnections();
@@ -304,10 +386,12 @@ function handle(ev) {
       renderConnections();
       break;
     case 'done':
-      if (!expectSummary && !paths.length) $('#tab-connections .placeholder').textContent = 'No pathway connects these nodes within four hops.';
+      if (!expectSummary && !paths.length && $('#tab-connections .placeholder')) $('#tab-connections .placeholder').textContent = 'No connecting pathway was found within four hops.';
       break;
     case 'error':
+      if ($('#scene').dataset.state === 'loading') graphState('idle', 'Nothing mapped', ev.message);
       document.querySelectorAll('.step.running').forEach((s) => {
+        if (s.id === 'step-prediction') return;
         s.classList.replace('running', 'error');
         s.querySelector('.state').textContent = STATE.error;
       });
@@ -320,16 +404,19 @@ function labelPaths(list) {
   for (const p of list) for (const n of p.nodes.slice(1, -1)) brain.label(n, kg.names[n], 'path');
 }
 
-const STATE = { running: 'Active', done: 'Done', error: 'Failed' };
+const STATE = { running: 'Active', done: 'Done', error: 'Failed', unavailable: 'Unavailable' };
 function renderStep({ id, title, status, detail }) {
   let li = document.getElementById(`step-${id}`);
   if (!li) {
     li = document.createElement('li');
     li.id = `step-${id}`;
     li.innerHTML = '<div class="head"><span class="title"></span><span class="state"></span></div><div class="detail"></div><div class="logs"></div>';
-    $('#steps').appendChild(li);
+    const modelStep = $('#step-prediction');
+    if (id !== 'prediction' && modelStep) $('#steps').insertBefore(li, modelStep);
+    else $('#steps').appendChild(li);
   }
   li.className = `step ${status}`;
+  if (status === 'running') activity(title, 'running');
   li.querySelector('.title').textContent = title;
   li.querySelector('.state').textContent = STATE[status] ?? status;
   if (detail) li.querySelector('.detail').textContent = detail;
@@ -338,6 +425,8 @@ function renderStep({ id, title, status, detail }) {
 function showError(msg) {
   const d = document.createElement('div');
   d.className = 'error-box';
+  d.setAttribute('role', 'alert');
+  activity('Could not finish · try again', 'error');
   d.innerHTML = esc(msg).replace(/`([^`]+)`/g, '<code>$1</code>');
   $('#steps').appendChild(d);
 }
@@ -352,12 +441,14 @@ function renderConnections() {
   if (!paths.length && !summary) return;
   const trial = $('#tab-connections .trial')?.outerHTML || '';
   const s = summary;
+  const trialTitle = $('#tab-connections .trial div')?.textContent || '';
+  const repeatedHeadline = s?.headline && trialTitle.startsWith(s.headline.replace(/…$/, '').trim());
   const keyIds = new Map((s?.key_paths || []).map((k) => [k.path, k]));
   const card = (p) => {
     const key = keyIds.get(p.id);
     const pct = Math.min(100, Math.round(p.strength * 100));
-    return `<div class="path ${selectedPath === p.id ? 'active' : ''} ${key ? 'key' : ''}" data-id="${p.id}">
-      <div class="phead"><span class="pid">${p.id}</span><span class="kind">${esc(p.kind)}</span><span class="pct">${pct}%</span></div>
+    return `<div class="path ${selectedPath === p.id ? 'active' : ''} ${key ? 'key' : ''}" data-id="${p.id}" tabindex="0" role="group" aria-label="Pathway ${p.id}; press Enter to trace">
+      <div class="phead"><span class="pid">${p.id}</span><span class="kind">${esc(p.kind)}</span><span class="pct" title="Graph traversal cost; not an outcome probability">Cost ${esc(p.cost)}</span></div>
       <div class="bar"><i style="width:${pct}%"></i></div>
       ${key?.title ? `<div class="t">${esc(key.title)}</div>` : ''}
       <div class="chain">${pathChain(p)}</div>
@@ -368,8 +459,8 @@ function renderConnections() {
   const others = paths.filter((p) => !keyIds.has(p.id));
   const synthesis = s
     ? `<div class="syn">
-      <span class="conf ${esc(s.confidence)}">Confidence: ${esc(s.confidence || 'n/a')}</span>
-      <h2>${esc(s.headline)}</h2>
+      <span class="conf ${esc(s.confidence)}">Narrative confidence: ${esc(s.confidence || 'n/a')}</span>
+      ${!repeatedHeadline ? `<h2>${esc(s.headline)}</h2>` : ''}
       <p class="prose">${esc(s.summary)}</p>
       ${s.mechanistic_hypothesis ? `<h3>Mechanistic hypothesis</h3><p class="prose">${esc(s.mechanistic_hypothesis)}</p>` : ''}
     </div>`
@@ -389,17 +480,25 @@ function renderConnections() {
       selectPath(el.dataset.id === selectedPath ? null : el.dataset.id);
     }),
   );
+  $('#tab-connections').querySelectorAll('.path').forEach((el) => el.addEventListener('keydown', (e) => {
+    if (e.target !== el || !['Enter', ' '].includes(e.key)) return;
+    e.preventDefault();
+    selectPath(el.dataset.id === selectedPath ? null : el.dataset.id);
+  }));
   bindChips($('#tab-connections'));
+  revealPanel($('#tab-connections'));
 }
 
 function selectPath(id) {
   selectedPath = id;
   document.querySelectorAll('#tab-connections .path').forEach((el) => el.classList.toggle('active', el.dataset.id === id));
   brain.lockPaths(paths, id);
-  if (!id) return;
+  brain.clearLabels('path');
+  if (!id) { labelPaths(paths.slice(0, 3)); return; }
   const p = paths.find((x) => x.id === id);
   for (const n of p.nodes) brain.label(n, kg.names[n], 'path');
   brain.focus(p.nodes);
+  if (matchMedia('(max-width: 900px)').matches) $('#scene').scrollIntoView({behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'center'});
 }
 
 function deselect() {
@@ -545,14 +644,16 @@ function showTip(i, x, y) {
   const t = typeOf(i);
   const hint = connectFrom >= 0 && i !== connectFrom ? ' · click to connect' : '';
   tip.innerHTML = `<span class="sw" style="background:${t.color}"></span><b>${esc(kg.names[i])}</b><span class="ty">${esc(t.label)} · ${kg.degree[i].toLocaleString()} edge${kg.degree[i] === 1 ? '' : 's'}${hint}</span>`;
-  tip.style.transform = `translate(${x + 14}px, ${y + 14}px)`;
   tip.classList.remove('hidden');
+  tip.style.transform = `translate(${Math.max(8, Math.min(x + 14, innerWidth - tip.offsetWidth - 8))}px, ${Math.max(8, Math.min(y + 14, innerHeight - tip.offsetHeight - 8))}px)`;
 }
 
 function showTab(name) {
-  document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.tab').forEach((t) => { t.classList.toggle('active', t.dataset.tab === name); t.setAttribute('aria-selected', String(t.dataset.tab === name)); });
   $('#tab-connections').classList.toggle('hidden', name !== 'connections');
   $('#tab-inspector').classList.toggle('hidden', name !== 'inspector');
+  $('#tab-prediction').classList.toggle('hidden', name !== 'prediction');
+  revealPanel($(`#tab-${name}`));
 }
 document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab)));
 
@@ -581,6 +682,7 @@ function toggle(id, fn) {
   b.addEventListener('click', () => {
     const on = !b.classList.contains('on');
     b.classList.toggle('on', on);
+    b.setAttribute('aria-pressed', String(on));
     b.textContent = `${b.dataset.label}: ${on ? 'on' : 'off'}`;
     fn(on);
   });
@@ -588,11 +690,7 @@ function toggle(id, fn) {
 toggle('#rotate', (on) => brain.setOrbit(on));
 toggle('#labels', (on) => brain.setLabels(on));
 $('#home').addEventListener('click', () => brain.home());
-$('#clear').addEventListener('click', () => {
-  cancelConnect();
-  reset();
-  brain.home();
-});
+$('#clear').addEventListener('click', clearSearch);
 window.addEventListener('resize', () => {
   if (!brain) return;
   brain.setInsets(insets());

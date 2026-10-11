@@ -1,0 +1,167 @@
+{
+  "runs": [
+    {
+      "roc_auc": 0.6457193686653405,
+      "average_precision_continuous": 0.6906520924279029,
+      "f1@0.5": 0.6191325014854426,
+      "precision@0.5": 0.681045751633987,
+      "recall@0.5": 0.5675381263616558,
+      "accuracy@0.5": 0.6124546553808948,
+      "confusion_matrix@0.5": [
+        [
+          492,
+          244
+        ],
+        [
+          397,
+          521
+        ]
+      ],
+      "prauc_binarized_upstream": 0.6265436136457746,
+      "n": 1654,
+      "n_pos": 918,
+      "run_id": "authors_shipped",
+      "dir": "final_predictions/authors_shipped",
+      "matches_saved_metrics": true
+    },
+    {
+      "roc_auc": 0.6204532537652743,
+      "average_precision_continuous": 0.6727276980862619,
+      "f1@0.5": 0.6367123287671232,
+      "precision@0.5": 0.6405733186328556,
+      "recall@0.5": 0.6328976034858388,
+      "accuracy@0.5": 0.5991535671100363,
+      "confusion_matrix@0.5": [
+        [
+          410,
+          326
+        ],
+        [
+          337,
+          581
+        ]
+      ],
+      "prauc_binarized_upstream": 0.6091658067324014,
+      "n": 1654,
+      "n_pos": 918,
+      "run_id": "ckpt_authors_phaseII",
+      "dir": "final_predictions/ckpt_authors",
+      "matches_saved_metrics": true
+    },
+    {
+      "roc_auc": 0.6206471417069244,
+      "average_precision_continuous": 0.6723974773400846,
+      "f1@0.5": 0.6366630076838639,
+      "precision@0.5": 0.6415929203539823,
+      "recall@0.5": 0.6318082788671024,
+      "accuracy@0.5": 0.599758162031439,
+      "confusion_matrix@0.5": [
+        [
+          412,
+          324
+        ],
+        [
+          338,
+          580
+        ]
+      ],
+      "prauc_binarized_upstream": 0.6097168021762667,
+      "n": 1654,
+      "n_pos": 918,
+      "run_id": "ckpt_authors_phaseII_STUBEMB",
+      "dir": "final_predictions/ckpt_authors_stubemb",
+      "matches_saved_metrics": true
+    },
+    {
+      "roc_auc": 0.6302542152126551,
+      "average_precision_continuous": 0.6703415016306343,
+      "f1@0.5": 0.6489130434782608,
+      "precision@0.5": 0.6475054229934925,
+      "recall@0.5": 0.6503267973856209,
+      "accuracy@0.5": 0.6094316807738815,
+      "confusion_matrix@0.5": [
+        [
+          411,
+          325
+        ],
+        [
+          321,
+          597
+        ]
+      ],
+      "prauc_binarized_upstream": 0.6151650977954337,
+      "n": 1654,
+      "n_pos": 918,
+      "run_id": "hint_p2_s0",
+      "dir": "final_predictions/hint_p2_s0",
+      "matches_saved_metrics": true
+    },
+    {
+      "roc_auc": 0.6390368949512173,
+      "average_precision_continuous": 0.675923259154823,
+      "f1@0.5": 0.6496469310157523,
+      "precision@0.5": 0.647887323943662,
+      "recall@0.5": 0.6514161220043573,
+      "accuracy@0.5": 0.6100362756952842,
+      "confusion_matrix@0.5": [
+        [
+          411,
+          325
+        ],
+        [
+          320,
+          598
+        ]
+      ],
+      "prauc_binarized_upstream": 0.6155146229080124,
+      "n": 1654,
+      "n_pos": 918,
+      "run_id": "hint_p2_s1",
+      "dir": "final_predictions/hint_p2_s1",
+      "matches_saved_metrics": true
+    },
+    {
+      "roc_auc": 0.639121998437056,
+      "average_precision_continuous": 0.6822918697516593,
+      "f1@0.5": 0.5949908368967624,
+      "precision@0.5": 0.6773296244784422,
+      "recall@0.5": 0.5305010893246187,
+      "accuracy@0.5": 0.5991535671100363,
+      "confusion_matrix@0.5": [
+        [
+          504,
+          232
+        ],
+        [
+          431,
+          487
+        ]
+      ],
+      "prauc_binarized_upstream": 0.6199045147421951,
+      "n": 1654,
+      "n_pos": 918,
+      "run_id": "hint_p2_s2",
+      "dir": "final_predictions/hint_p2_s2",
+      "matches_saved_metrics": true
+    }
+  ],
+  "training_seed_aggregate": {
+    "roc_auc": {
+      "mean": 0.6361377028669761,
+      "std": 0.0041603990902104775
+    },
+    "average_precision_continuous": {
+      "mean": 0.6761855435123723,
+      "std": 0.004882241245586838
+    },
+    "f1@0.5": {
+      "mean": 0.6311836037969251,
+      "std": 0.025593904608279455
+    },
+    "prauc_binarized_upstream": {
+      "mean": 0.6168614118152137,
+      "std": 0.0021565247535842926
+    },
+    "n_runs": 3
+  }
+}

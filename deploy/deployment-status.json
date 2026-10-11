@@ -1,0 +1,102 @@
+{
+  "recorded_at_utc": "2026-10-11T08:18:19.085360+00:00",
+  "url": "https://verdia-hackru-20839887.westus2.cloudapp.azure.com",
+  "host": "20.83.98.87",
+  "vm_size": "Standard_B2als_v2",
+  "node_version": "22.23.3",
+  "stage": "graph explorer and live HINT inference deployed",
+  "public_https_status": 200,
+  "health": {
+    "ok": true,
+    "primekg_nodes": 129375,
+    "primekg_edges": 4050249,
+    "llm_provider": "mock",
+    "prediction_ready": true,
+    "prediction_mode": "live_inference"
+  },
+  "observed_browser_example": {
+    "nct": "NCT01035255",
+    "reached_nodes": 17697,
+    "paths": 24,
+    "all_five_steps": "done",
+    "search_time_ms": 160
+  },
+  "service_memory_bytes_before_example": 175431680,
+  "private_files_transferred": false,
+  "descriptive_features_deployed": false,
+  "source_sha256": {
+    "server/index.js": "988632f3971dc2e02673096d7d0cb4e67bb3e13ff7161c652a6bf46444ca8450",
+    "server/agent.js": "5ebc9479387d8878fb61495a5060442a89bf3530d5ae7e17b2ffc541ebcb9f5a",
+    "server/neural.js": "7c60a23cc8cc2441c6f25108006ae58fb90469af5edec69ab62201082e73fcfa",
+    "server/tools/http.js": "354a862fa016423e99aaa3d8e3b6588f4c182f8d7083bd7f017d3673cba014dc",
+    "server/tools/ctgov.js": "db6f718b4238e0e657a32b8c92914053e6a5ba6ad909de576cf74fdd7bec0445",
+    "src/main.js": "2847bb54856f9f1a92892e6c6e16d780a56470220ba309f2b217f5c57f275588",
+    "index.html": "c290893e3e6a335c1a82005cc8fbd537198e77f81e1338ebc513ca94eb2bfeb8",
+    "package-lock.json": "3e96ee812eea9fea0c7dad6be8e2080d7611bc5744806e6a12ceea5b59a05383",
+    "deploy/verdia.service": "c4c14d680a055458d35acf939a38b895bf2061b9ab60c9a17f67798dede3e0a0",
+    "deploy/Caddyfile": "06b4ec0a0a5ce984e410bab03b313879178bb6ddf4720d089c4c91db7ad2e08b",
+    "src/style.css": "eebbbe4751c1819dd7c380006bebb7f8a7a6280923c973b5a59252a0e9b283cc",
+    "src/telemetry.js": "d0557e570540eff7920e2ed6acdf943c832e7e4adbae31c903187687b5b1d1ea",
+    "src/brain.js": "ecbddd1740ab41b98fb974093ca0943265222cabcc3a540ff71db895ce0e3acf",
+    "server/prediction.js": "af3223a11bb1a3ebc48cbc4c9695919c805ba6c99b0d3aa74b64ada5bdf38378",
+    "src/prediction.js": "669388585c80b75fafe5da7fac84baae385891ed825b2495959f2c1ff96f1d8b",
+    "model_service/serve.py": "c999040223585558732e0002f1b5af8dde504ef187af6c4a8a01fb544ff63202",
+    "model_service/hint_attention/protocol.py": "232a4710ad36518a95dceb185ecd9964a29c6228b3cf69328f7755ca5d0190d2",
+    "scripts/package-model.py": "2dc88cae4d91e1ee92724bf320944f7e8a7b485ddeaaf08afe10d3490ed2f89f",
+    "deploy/verdia-model.service": "85bff105a801e8dd1e80e5f6367cca49c557fa82f3459e9f71f7eee277946eb0"
+  },
+  "verification": "Production build succeeded; model and web service health confirmed; browser displayed a fresh NCT01132482 inference and graph. Downloaded its prediction provenance. No automated test suite or benchmark rerun.",
+  "ui_revision": "Graph idle/off until query, streamed mapping highlights, input-clear cancels client run, explicit prediction scope and historical result fallback",
+  "ui_review": {
+    "local": "Original HUD rendered with 24 paths; at 390px document width matches viewport and results panel is visible",
+    "automated_tests_run": false,
+    "performance_benchmark_run": false,
+    "public": "Original HUD displayed on Azure with 24 paths; desktop and narrow layouts visually reviewed",
+    "current": [
+      "Empty home page displays Graph is off with zero counters",
+      "Sildenafil example streams the mapped graph and returns live 0.657 score",
+      "Erasing the input hides graph, clears results, and removes URL query",
+      "NCT02830178 displays observational study / graph exploration only with supported examples"
+    ]
+  },
+  "previous_graph_release_recorded_at_utc": "2026-10-11T06:33:48.358016+00:00",
+  "model_service": {
+    "host": "127.0.0.1",
+    "port": 8791,
+    "device": "cpu",
+    "startup_memory_bytes": 898105344,
+    "python": "3.12.3",
+    "torch": "2.4.1+cpu"
+  },
+  "observed_model_example": {
+    "nct": "NCT01132482",
+    "attention_score": 0.6571475267410278,
+    "control_score": 0.6642745137214661,
+    "worker_seconds": 2.64,
+    "paths": 10,
+    "reached_nodes": 13637,
+    "benchmark_membership": "test",
+    "input_source": "Current registry record + PubChem + training-only disease dictionary"
+  },
+  "model_artifacts_transferred": [
+    "authors checkpoint",
+    "two trained state dictionaries",
+    "benchmark metadata and predictions without labels",
+    "split membership",
+    "disease dictionary"
+  ],
+  "request_handling": {
+    "graph_concurrency": 2,
+    "prediction_http_concurrency": 4,
+    "cpu_inference_concurrency": 1,
+    "max_distinct_prediction_jobs": 3,
+    "per_ip_requests_per_minute": 20
+  },
+  "disease_dictionary": {
+    "keys": 1137,
+    "previous_keys": 1091,
+    "source": "TOP Phase II training inputs only; conservative possessive and comma-order aliases; conflicts excluded",
+    "sha256": "af05f65cad6b5f3d0be76b42140bba450194fdaca20bc07ef4531ae99d8190ca"
+  },
+  "known_scope": "Phase II interventional drug trials with resolvable inputs. NCT02830178 is observational and cannot receive a valid Phase II success score."
+}

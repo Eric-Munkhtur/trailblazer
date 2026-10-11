@@ -1,0 +1,69 @@
+{
+  "arm": "conditioned",
+  "seed": 0,
+  "best_epoch": 4,
+  "best_validation_loss": 0.621628625243234,
+  "valid": {
+    "n": 446,
+    "n_positive": 208,
+    "roc_auc": 0.7120636716224952,
+    "average_precision": 0.6887974706382896,
+    "f1_at_0.5": 0.5983827493261455,
+    "precision_at_0.5": 0.6809815950920245,
+    "recall_at_0.5": 0.5336538461538461,
+    "confusion_matrix": [
+      [
+        186,
+        52
+      ],
+      [
+        97,
+        111
+      ]
+    ]
+  },
+  "test": {
+    "n": 1654,
+    "n_positive": 918,
+    "roc_auc": 0.6309824050393105,
+    "average_precision": 0.6825017921187282,
+    "f1_at_0.5": 0.5960264900662252,
+    "precision_at_0.5": 0.6662180349932705,
+    "recall_at_0.5": 0.5392156862745098,
+    "confusion_matrix": [
+      [
+        488,
+        248
+      ],
+      [
+        423,
+        495
+      ]
+    ]
+  },
+  "parameter_diagnostics": {
+    "sentence_key.weight": {
+      "l2": 4.101810932159424,
+      "nonzero": 24576
+    },
+    "inclusion_query.weight": {
+      "l2": 0.6778541207313538,
+      "nonzero": 3200
+    },
+    "inclusion_query.bias": {
+      "l2": 0.0461588054895401,
+      "nonzero": 32
+    },
+    "exclusion_query.weight": {
+      "l2": 0.6985745429992676,
+      "nonzero": 3200
+    },
+    "exclusion_query.bias": {
+      "l2": 0.042145736515522,
+      "nonzero": 32
+    }
+  },
+  "elapsed_seconds": 1723.3008738581557,
+  "best_checkpoint_sha256": "3748480ba5ce679c2c0e4aebdce12197019362cb28ca6f35a53edc5cacdba964",
+  "peak_gpu_allocated_bytes": 99134976
+}

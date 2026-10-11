@@ -1,0 +1,25 @@
+[Unit]
+Description=Verdia graph explorer
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=azureuser
+WorkingDirectory=/home/azureuser/verdia
+Environment=NODE_ENV=production
+Environment=LLM_PROVIDER=mock
+Environment=HOST=127.0.0.1
+Environment=PORT=8790
+Environment=TRUST_LOCAL_PROXY=1
+ExecStart=/home/azureuser/.local/node/bin/node --max-old-space-size=768 server/index.js
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

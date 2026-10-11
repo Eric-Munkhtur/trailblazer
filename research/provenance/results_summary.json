@@ -1,0 +1,20 @@
+{
+  "fresh_training_test_aggregate": {
+    "roc_auc": {
+      "mean": 0.6361377028669761,
+      "population_sd": 0.0041603990902104775,
+      "n_seeds": 3
+    },
+    "average_precision_continuous": {
+      "mean": 0.6761855435123723,
+      "population_sd": 0.004882241245586838,
+      "n_seeds": 3
+    },
+    "f1@0.5": {
+      "mean": 0.6311836037969252,
+      "population_sd": 0.025593904608279455,
+      "n_seeds": 3
+    }
+  },
+  "aggregation": "population standard deviation (ddof=0); not an ensemble; fresh runs are not matched controls for MSI attention"
+}

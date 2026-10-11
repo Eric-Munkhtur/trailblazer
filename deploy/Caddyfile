@@ -1,0 +1,10 @@
+verdia-hackru-20839887.westus2.cloudapp.azure.com {
+    encode gzip
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+    reverse_proxy 127.0.0.1:8790 {
+        flush_interval -1
+    }
+}

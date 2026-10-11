@@ -1,0 +1,168 @@
+{
+  "available": true,
+  "mode": "live_inference",
+  "nct": "NCT01132482",
+  "scores": {
+    "control": 0.6642745137214661,
+    "attention": 0.6571475267410278
+  },
+  "generatedAt": "2026-10-11T07:48:21Z",
+  "durationSeconds": 2.64,
+  "benchmarkMembership": "test",
+  "inputs": {
+    "compounds": [
+      {
+        "intervention": "Sildenafil",
+        "matchedName": "Sildenafil",
+        "title": "Sildenafil",
+        "cid": 135398744,
+        "smiles": "CCCC1=NN(C2=C1N=C(NC2=O)C3=C(C=CC(=C3)S(=O)(=O)N4CCN(CC4)C)OCC)C",
+        "source": "https://pubchem.ncbi.nlm.nih.gov/compound/135398744"
+      }
+    ],
+    "diseases": [
+      {
+        "condition": "Cystic Fibrosis",
+        "codes": [
+          "E84.0",
+          "E84.11",
+          "E84.19",
+          "E84.8",
+          "E84.9",
+          "P09.4",
+          "Z14.1"
+        ],
+        "omittedCodes": [],
+        "source": "Exact name match in TOP Phase II training inputs"
+      }
+    ],
+    "eligibilitySha256": "dcf87eb677eb1909cde9a88c7151421bc8e411e22e5caea0ada68cc5d028978b",
+    "inclusionLines": 10,
+    "exclusionLines": 17,
+    "sharedGroups": false,
+    "truncatedLines": 0
+  },
+  "attention": {
+    "inclusion": [
+      {
+        "text": "inclusion criteria:",
+        "weight": 0.28328564763069153
+      },
+      {
+        "text": "8. no changes in use of nasal medications within 2 weeks of screening visit",
+        "weight": 0.09581954032182693
+      },
+      {
+        "text": "6. ability to understand and sign a written informed consent or assent and comply with the requirements of the study",
+        "weight": 0.09422212839126587
+      },
+      {
+        "text": "5. ability to reproducibly perform spirometry (according to ats criteria)",
+        "weight": 0.09324948489665985
+      }
+    ],
+    "exclusion": [
+      {
+        "text": "2. use of an investigational agent within the 4-week period prior to visit 1 (day 0)",
+        "weight": 0.13802900910377502
+      },
+      {
+        "text": "9. presence of a condition or abnormality that in the opinion of the investigator would compromise the safety of the subject or the quality of the data",
+        "weight": 0.1241927370429039
+      },
+      {
+        "text": "12. history of nasal disease or nasal surgery that would, in the opinion of the investigator, impede accurate measurements of npd",
+        "weight": 0.07161365449428558
+      },
+      {
+        "text": "1. history of hypersensitivity to sildenafil",
+        "weight": 0.05982139706611633
+      }
+    ]
+  },
+  "preprocessing": {
+    "encoder": "dmis-lab/biobert-base-cased-v1.1",
+    "revision": "924f12e0c3db7f156a765ad53fb6b11e7afedbc8",
+    "recipe": "fp32; final layer; mean over real tokens including CLS/SEP; token_type_ids=1; upstream line parser"
+  },
+  "limitations": [
+    "Experimental score for the TOP success label, not separate efficacy or safety predictions.",
+    "The current registry record may include edits made after the historical trial finished.",
+    "The live input-mapping pipeline has not been evaluated as a separate benchmark.",
+    "PrimeKG paths are context and are not inputs to this checkpoint.",
+    "Attention weights show pooling emphasis, not causal explanations."
+  ],
+  "trial": {
+    "title": "Effects of Sildenafil on CFTR-dependent Ion Transport Activity",
+    "phases": [
+      "PHASE2"
+    ],
+    "url": "https://clinicaltrials.gov/study/NCT01132482"
+  },
+  "benchmark": {
+    "dataset": "TOP Phase II",
+    "nTest": 1654,
+    "recordedDate": "2026-10-11",
+    "models": {
+      "attention": {
+        "name": "Verdia · sentence attention",
+        "seed": 0,
+        "selectedEpoch": 4,
+        "checkpointSha256": "2da914ddaef4a9178cfeb5fb793b28bb17c0a077dc407de3ba620e78fcf58457",
+        "predictionsSha256": "963340ee19088ea313979c9a6f81366dd4e022e775b87e697d2d6d55460e8565",
+        "metrics": {
+          "n": 1654,
+          "rocAuc": 0.6323085393577721,
+          "averagePrecision": 0.6833485441486831,
+          "f1": 0.6055919095776323,
+          "accuracy": 0.5991535671100363
+        }
+      },
+      "control": {
+        "name": "HINT · matched control",
+        "seed": 0,
+        "selectedEpoch": 4,
+        "checkpointSha256": "2a4811502a45831c215bf556349b98fbe2b6fc96a342fcd981a33e69a151d6d4",
+        "predictionsSha256": "b3dff5b3b7fac266cde61caea56a1847923fab00180963cc1fc5e90121c64fb9",
+        "metrics": {
+          "n": 1654,
+          "rocAuc": 0.6320184474756085,
+          "averagePrecision": 0.6829250175246367,
+          "f1": 0.6058437686344663,
+          "accuracy": 0.6003627569528416
+        }
+      },
+      "conditioned": {
+        "name": "Verdia · context attention",
+        "seed": 0,
+        "selectedEpoch": 4,
+        "checkpointSha256": "3748480ba5ce679c2c0e4aebdce12197019362cb28ca6f35a53edc5cacdba964",
+        "predictionsSha256": "6c74451dcf34c773a8171ca78e368b54a37bc23773e3cd358725d9dd753b143c",
+        "metrics": {
+          "n": 1654,
+          "rocAuc": 0.6309824050393105,
+          "averagePrecision": 0.6825017921187282,
+          "f1": 0.5960264900662252,
+          "accuracy": 0.594316807738815
+        }
+      }
+    },
+    "conclusion": "Neither attention modification demonstrated a reliable improvement over the matched control.",
+    "upstreamCommit": "8dc0497f23fdb84e2905da7655924a91e6e79798",
+    "upstreamUrl": "https://github.com/futianfan/clinical-trial-outcome-prediction",
+    "inputSha256": {
+      "phase_II.ckpt": "da2c94feca23c751925faceab118895b8ccb68c65a454daad01e1977d7af8e63",
+      "sentence2embedding.pkl": "d4c8f2301ef0eb3213eac9de4c8a13c32a7e5d43efa8da292ab9d230d9e54a90",
+      "icdcode2ancestor_dict.pkl": "276dd306e647113b4dc6f3602ebb85ab14e412648f23dd9d998bfa85c8afbf2f",
+      "phase_II_train.csv": "23e767816483b53ffad04c1e570d7ad4192e09a314ac0dd52375443c2afe2e39",
+      "phase_II_valid.csv": "c5905bfc5b646e30321bd8e671d7bd946b8fb1dfe5c30a74bb29fa40e2a711e7",
+      "phase_II_test.csv": "6e829c430ce1e397993dfc003f522f9e8089a6b13117800ff7943a252423ea91"
+    },
+    "historicalScores": {
+      "attention": 0.6520299911499023,
+      "control": 0.6589157581329346,
+      "conditioned": 0.649551272392273
+    }
+  },
+  "cached": false
+}

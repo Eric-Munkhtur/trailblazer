@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verdia · PrimeKG neural map</title>
+    <title>Verdia · Trial knowledge graph</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -23,7 +23,13 @@
       </symbol>
     </svg>
 
-    <div id="scene"></div>
+    <div id="scene" data-active="false" data-state="idle">
+      <div id="graph-state" role="status">
+        <span class="graph-state-mark" aria-hidden="true">+</span>
+        <h2 id="graph-state-title">Graph is off</h2>
+        <p id="graph-state-detail">Enter a trial ID and press Map trial to begin.</p>
+      </div>
+    </div>
     <div class="frame" aria-hidden="true"></div>
     <div id="caption" class="caption" aria-hidden="true"></div>
     <div id="tip" class="tip hidden"></div>
@@ -37,13 +43,13 @@
 
     <header class="hud-top">
       <div class="meta">
-        <span class="wide">PRIMEKG-NEURAL-MAP</span><span class="wide">FA2-3D</span>
+        <span class="wide">PRIMEKG-KNOWLEDGE-MAP</span><span class="wide">FA2-3D</span>
         <span>NODES</span><span id="meta-nodes">•</span><span>TIME</span><span id="clock">•</span>
       </div>
       <svg class="wordmark" role="img" aria-label="Verdia"><use href="#wordmark" /></svg>
       <nav class="actions">
         <div>
-          <button id="rotate" class="toggle on" data-label="Orbit">Orbit: on</button><i>/</i><button id="labels" class="toggle on" data-label="Labels">Labels: on</button><i>/</i><button id="home">Reset-view</button><i>/</i><button id="clear">Clear</button>
+          <button id="rotate" class="toggle on" aria-pressed="true" data-label="Orbit">Orbit: on</button><i>/</i><button id="labels" class="toggle on" aria-pressed="true" data-label="Labels">Labels: on</button><i>/</i><button id="home">Reset-view</button><i>/</i><button id="clear">Clear</button>
         </div>
         <div class="sources">
           <a href="https://github.com/mims-harvard/PrimeKG" target="_blank" rel="noopener">PrimeKG ↗</a><i>/</i><a href="https://clinicaltrials.gov" target="_blank" rel="noopener">ClinicalTrials.gov ↗</a>
@@ -56,35 +62,39 @@
         <div class="sec-head"><span>Query</span><label for="nct">NCT ID · drug · disease · gene · A → B</label></div>
         <div class="row">
           <span class="prompt">&gt;</span>
-          <input id="nct" placeholder="NCT02142738" autocomplete="off" spellcheck="false" />
-          <button id="run" type="submit">Fire</button>
+          <input id="nct" placeholder="NCT01928927" autocomplete="off" spellcheck="false" />
+          <button id="run" type="submit">Map trial</button>
         </div>
+        <p class="query-scope">Live prediction: Phase II drug trials. Other study types can be explored in the graph.</p>
         <div class="examples">
-          <span>Try:</span>
-          <button type="button" data-q="NCT02142738" title="KEYNOTE-024 · pembrolizumab in NSCLC">KEYNOTE-024</button><i>/</i>
-          <button type="button" data-q="NCT01035255" title="PARADIGM-HF · sacubitril/valsartan in heart failure">PARADIGM-HF</button><i>/</i>
-          <button type="button" data-q="NCT00000620" title="ACCORD · intensive glycemic control in type 2 diabetes">ACCORD</button><i>/</i>
+          <span>Phase II:</span>
+          <button type="button" data-q="NCT01132482" title="NCT01132482 · sildenafil for cystic fibrosis · live prediction">Sildenafil</button><i>/</i>
+          <button type="button" data-q="NCT01928927" title="NCT01928927 · telmisartan in HIV · live prediction">TRAFIC</button>
+        </div>
+        <div class="examples graph-examples">
+          <span>Graph only:</span>
           <button type="button" data-q="metformin" title="Explore a PrimeKG node">metformin</button><i>/</i>
           <button type="button" data-q="metformin -> Alzheimer disease" title="Connect two PrimeKG nodes">metformin → Alzheimer</button>
         </div>
       </form>
 
-      <div class="sec-head"><span>Agent trace</span><span id="trace-note"></span></div>
+      <div class="sec-head"><span>Agent trace</span><span id="trace-note"></span></div><div id="activity-label" class="activity-label" role="status">Ready to explore</div>
       <ol id="steps" class="steps">
         <li class="empty">
           <ul>
             <li>Every point is one of PrimeKG's 129,375 biomedical entities, placed by a force-directed layout of its real connections and sized by how many it has.</li>
             <li>Hover a point to see its edges, click to pin it.</li>
-            <li>Enter an NCT number: the agent grounds the trial's drugs and diseases, then searches outward from both sides; what it reaches lights up in colour until the two meet.</li>
+            <li>Enter an NCT number: the agent maps its drugs and diseases, then lights up their connections. Supported Phase II drug trials also receive a score from our trained HINT model.</li>
             <li>Or connect any two nodes with “A → B”.</li>
           </ul>
         </li>
       </ol>
+      <div class="panel-scroll-hint">Agent activity <span>Scroll to read ↓</span></div>
     </aside>
 
     <aside class="panel right">
-      <div class="tabs sec-head">
-        <span><button class="tab active" data-tab="connections">Connections</button><i>/</i><button class="tab" data-tab="inspector">Inspector</button></span>
+      <div class="tabs sec-head" role="tablist" aria-label="Result views">
+        <span><button class="tab" role="tab" aria-selected="false" data-tab="prediction">Prediction</button><i>/</i><button class="tab active" role="tab" aria-selected="true" data-tab="connections">Paths</button><i>/</i><button class="tab" role="tab" aria-selected="false" data-tab="inspector">Inspector</button></span>
         <span id="tab-note"></span>
       </div>
       <div id="tab-connections" class="tab-body">
@@ -93,6 +103,10 @@
       <div id="tab-inspector" class="tab-body hidden">
         <div class="placeholder">Click any point in the graph to inspect it.</div>
       </div>
+      <div id="tab-prediction" class="tab-body hidden" role="tabpanel" aria-label="Model prediction" aria-live="polite">
+        <div class="placeholder">Enter an NCT number to run our trained model. Supports Phase II small-molecule trials with complete, resolvable inputs.</div>
+      </div>
+      <div class="panel-scroll-hint">Connections &amp; evidence <span>Scroll to read ↓</span></div>
     </aside>
 
     <section class="telemetry">

@@ -1,0 +1,41 @@
+{
+  "locked_at_utc": "2026-10-11T05:55:59.906368+00:00",
+  "experiment": "final_conditioned_attention_s0",
+  "exploratory_after_prior_test_inspection": true,
+  "architecture": {
+    "name": "drug_disease_conditioned_eligibility_attention",
+    "context_dimension": 100,
+    "key_query_dimension": 32,
+    "sentence_dimension": 768,
+    "shared_sentence_key": true,
+    "separate_inclusion_exclusion_queries": true,
+    "context_normalization": "LayerNorm without affine parameters",
+    "query_initialization": "zero weights and biases",
+    "sentence_key_initialization": "PyTorch Linear default, seed 0",
+    "attention_scale": "1/sqrt(32)",
+    "added_parameters": 31040
+  },
+  "settings": {
+    "seed": 0,
+    "epochs": 5,
+    "batch_size": 32,
+    "learning_rate": 0.0003,
+    "threads": 2,
+    "device": "cuda",
+    "optimizer": "Adam",
+    "weight_decay": 0,
+    "selection": "lowest sample-averaged validation BCE, including epoch 0",
+    "test_threshold": 0.5,
+    "max_architecture_attempts": 1
+  },
+  "source_sha256": {
+    "EXPERIMENT_PLAN.md": "1e8a226df6f4617796bc833f53da097118616cf1a9aa2492c122289811a0bb3b",
+    "README.md": "7ec1a01c7a0c98fc1d5af49de22422364ac6f17912988d049b3023ddab52716a",
+    "THIRD_PARTY.md": "5b6d15c4c828fabd5379b034c26a23521e5957a25a9658cb0f77aec265b94d4b",
+    "train_conditioned.py": "7ce848eff777f6cbd31c7a4633fb6a7bbf282a991f4216949df709b59cfae1cf",
+    "launch_final.sh": "f2f924a22821b34a734c5c822adc61a4448dd3bf69f96a56a3165ad00534710b",
+    "rebuild_pair_results.py": "7f8d04cc928926a3190b351527bf3c70bda75e1c209d1cc9ba42deb360a3b47f",
+    "hint_conditioned/__init__.py": "6e39580ead0c5ee23e597843d5eb42709af69f81e84677a61db8ed90ec20c14a",
+    "hint_conditioned/protocol.py": "00b75e0577248f7bc164b0c2485c20760e809e49d5f3dd406e812bc45903b2b8"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "run_id": "hint_p2_s0",
+  "seed": 0,
+  "device": "cpu",
+  "upstream_commit": "8dc0497f23fdb84e2905da7655924a91e6e79798",
+  "pythonhashseed": "0",
+  "seeding": "torch/np/random seeded AFTER HINT imports (import-time reseeding bug fixed)",
+  "recipe": {
+    "arch": "HINTModel",
+    "mpnn_hidden_size": 50,
+    "mpnn_depth": 3,
+    "gram_embedding_dim": 50,
+    "protocol_output_dim": 50,
+    "protocol_highway_num": 3,
+    "global_embed_size": 50,
+    "highway_num_layer": 2,
+    "gnn_hidden_size": 50,
+    "epoch": 5,
+    "lr": 0.0003,
+    "weight_decay": 0,
+    "batch_size": 32,
+    "optimizer": "Adam",
+    "loss": "BCEWithLogitsLoss",
+    "init_pretrain": "save_model/admet_model.ckpt (shipped ADMET model provides molecule_encoder)",
+    "selection": "lowest validation loss (sum of batch BCE losses), evaluated before training and after each epoch"
+  },
+  "deviations_from_upstream": [
+    "device=cuda (upstream hardcodes cpu)",
+    "best-model weights restored correctly via load_state_dict (upstream self=deepcopy(best_model) bug)",
+    "test evaluated once at end; not used in selection",
+    "torch.manual_seed(seed) via CLI set AFTER imports (upstream fixes 0 at import; import-time reseeding would equalize all seeds)",
+    "per-epoch resumable checkpointing; GRAM mapping saved with weights"
+  ]
+}

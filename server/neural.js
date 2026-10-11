@@ -102,12 +102,14 @@ function trace(side, m) {
   return { nodes, rels };
 }
 
-function classify(rels, interiorTypes) {
+function classify(rels, interiorTypes, displays) {
   if (rels.length === 1) {
     const r = rels[0];
     return r === 'indication' ? 'known indication' : r === 'off-label use' ? 'off-label use' : r === 'contraindication' ? 'contraindication' : 'direct link';
   }
-  if (rels.length === 2 && rels[0] === 'drug_protein' && rels[1] === 'disease_protein') return 'shared target';
+  if (rels.length === 2 && rels[0] === 'drug_protein' && rels[1] === 'disease_protein') {
+    return displays[0] === 'target' ? 'target–disease association' : 'protein association';
+  }
   if (interiorTypes.includes('drug')) return 'therapeutic analogy';
   if (interiorTypes.includes('disease') && rels.filter((r) => r === 'disease_protein').length >= 2) return 'shared disease genetics';
   if (rels.includes('protein_protein')) return 'protein interaction bridge';
@@ -156,6 +158,7 @@ export function neuralSearch(kg, seedsA, seedsB, { hops = 2, maxPaths = 24, side
     const kind = classify(
       rels.map((r) => kg.relations[r].relation),
       interior.map((n) => kg.typeOf(n)),
+      rels.map((r) => kg.relations[r].display),
     );
     if ((kindUse.get(kind) || 0) >= (KIND_CAP[kind] ?? DEFAULT_KIND_CAP)) continue;
     seen.add(key);

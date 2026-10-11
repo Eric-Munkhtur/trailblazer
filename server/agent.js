@@ -113,7 +113,7 @@ function candidatesFor(kg, names, types, limit = 8) {
 // ---------- 4. synthesis ----------
 
 const SYNTH_SYSTEM = `You are a translational-medicine reasoning agent working over PrimeKG.
-You receive a clinical trial, its interventions and diseases grounded in PrimeKG, and the strongest pathways a bidirectional neural search found between them (lower cost = stronger, more specific).
+You receive a clinical trial, its interventions and diseases grounded in PrimeKG, and pathways ranked by a manually weighted bidirectional graph search (lower cost ranks earlier; it is not a probability or validated evidence strength).
 Explain how the interventions connect to the disease biology. Prefer mechanistic pathways (targets, protein interactions, pathways, phenotypes) over therapeutic analogies via other drugs. Only cite pathway ids that are given.
 Return JSON:
 {"headline":"<=12 words",
@@ -133,7 +133,7 @@ function synthPrompt(kg, trial, seeds, search) {
   const feat = (i) => kg.features[i] || {};
   const lines = [
     `Trial ${trial.nct}: ${trial.briefTitle}`,
-    `Phase: ${trial.phases.join('/') || 'n/a'} · status ${trial.status} · sponsor ${trial.sponsor}`,
+    `Phase: ${trial.phases.join('/') || 'n/a'} · sponsor ${trial.sponsor}`,
     `Summary: ${trial.summary.slice(0, 800)}`,
     '',
     'Grounded seeds:',
@@ -143,25 +143,25 @@ function synthPrompt(kg, trial, seeds, search) {
       return `- [${s.side}] ${s.name} (${s.type}) for "${s.entity}"${extra ? ` — ${extra.slice(0, 350)}` : ''}`;
     }),
     '',
-    `Neural search reached ${search.reached.intervention} nodes from the intervention side and ${search.reached.disease} from the disease side; ${search.meetCount} meeting points.`,
+    `Graph search reached ${search.reached.intervention} nodes from the intervention side and ${search.reached.disease} from the disease side; ${search.meetCount} meeting points.`,
     'Pathways:',
     ...search.paths.map((p) => `${p.id} (${p.kind}, cost ${p.cost}): ${describePath(kg, p)}`),
   ];
   return lines.join('\n');
 }
 
-const MOCK_KINDS = ['shared target', 'pathway bridge', 'protein interaction bridge', 'known indication', 'phenotype overlap', 'shared disease genetics', 'functional bridge', 'off-label use'];
+const MOCK_KINDS = ['target–disease association', 'pathway bridge', 'protein interaction bridge', 'known indication', 'phenotype overlap', 'shared disease genetics', 'functional bridge', 'off-label use'];
 
 function mockSynth(kg, trial, search) {
   const picks = MOCK_KINDS.map((k) => search.paths.find((p) => p.kind === k)).filter(Boolean).slice(0, 4);
   if (!picks.length) picks.push(...search.paths.slice(0, 4));
   return {
     headline: trial.briefTitle.length > 90 ? `${trial.briefTitle.slice(0, 90).replace(/\s+\S*$/, '')}…` : trial.briefTitle,
-    summary: `Mock synthesis (no LLM). ${trial.nct} is a ${trial.phases.join('/') || ''} study sponsored by ${trial.sponsor}. The neural search found ${search.paths.length} pathways across ${search.meetCount} meeting points in PrimeKG.`,
-    mechanistic_hypothesis: 'Set OPENAI_API_KEY or ANTHROPIC_API_KEY to get an LLM-written mechanistic hypothesis over these pathways.',
+    summary: `Structured-data mode (no LLM). ${trial.nct} is a ${trial.phases.join('/') || ''} study sponsored by ${trial.sponsor}. Graph search found ${search.paths.length} pathways across ${search.meetCount} meeting points in PrimeKG.`,
+    mechanistic_hypothesis: 'Inspect the individual relationships below. Graph connections provide biological context; they do not establish a trial outcome or a causal mechanism.',
     key_paths: picks.map((p) => ({ path: p.id, title: p.kind, explanation: describePath(kg, p) })),
     novel_hypotheses: [],
-    gaps: ['Running in mock mode — LLM reasoning disabled.'],
+    gaps: ['Entities were matched by name. Review matches before interpreting paths.', 'The Prediction tab runs HINT separately. These PrimeKG paths are biological context, not inputs to that model.'],
     confidence: 'low',
   };
 }
@@ -181,7 +181,7 @@ export async function runAgent(nct, emit) {
   // 1. Retrieve
   step('retrieve', 'Retrieve trial record', 'running', 'ClinicalTrials.gov API v2');
   const trial = await fetchTrial(nct);
-  emit({ type: 'trial', trial: { nct, title: trial.briefTitle, status: trial.status, phases: trial.phases, sponsor: trial.sponsor, url: trial.url } });
+  emit({ type: 'trial', trial: { nct, title: trial.briefTitle, acronym: trial.acronym, status: trial.status, phases: trial.phases, sponsor: trial.sponsor, url: trial.url, conditions: trial.conditions, interventions: trial.interventions.map((i) => ({ name: i.name, roles: trial.armGroups.filter((a) => i.arms.includes(a.label)).map((a) => a.type) })) } });
   log('retrieve', `"${trial.briefTitle}"`);
   log('retrieve', `${trial.interventions.length} interventions · ${trial.conditions.length} conditions · ${trial.status}`);
   step('retrieve', 'Retrieve trial record', 'done');
@@ -246,11 +246,11 @@ export async function runAgent(nct, emit) {
   step('ground', 'Ground entities in PrimeKG', 'done', `${seedsA.length} intervention seeds · ${seedsB.length} disease seeds`);
 
   // 4. Neural search
-  step('signal', 'Propagate neural signals', 'running', 'bidirectional activation over PrimeKG');
+  step('signal', 'Explore graph connections', 'running', 'bidirectional traversal over PrimeKG');
   const search = await streamSearch(kg, seedsA, seedsB, emit, (text) => log('signal', text));
   const kinds = [...new Set(search.paths.map((p) => p.kind))];
   for (const p of search.paths.slice(0, 6)) log('signal', `${p.id} ${p.kind}: ${describePath(kg, p).replace(/ \([^)]*\)/g, '')}`);
-  step('signal', 'Propagate neural signals', 'done', `${search.paths.length} pathways · ${kinds.length} kinds`);
+  step('signal', 'Explore graph connections', 'done', `${search.paths.length} pathways · ${kinds.length} kinds`);
 
   // 5. Synthesize
   step('synth', 'Interpret the connections', 'running', `LLM · ${llm.provider}/${llm.model}`);

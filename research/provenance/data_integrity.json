@@ -1,0 +1,73 @@
+{
+  "upstream_commit": "8dc0497f23fdb84e2905da7655924a91e6e79798",
+  "splits": {
+    "train": {
+      "file": "data/phase_II_train.csv",
+      "rows": 4005,
+      "labels_1": 1914,
+      "labels_0": 2091,
+      "frac_1": 0.4779,
+      "duplicate_nctids": {},
+      "n_unique_nctids": 4005,
+      "rows_all_smiles_unparseable": [],
+      "rows_empty_smiles": [],
+      "rows_empty_icdcodes": [],
+      "sha256": "23e767816483b53ffad04c1e570d7ad4192e09a314ac0dd52375443c2afe2e39"
+    },
+    "valid": {
+      "file": "data/phase_II_valid.csv",
+      "rows": 446,
+      "labels_1": 208,
+      "labels_0": 238,
+      "frac_1": 0.4664,
+      "duplicate_nctids": {},
+      "n_unique_nctids": 446,
+      "rows_all_smiles_unparseable": [],
+      "rows_empty_smiles": [],
+      "rows_empty_icdcodes": [],
+      "sha256": "c5905bfc5b646e30321bd8e671d7bd946b8fb1dfe5c30a74bb29fa40e2a711e7"
+    },
+    "test": {
+      "file": "data/phase_II_test.csv",
+      "rows": 1654,
+      "labels_1": 918,
+      "labels_0": 736,
+      "frac_1": 0.555,
+      "duplicate_nctids": {},
+      "n_unique_nctids": 1654,
+      "rows_all_smiles_unparseable": [],
+      "rows_empty_smiles": [],
+      "rows_empty_icdcodes": [],
+      "sha256": "6e829c430ce1e397993dfc003f522f9e8089a6b13117800ff7943a252423ea91"
+    }
+  },
+  "overlap": {
+    "train\u2229valid": 0,
+    "train\u2229test": 0,
+    "valid\u2229test": 0
+  },
+  "fields_consumed_by_predictor": {
+    "nctid (row[0])": "identifier only",
+    "label (row[3])": "training/eval target",
+    "icdcodes (row[6])": "disease encoder input (GRAM)",
+    "smiless (row[8])": "molecule encoder input (MPNN)",
+    "criteria (row[9])": "protocol encoder input (BioBERT sentence embeddings)",
+    "status/why_stop/phase/drugs": "NOT consumed by HINT/dataloader.csv_three_feature_2_dataloader (verified by code audit)"
+  },
+  "paper_table1_phaseII": {
+    "train": 4004,
+    "valid": 445,
+    "test": 1653,
+    "success": [
+      1925,
+      196,
+      918
+    ],
+    "failure": [
+      2079,
+      249,
+      735
+    ],
+    "note": "Patterns 2022 Table 1; repo files have +1 row per split - difference investigated below"
+  }
+}

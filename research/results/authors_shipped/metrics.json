@@ -1,0 +1,44 @@
+{
+  "experiment": "authors' shipped test predictions (results/phase_II_test.csv) scored by us",
+  "source_file_sha256_note": "see data_integrity_report for split hashes; predictions file hashed below",
+  "n_test_rows": 1654,
+  "n_scored": 1654,
+  "n_missing_prediction_in_authors_file": [],
+  "duplicate_nctids_in_authors_file": [],
+  "independent_evaluator": {
+    "roc_auc": 0.6457193686653405,
+    "average_precision": 0.6906520924279029,
+    "f1@0.5": 0.6191325014854426,
+    "precision@0.5": 0.681045751633987,
+    "recall@0.5": 0.5675381263616558,
+    "accuracy@0.5": 0.6124546553808948,
+    "confusion_matrix@0.5": [
+      [
+        492,
+        244
+      ],
+      [
+        397,
+        521
+      ]
+    ],
+    "n": 1654,
+    "n_pos": 918,
+    "frac_pos": 0.5550181378476421
+  },
+  "upstream_evaluator_replication": {
+    "roc_auc_continuous": 0.6457193686653405,
+    "prauc_binarized_UPSTREAM": 0.6265436136457746,
+    "f1@0.5": 0.6191325014854426,
+    "precision@0.5": 0.681045751633987,
+    "recall@0.5": 0.5675381263616558,
+    "accuracy@0.5": 0.6124546553808948
+  },
+  "paper_table2_phaseII": {
+    "PR-AUC": "0.629\u00b10.009",
+    "F1": "0.620\u00b10.008",
+    "ROC-AUC": "0.645\u00b10.006",
+    "note": "paper 'PR-AUC' corresponds to upstream binarized-AP metric"
+  },
+  "authors_predictions_sha256": "a45453e312c38086adfe29f9e0fc5001770b179816a7d6d7a653b011eb18d95f"
+}

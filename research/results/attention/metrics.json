@@ -1,0 +1,47 @@
+{
+  "arm": "attention",
+  "seed": 0,
+  "best_epoch": 4,
+  "best_validation_loss": 0.6213730458721451,
+  "valid": {
+    "n": 446,
+    "n_positive": 208,
+    "roc_auc": 0.7124070782159018,
+    "average_precision": 0.6889461916252178,
+    "f1_at_0.5": 0.5957446808510638,
+    "precision_at_0.5": 0.6666666666666666,
+    "recall_at_0.5": 0.5384615384615384,
+    "confusion_matrix": [
+      [
+        182,
+        56
+      ],
+      [
+        96,
+        112
+      ]
+    ]
+  },
+  "test": {
+    "n": 1654,
+    "n_positive": 918,
+    "roc_auc": 0.6323085393577721,
+    "average_precision": 0.6833485441486831,
+    "f1_at_0.5": 0.6055919095776323,
+    "precision_at_0.5": 0.6671035386631717,
+    "recall_at_0.5": 0.5544662309368191,
+    "confusion_matrix": [
+      [
+        482,
+        254
+      ],
+      [
+        409,
+        509
+      ]
+    ]
+  },
+  "elapsed_seconds": 1744.0103002749383,
+  "best_checkpoint_sha256": "2da914ddaef4a9178cfeb5fb793b28bb17c0a077dc407de3ba620e78fcf58457",
+  "peak_gpu_allocated_bytes": 98488832
+}
