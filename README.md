@@ -11,7 +11,7 @@ cp .env.example .env   # add OPENAI_API_KEY or ANTHROPIC_API_KEY
 npm run dev            # http://localhost:5173
 ```
 
-`npm start` builds the frontend and serves everything from the API server on port 8787.
+`npm start` builds the frontend and serves everything from the API server on port 8790 (set `PORT` in `.env` to change it; the dev proxy follows it).
 
 `LLM_PROVIDER=mock npm run dev` runs an offline demo without an LLM: extraction comes from the trial's structured fields, grounding takes the top lexical match, and the synthesis step is a placeholder.
 

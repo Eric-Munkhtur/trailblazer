@@ -7,7 +7,7 @@ import { llmConfig } from './llm.js';
 import { primekg } from './primekg.js';
 
 const app = express();
-const PORT = Number(process.env.PORT) || 8787;
+const PORT = Number(process.env.PORT) || 8790;
 const runs = new Map();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const kg = primekg();

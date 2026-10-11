@@ -326,7 +326,8 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   // ---------- state ----------
   const state = { ambient: true, labels: true, fireDirty: false, lockDirty: false, cam: null, hover: -1, frame: 0 };
   const labelObjs = new Map();
-  const clock = new THREE.Clock();
+  const timer = new THREE.Timer();
+  timer.connect(document);
   const now = () => shared.uTime.value;
   const P = (i) => pos.subarray(i * 3, i * 3 + 3);
 
@@ -385,7 +386,8 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   let lastAmbient = 0;
   const ambientColor = new THREE.Color();
   renderer.setAnimationLoop(() => {
-    const dt = Math.min(clock.getDelta(), 0.1);
+    timer.update();
+    const dt = Math.min(timer.getDelta(), 0.1);
     shared.uTime.value += dt;
     const t = now();
     nodeUniforms.uReveal.value = Math.min(3, nodeUniforms.uReveal.value + dt * 0.9);
