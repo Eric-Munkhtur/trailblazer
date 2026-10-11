@@ -24,8 +24,8 @@ Besides NCT numbers, the search box takes a drug, disease, or gene name (find an
 | Retrieve | ClinicalTrials.gov API v2 | — |
 | Extract & normalize | LLM: canonical drug names, combination components, modality, arm role, putative targets, diseases | — |
 | Ground | Lexical search over PrimeKG names proposes candidates; the LLM picks the node that denotes the same concept. Drugs without a DrugBank node are seeded at their LLM-proposed gene targets | Candidate nodes flicker, chosen seeds light up and get labels |
-| Propagate | Bidirectional search, two hops from each side, over relation-weighted edges with a hub penalty | Replayed in cost time: every node the search reaches lights up when its cumulative path cost says it should (0.9 s per unit), and the cheapest edges of each hop travel as cyan (intervention) and pink (disease) signals. The trace reports how long the real search took (tens of milliseconds) |
-| Meet & lock | Meet-in-the-middle path reconstruction, diversified across pathway kinds | Meeting nodes flash when both wavefronts have reached them; up to 24 pathways loop as green spike trains |
+| Propagate | Bidirectional search, two hops from each side, over relation-weighted edges with a hub penalty | Replayed in cost time: every node the search reaches lights up when its cumulative path cost says it should (0.9 s per unit), and the cheapest edges of each hop travel as violet (intervention) and orange (disease) signals. The trace reports how long the real search took (tens of milliseconds) |
+| Meet & lock | Meet-in-the-middle path reconstruction, diversified across pathway kinds | Meeting nodes flash when both wavefronts have reached them; up to 24 pathways loop as red spike trains |
 | Interpret | LLM explains the mechanistic pathways and proposes hypotheses and gaps | Key pathways in the Connections panel |
 
 Pathways are classified as known indication, off-label use, contraindication, shared target, protein-interaction bridge, pathway bridge, phenotype overlap, shared disease genetics, disease hierarchy, therapeutic analogy, functional bridge, or multi-hop.
@@ -45,6 +45,15 @@ Each point is sized by its real degree. The fibres are a stratified sample of 14
 - **Connect to…** in the inspector (or `A -> B` in the search box) runs the neural search between any two nodes, without an LLM.
 - **Zoom** in and the most prominent nearby nodes (by degree within their type) are named.
 - Click a pathway card to isolate and trace it; toggle node types in the legend; Esc cancels.
+
+## Interface
+
+The look follows Zajno's *Smart Earth Protection* concept for NASA ([Dribbble](https://dribbble.com/shots/25860515-Educational-Website-on-Space-Pollution)): black, hairline rules, uppercase [Reddit Mono](https://fonts.google.com/specimen/Reddit+Mono), and a single red accent. Every readout is live data:
+
+- The wireframe sphere has the layout's 95th-percentile radius (R = 420); its far side is dashed, and it fades out as you zoom in. The graph is centred in the part of the stage the panels leave free.
+- The counters show PrimeKG's entity and relation totals. During a search they show the nodes reached (counted up in step with the replay), the real search time, and then the number of pathways.
+- The chart shows the degree distribution, with the inspected node marked. During a search it switches to the nodes each wavefront has reached over replay time, with the moment they meet.
+- The loading scale tracks the seven PrimeKG asset files as they download.
 
 ## Data
 

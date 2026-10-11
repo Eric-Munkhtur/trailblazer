@@ -16,16 +16,16 @@ const DATAVERSE = 'https://dataverse.harvard.edu/api/access/datafile';
 const FILES = { 'nodes.tab': 6180617, 'edges.csv': 6180616, 'drug_features.tab': 6180619, 'disease_features.tab': 6180618 };
 
 const TYPES = {
-  'gene/protein': { label: 'Gene / protein', color: '#ffb547' },
-  drug: { label: 'Drug', color: '#38e1ff' },
-  disease: { label: 'Disease', color: '#ff4f9a' },
-  'effect/phenotype': { label: 'Phenotype / effect', color: '#ff7a59' },
-  biological_process: { label: 'Biological process', color: '#7c8cff' },
-  molecular_function: { label: 'Molecular function', color: '#b18cff' },
-  cellular_component: { label: 'Cellular component', color: '#e08cff' },
-  pathway: { label: 'Pathway', color: '#5cf2c0' },
-  anatomy: { label: 'Anatomy', color: '#9ae66e' },
-  exposure: { label: 'Exposure', color: '#f5e663' },
+  'gene/protein': { label: 'Gene / protein', color: '#d6d0c4' },
+  drug: { label: 'Drug', color: '#8c84ff' },
+  disease: { label: 'Disease', color: '#ff8b3d' },
+  'effect/phenotype': { label: 'Phenotype / effect', color: '#b59c84' },
+  biological_process: { label: 'Biological process', color: '#8790a6' },
+  molecular_function: { label: 'Molecular function', color: '#a99fc2' },
+  cellular_component: { label: 'Cellular component', color: '#7aa5b5' },
+  pathway: { label: 'Pathway', color: '#3fcf74' },
+  anatomy: { label: 'Anatomy', color: '#5fb3a6' },
+  exposure: { label: 'Exposure', color: '#d9cc6a' },
 };
 // Tissue expression (1.5M edges) and drug–drug synergy (1.3M) link almost everything to
 // everything; the layout uses the other ~1.2M edges plus a few of the most specific excluded

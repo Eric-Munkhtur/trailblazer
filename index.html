@@ -6,71 +6,108 @@
     <title>Verdia · PrimeKG neural map</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="wordmark" viewBox="0 0 66.8 12">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M1.2 1.2 5.4 10.8 9.6 1.2M22.2 1.2H17.4Q14.4 1.2 14.4 4.2V7.8Q14.4 10.8 17.4 10.8H22.2M14.4 6H21M27 10.8V4.2Q27 1.2 30 1.2H31.8Q34.8 1.2 34.8 3.6 34.8 6 31.8 6H27M31.2 6 35 10.8M39.8 1.2V10.8H43.4Q47.6 10.8 47.6 6 47.6 1.2 43.4 1.2ZM52.4 1.2V10.8M57.2 10.8 61.4 1.2 65.6 10.8"
+        />
+      </symbol>
+    </svg>
+
     <div id="scene"></div>
+    <div class="frame" aria-hidden="true"></div>
+    <div id="caption" class="caption" aria-hidden="true"></div>
     <div id="tip" class="tip hidden"></div>
     <div id="mode" class="mode hidden"></div>
 
     <div id="boot" class="boot">
-      <div class="boot-inner">
-        <div class="logo"><span class="dot"></span>VERDIA</div>
-        <div id="boot-msg">Mapping PrimeKG…</div>
-      </div>
+      <svg class="wordmark" role="img" aria-label="Verdia"><use href="#wordmark" /></svg>
+      <div id="boot-msg" class="boot-msg">[MAPPING PRIMEKG]</div>
+      <div id="boot-scale" class="scale"></div>
     </div>
 
-    <header class="brand">
-      <div class="logo"><span class="dot"></span>VERDIA</div>
-      <div class="tag" id="kg-status">PrimeKG neural map</div>
+    <header class="hud-top">
+      <div class="meta">
+        <span class="wide">PRIMEKG-NEURAL-MAP</span><span class="wide">FA2-3D</span>
+        <span>NODES</span><span id="meta-nodes">•</span><span>TIME</span><span id="clock">•</span>
+      </div>
+      <svg class="wordmark" role="img" aria-label="Verdia"><use href="#wordmark" /></svg>
+      <nav class="actions">
+        <div>
+          <button id="rotate" class="toggle on" data-label="Orbit">Orbit: on</button><i>/</i><button id="labels" class="toggle on" data-label="Labels">Labels: on</button><i>/</i><button id="home">Reset-view</button><i>/</i><button id="clear">Clear</button>
+        </div>
+        <div class="sources">
+          <a href="https://github.com/mims-harvard/PrimeKG" target="_blank" rel="noopener">PrimeKG ↗</a><i>/</i><a href="https://clinicaltrials.gov" target="_blank" rel="noopener">ClinicalTrials.gov ↗</a>
+        </div>
+      </nav>
     </header>
 
     <aside class="panel left">
       <form id="run-form" class="run">
-        <label for="nct">ClinicalTrials.gov ID, any drug / disease / gene, or A → B</label>
+        <div class="sec-head"><span>Query</span><label for="nct">NCT ID · drug · disease · gene · A → B</label></div>
         <div class="row">
+          <span class="prompt">&gt;</span>
           <input id="nct" placeholder="NCT02142738" autocomplete="off" spellcheck="false" />
           <button id="run" type="submit">Fire</button>
         </div>
         <div class="examples">
-          <span>Try</span>
-          <button type="button" data-q="NCT02142738" title="KEYNOTE-024 · pembrolizumab in NSCLC">KEYNOTE-024</button>
-          <button type="button" data-q="NCT01035255" title="PARADIGM-HF · sacubitril/valsartan in heart failure">PARADIGM-HF</button>
-          <button type="button" data-q="NCT00000620" title="ACCORD · intensive glycemic control in type 2 diabetes">ACCORD</button>
-          <button type="button" data-q="metformin" title="Explore a PrimeKG node">metformin</button>
+          <span>Try:</span>
+          <button type="button" data-q="NCT02142738" title="KEYNOTE-024 · pembrolizumab in NSCLC">KEYNOTE-024</button><i>/</i>
+          <button type="button" data-q="NCT01035255" title="PARADIGM-HF · sacubitril/valsartan in heart failure">PARADIGM-HF</button><i>/</i>
+          <button type="button" data-q="NCT00000620" title="ACCORD · intensive glycemic control in type 2 diabetes">ACCORD</button><i>/</i>
+          <button type="button" data-q="metformin" title="Explore a PrimeKG node">metformin</button><i>/</i>
           <button type="button" data-q="metformin -> Alzheimer disease" title="Connect two PrimeKG nodes">metformin → Alzheimer</button>
         </div>
-        <div id="llm-status" class="llm-status"></div>
       </form>
 
-      <div class="section-title">Agent trace</div>
+      <div class="sec-head"><span>Agent trace</span><span id="trace-note"></span></div>
       <ol id="steps" class="steps">
-        <li class="empty">Every point is one of PrimeKG's 129,375 biomedical entities, placed by a force-directed layout of its real connections and sized by how many it has. Hover a point to see its edges, click to pin it. Enter an NCT number and the agent grounds the trial's drugs and diseases, then fires signals from both sides until the wavefronts meet — or connect any two nodes with “A → B”.</li>
+        <li class="empty">
+          <ul>
+            <li>Every point is one of PrimeKG's 129,375 biomedical entities, placed by a force-directed layout of its real connections and sized by how many it has.</li>
+            <li>Hover a point to see its edges, click to pin it.</li>
+            <li>Enter an NCT number: the agent grounds the trial's drugs and diseases, then fires signals from both sides until the wavefronts meet.</li>
+            <li>Or connect any two nodes with “A → B”.</li>
+          </ul>
+        </li>
       </ol>
     </aside>
 
     <aside class="panel right">
-      <div class="tabs">
-        <button class="tab active" data-tab="connections">Connections</button>
-        <button class="tab" data-tab="inspector">Inspector</button>
+      <div class="tabs sec-head">
+        <span><button class="tab active" data-tab="connections">Connections</button><i>/</i><button class="tab" data-tab="inspector">Inspector</button></span>
+        <span id="tab-note"></span>
       </div>
       <div id="tab-connections" class="tab-body">
         <div class="placeholder">Pathways the agent discovers between the trial's interventions and diseases appear here.</div>
       </div>
       <div id="tab-inspector" class="tab-body hidden">
-        <div class="placeholder">Click any neuron in the graph to inspect it.</div>
+        <div class="placeholder">Click any point in the graph to inspect it.</div>
       </div>
     </aside>
 
-    <footer class="dock">
-      <div id="legend" class="legend"></div>
-      <div class="controls">
-        <button id="rotate" class="toggle on">Orbit</button>
-        <button id="labels" class="toggle on">Labels</button>
-        <button id="home">Reset view</button>
-        <button id="clear">Clear</button>
+    <section class="telemetry">
+      <div class="counter"><div class="lbl" id="c1-l">Entities:</div><div class="val" id="c1">000.000.000</div></div>
+      <div class="counter"><div class="lbl" id="c2-l">Relations:</div><div class="val" id="c2">000.000.000</div></div>
+      <div class="counter hidden" id="c3-box"><div class="lbl">Pathways:</div><div class="val" id="c3">00</div></div>
+      <div class="chart-box">
+        <div class="lbl" id="chart-l">Degree distribution:</div>
+        <svg id="chart"></svg>
       </div>
+    </section>
+
+    <footer class="hud-bottom">
+      <div id="legend" class="legend"></div>
+      <div id="llm-status" class="status"></div>
     </footer>
 
     <script type="module" src="/src/main.js"></script>

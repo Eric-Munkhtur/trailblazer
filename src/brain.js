@@ -6,13 +6,18 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
-export async function loadPrimeKG() {
+/** Loads the browser assets; `onProgress` receives the fraction of files loaded. */
+export async function loadPrimeKG(onProgress) {
+  const FILES = 7;
+  let loaded = 0;
   const get = async (file, kind) => {
     const res = await fetch(`/primekg/${file}`);
     if (!res.ok || (kind !== 'text' && kind !== 'json' && res.headers.get('content-type')?.includes('text/html'))) {
       throw new Error('PrimeKG has not been built yet. Run `npm run primekg`, then reload.');
     }
-    return kind === 'json' ? res.json() : kind === 'text' ? res.text() : res.arrayBuffer();
+    const body = await (kind === 'json' ? res.json() : kind === 'text' ? res.text() : res.arrayBuffer());
+    onProgress?.(++loaded / FILES);
+    return body;
   };
   const [meta, pos, types, degree, names, edges, edgeRels] = await Promise.all([
     get('meta.json', 'json'),
@@ -71,7 +76,7 @@ const FIBER_VS = /* glsl */ `
   varying vec3 vColor;
   varying float vAlpha;
   void main() {
-    vColor = aColor;
+    vColor = mix(aColor, vec3(0.8), 0.45);
     float l = aLen / uLength;
     vAlpha = uMask[int(aType + 0.5)] * mix(1.0, 0.3, uDim) * aAlpha / (1.0 + l * l);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -169,6 +174,27 @@ const PULSE_FS = /* glsl */ `
     gl_FragColor = vec4(mix(vColor, vec3(1.0), 0.45) * 1.6, core * vA);
   }`;
 
+// Reference frame around the layout: great circles on the sphere that holds 95% of nodes.
+// Segments on the far side of the sphere (or, for axis lines, behind its centre) are dashed.
+const WIRE_VS = /* glsl */ `
+  uniform vec3 uCam;
+  uniform float uR;
+  attribute float aDist, aSurf;
+  varying float vBack, vDist;
+  void main() {
+    vDist = aDist;
+    vBack = step(dot(position, uCam), aSurf * uR * uR);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }`;
+
+const WIRE_FS = /* glsl */ `
+  uniform float uOpacity;
+  varying float vBack, vDist;
+  void main() {
+    if (vBack > 0.5 && mod(vDist, 11.0) > 5.5) discard;
+    gl_FragColor = vec4(vec3(0.8), uOpacity * (1.0 - 0.45 * vBack));
+  }`;
+
 const dynamicAttr = (geo, name, size, n) => {
   const a = new THREE.BufferAttribute(new Float32Array(n * size), size);
   a.setUsage(THREE.DynamicDrawUsage);
@@ -257,12 +283,51 @@ class SignalLayer {
 }
 
 const SIDE_COLORS = {
-  intervention: new THREE.Color('#38e1ff'),
-  disease: new THREE.Color('#ff4f9a'),
-  A: new THREE.Color('#38e1ff'),
-  B: new THREE.Color('#ff4f9a'),
-  path: new THREE.Color('#5cf2c0'),
+  intervention: new THREE.Color('#8c84ff'),
+  disease: new THREE.Color('#ff8b3d'),
+  A: new THREE.Color('#8c84ff'),
+  B: new THREE.Color('#ff8b3d'),
+  path: new THREE.Color('#ff4a2e'),
 };
+
+function wireGeometry(R) {
+  const pos = [];
+  const dist = [];
+  const surf = [];
+  const ring = (normal, segs = 192) => {
+    const n = normal.clone().normalize();
+    const u = new THREE.Vector3(Math.abs(n.x) < 0.9 ? 1 : 0, Math.abs(n.x) < 0.9 ? 0 : 1, 0).cross(n).normalize();
+    const v = n.clone().cross(u);
+    const at = (k) => u.clone().multiplyScalar(Math.cos((k / segs) * Math.PI * 2) * R).addScaledVector(v, Math.sin((k / segs) * Math.PI * 2) * R);
+    let d = 0;
+    for (let k = 0; k < segs; k++) {
+      const a = at(k);
+      const b = at(k + 1);
+      pos.push(...a.toArray(), ...b.toArray());
+      dist.push(d, (d += a.distanceTo(b)));
+      surf.push(1, 1);
+    }
+  };
+  const axis = (dir, len) => {
+    const a = dir.clone().normalize().multiplyScalar(-len);
+    const b = a.clone().negate();
+    pos.push(...a.toArray(), ...b.toArray());
+    dist.push(0, a.distanceTo(b));
+    surf.push(0, 0);
+  };
+  const tilted = new THREE.Vector3(0, Math.cos(0.42), Math.sin(0.42));
+  ring(new THREE.Vector3(0, 1, 0));
+  ring(new THREE.Vector3(0, 0, 1));
+  ring(new THREE.Vector3(Math.sin(1.05), 0, Math.cos(1.05)));
+  ring(tilted);
+  axis(new THREE.Vector3(0, 1, 0), R * 1.08);
+  axis(tilted, R * 1.05);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('aDist', new THREE.Float32BufferAttribute(dist, 1));
+  geo.setAttribute('aSurf', new THREE.Float32BufferAttribute(surf, 1));
+  return geo;
+}
 
 // A coarse 3D grid over the layout. Points and fibres in crowded cells are drawn fainter, so
 // clusters keep their texture under additive blending instead of saturating to white.
@@ -283,9 +348,13 @@ function densityGrid(pos, N, cells = 48) {
 }
 
 const fade = (ref, count, exp) => Math.min(1, Math.pow(ref / Math.max(1, count), exp));
+const smooth = (a, b, x) => {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
 const FIBER_OPACITY = 0.03;
 const EGO_MAX = 4000;
-const HINTS = 32;
+const HINTS = 24;
 const HINT_MIN = 1.45;
 
 export function createBrain(container, kg, { onHover, onClick } = {}) {
@@ -294,7 +363,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   const pixelRatio = Math.min(window.devicePixelRatio, 1.75);
   renderer.setPixelRatio(pixelRatio);
   renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setClearColor(0x03050a, 1);
+  renderer.setClearColor(0x000000, 1);
   container.appendChild(renderer.domElement);
 
   const labelRenderer = new CSS2DRenderer();
@@ -304,7 +373,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
 
   const HOME = 1150;
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x03050a, 0.0003);
+  scene.fog = new THREE.FogExp2(0x000000, 0.0003);
   const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 1, 8000);
   camera.position.set(0, 0.25 * HOME, 0.97 * HOME);
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -317,12 +386,13 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.55, 0.5, 0.4);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.38, 0.4, 0.42);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
   const shared = { uTime: { value: 0 }, uPixelRatio: { value: pixelRatio }, uDim: { value: 0 }, uMask: { value: new Array(16).fill(1) } };
   const typeColors = meta.types.map((t) => new THREE.Color(t.color));
+  const egoColors = typeColors.map((c) => c.clone().lerp(new THREE.Color(1, 1, 1), 0.4));
   const grid = densityGrid(pos, N);
 
   // Neurons: every PrimeKG node, sized by its real number of connections.
@@ -418,6 +488,60 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
   const paths = new SignalLayer(1200, shared, true);
   scene.add(signals.lines, signals.pulses, paths.lines, paths.pulses);
 
+  // Reference sphere, shown in the overview and faded out up close. Its outline is the sphere's
+  // silhouette, recomputed for the camera every frame.
+  const R = meta.layout?.radius ?? 420;
+  const wireUniforms = { uCam: { value: new THREE.Vector3() }, uR: { value: R }, uOpacity: { value: 0 } };
+  const wire = new THREE.LineSegments(
+    wireGeometry(R),
+    new THREE.ShaderMaterial({ uniforms: wireUniforms, vertexShader: WIRE_VS, fragmentShader: WIRE_FS, transparent: true, depthWrite: false }),
+  );
+  const outline = new THREE.LineLoop(
+    new THREE.BufferGeometry().setFromPoints(Array.from({ length: 192 }, (_, k) => new THREE.Vector3(Math.cos((k / 192) * Math.PI * 2), Math.sin((k / 192) * Math.PI * 2), 0))),
+    new THREE.LineBasicMaterial({ color: 0xcfcfcf, transparent: true, opacity: 0, depthWrite: false, fog: false }),
+  );
+  wire.frustumCulled = outline.frustumCulled = false;
+  scene.add(wire, outline);
+  const axisLabels = [
+    ['+Y', [0, 1.13, 0]],
+    ['−Y', [0, -1.13, 0]],
+    ['+X', [1.05, 0, 0]],
+    ['−X', [-1.05, 0, 0]],
+    ['+Z', [0, 0, 1.05]],
+    ['−Z', [0, 0, -1.05]],
+    ['O', [0.035, -0.04, 0]],
+    [`R=${R}`, [0.74, 0, 0.74]],
+  ].map(([text, [x, y, z]]) => {
+    const el = document.createElement('div');
+    el.className = 'axis-label';
+    el.textContent = text;
+    const o = new CSS2DObject(el);
+    o.position.set(x * R, y * R, z * R);
+    scene.add(o);
+    return o;
+  });
+
+  const reticle = new CSS2DObject(Object.assign(document.createElement('div'), { className: 'reticle' }));
+  reticle.visible = false;
+  scene.add(reticle);
+
+  // The page overlays panels on the canvas. A view offset centres the scene in the uncovered
+  // stage, and the home distance fits the reference sphere inside it.
+  const inset = { left: 0, right: 0, top: 0, bottom: 0 };
+  let fitAngle = THREE.MathUtils.degToRad(20);
+  let homeDist = HOME;
+  /** Camera distance at which a ball of `radius` fills the uncovered stage. */
+  const fitDist = (radius) => radius / Math.sin(fitAngle);
+  function applyInset() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    camera.setViewOffset(w, h, (inset.right - inset.left) / 2, (inset.bottom - inset.top) / 2, w, h);
+    const stage = Math.min(w - inset.left - inset.right, h - inset.top - inset.bottom);
+    const t = ((stage * 0.43) / (h / 2)) * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    fitAngle = Math.atan(Math.max(0.05, t));
+    homeDist = fitDist(R * 1.04);
+  }
+
   // ---------- state ----------
   const state = { labels: true, fireDirty: false, lockDirty: false, cam: null, hover: -1, frame: 0 };
   const labelObjs = new Map();
@@ -436,6 +560,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     const w = container.clientWidth;
     const h = container.clientHeight;
     camera.aspect = w / h;
+    applyInset();
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
     composer.setSize(w, h);
@@ -573,8 +698,25 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     }
     controls.update();
     // Fewer fibres overlap per pixel up close, so each one is drawn stronger.
-    const zoom = HOME / Math.max(1, camera.position.distanceTo(controls.target));
+    const dist = camera.position.distanceTo(controls.target);
+    const zoom = homeDist / Math.max(1, dist);
     fiberUniforms.uOpacity.value = FIBER_OPACITY * Math.min(6, Math.max(1, Math.pow(zoom, 0.9)));
+
+    const camR = camera.position.length();
+    const wireA = smooth(R * 1.5, R * 2.3, camR);
+    wire.visible = outline.visible = wireA > 0.01;
+    if (wire.visible) {
+      wireUniforms.uOpacity.value = 0.3 * wireA;
+      wireUniforms.uCam.value.copy(camera.position);
+      outline.material.opacity = 0.45 * wireA;
+      outline.position.copy(camera.position).multiplyScalar((R * R) / (camR * camR));
+      outline.scale.setScalar(R * Math.sqrt(1 - (R * R) / (camR * camR)));
+      outline.lookAt(camera.position);
+    }
+    for (const o of axisLabels) {
+      o.visible = state.labels && wireA > 0.05;
+      o.element.style.opacity = wireA;
+    }
 
     if (pending) {
       const [x, y] = pending;
@@ -682,7 +824,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
     showEgo(i, nbrs) {
       for (const j of egoNodes) hi.array[j] = 0;
       const n = Math.min(EGO_MAX, nbrs.length);
-      const c0 = typeColors[types[i]];
+      const c0 = egoColors[types[i]];
       for (let k = 0; k < n; k++) {
         const j = nbrs[k];
         ego.position.array.set(P(i), k * 6);
@@ -691,7 +833,7 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
         ego.aS.array[k * 2 + 1] = 1;
         ego.aPhase.array[k * 2] = ego.aPhase.array[k * 2 + 1] = Math.random();
         c0.toArray(ego.aColor.array, k * 6);
-        typeColors[types[j]].toArray(ego.aColor.array, k * 6 + 3);
+        egoColors[types[j]].toArray(ego.aColor.array, k * 6 + 3);
         hi.array[j] = 0.5;
       }
       hi.array[i] = 1;
@@ -700,6 +842,11 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       for (const a of Object.values(ego)) a.needsUpdate = true;
       egoGeo.setDrawRange(0, n * 2);
       hi.needsUpdate = true;
+    },
+    /** Draw the callout box around node i, or remove it (i < 0). */
+    mark(i) {
+      reticle.visible = i >= 0;
+      if (i >= 0) reticle.position.fromArray(P(i));
     },
     clearEgo() {
       for (const j of egoNodes) hi.array[j] = 0;
@@ -785,10 +932,17 @@ export function createBrain(container, kg, { onHover, onClick } = {}) {
       for (const i of indices) box.expandByPoint(new THREE.Vector3().fromArray(P(i)));
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3()).length();
-      flyTo(center, distance ?? Math.max(160, size * 1.25), ms);
+      flyTo(center, distance ?? Math.max(160, fitDist(size * 0.55)), ms);
     },
-    home(distance = HOME) {
+    home(distance = homeDist) {
       flyTo(new THREE.Vector3(0, 0, 0), distance);
+    },
+    /** Pixels of the canvas covered by page chrome on each side; `place` also moves the camera home. */
+    setInsets(px, { place = false } = {}) {
+      Object.assign(inset, px);
+      applyInset();
+      camera.updateProjectionMatrix();
+      if (place) camera.position.sub(controls.target).setLength(homeDist).add(controls.target);
     },
     position: P,
   };

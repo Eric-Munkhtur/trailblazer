@@ -186,12 +186,14 @@ export function neuralSearch(kg, seedsA, seedsB, { hops = 2, maxPaths = 24, side
       const keep = layer.filter((v) => onPath.has(v));
       const rest = layer.filter((v) => !onPath.has(v)).slice(0, DRAW_CAP[h + 1] || 600);
       const lit = layer.slice(0, LIT_CAP);
+      const times = lit.map((v) => at(side, v));
+      for (const t of times) duration = Math.max(duration, t);
       const edges = [...keep, ...rest].map((v) => {
         const [u, r] = side.parent.get(v);
         duration = Math.max(duration, at(side, v));
         return [u, v, r, at(side, u), at(side, v)];
       });
-      return { side: label, hop: h + 1, reached: layer.length, edges, nodes: lit, times: lit.map((v) => at(side, v)) };
+      return { side: label, hop: h + 1, reached: layer.length, edges, nodes: lit, times };
     });
   const fa = framesFor(A, sides[0]);
   const fb = framesFor(B, sides[1]);
@@ -218,6 +220,7 @@ export function neuralSearch(kg, seedsA, seedsB, { hops = 2, maxPaths = 24, side
 export async function streamSearch(kg, seedsA, seedsB, emit, log, opts) {
   const s = neuralSearch(kg, seedsA, seedsB, opts);
   const explored = Object.values(s.reached).reduce((a, b) => a + b, 0);
+  emit({ type: 'search', explored, ms: s.ms, duration: s.duration });
   log(`searched ${explored.toLocaleString()} nodes in ${s.ms < 10 ? s.ms.toFixed(1) : Math.round(s.ms)} ms · replayed at ${WAVE_SECONDS}s per unit of path cost`);
   for (const f of s.frames) {
     emit({ type: 'signal', ...f });
